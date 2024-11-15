@@ -1,4 +1,5 @@
 using System.Collections;
+using PDollarGestureRecognizer;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -19,6 +20,7 @@ public class GunController : MonoBehaviour
     {
         EventManager.Instance.SubscribeToOnPickupWeaponAction(GunPickedUp);
         EventManager.Instance.SubscribeToOnReleaseWeaponAction(GunReleased);
+        EventManager.Instance.SubscribeToOnDidGesture(GunGesture);
 
         inputActionReferenceKeyboard.action.Enable();
         inputActionReferenceKeyboard.action.performed += FireBullet;
@@ -37,6 +39,12 @@ public class GunController : MonoBehaviour
     {
         if (weapon.GetComponent<GunController>())
             hasGunInHand = false;
+    }
+
+    private void GunGesture(Result result, GameObject source)
+    {//ovde ces da pustas i animaciju za reload i ui da menjas za to koliko je trenutno metaka u sarzeru
+        if (result.GestureClass == "O" && source.GetComponent<HandData>().WeaponInHand.GetComponent<GunController>())
+            currentAmmo = gunData.Ammo;
     }
 
     private void FireBullet(InputAction.CallbackContext callback)

@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class HandData : MonoBehaviour
 {
@@ -9,5 +8,7 @@ public class HandData : MonoBehaviour
 	public Transform Root;
 	public Animator Animator;
 	public Transform[] FingerBones;
+	public GameObject WeaponInHand;
+	public bool HasWeaponInHand;
 
 }

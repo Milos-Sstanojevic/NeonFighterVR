@@ -7,8 +7,12 @@ public class HandController : MonoBehaviour
     [SerializeField] private InputActionReference drawInputActionReferenceVR;
     [SerializeField] private float inputThreshold = 0.1f;
 
-    public GameObject WeaponInHand { get; private set; }
-    public bool HasWeaponInHand { get; private set; }
+    private HandData handData;
+
+    private void Start()
+    {
+        handData = GetComponent<HandData>();
+    }
 
     private void OnEnable()
     {
@@ -30,16 +34,16 @@ public class HandController : MonoBehaviour
         if (hand != this)
             return;
 
-        HasWeaponInHand = true;
-        WeaponInHand = weapon;
+        handData.HasWeaponInHand = true;
+        handData.WeaponInHand = weapon;
     }
 
     private void ReleasedWeapon(GameObject weapon)
     {
-        if (WeaponInHand == weapon)
+        if (handData.WeaponInHand == weapon)
         {
-            HasWeaponInHand = false;
-            WeaponInHand = null;
+            handData.HasWeaponInHand = false;
+            handData.WeaponInHand = null;
         }
     }
 

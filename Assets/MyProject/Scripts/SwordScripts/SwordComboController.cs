@@ -8,15 +8,15 @@ public class SwordComboController : MonoBehaviour
 
     private void OnEnable()
     {
-        EventManager.Instance.SubscribeToOnDidGesture(StingerCombo);
+        EventManager.Instance.SubscribeToOnDidGesture(SwordGesture);
         EventManager.Instance.SubscribeToOnPickupWeaponAction(SwordPickedUp);
         EventManager.Instance.SubscribeToOnReleaseWeaponAction(SwordReleased);
     }
 
     //napravi da se ovaj kombo pokrece ako je napisao slovo S pustio a onda sledece slovo koje je napisao je O kada napise S treba da se odradi animacija za Million Stabs, a cim se zavrsi ako napise O onda neka ga gurne u napred kao stinger
-    private void StingerCombo(Result result, GameObject weapon)
+    private void SwordGesture(Result result, GameObject source)
     {
-        if (result.GestureClass == "S" && weapon.GetComponent<HandController>().WeaponInHand.GetComponent<SwordComboController>())
+        if (result.GestureClass == "S" && source.GetComponent<HandData>().WeaponInHand.GetComponent<SwordComboController>())
             Debug.Log("STINGER");
     }
 
@@ -34,7 +34,7 @@ public class SwordComboController : MonoBehaviour
 
     private void OnDisable()
     {
-        EventManager.Instance.UnsubscribeFromOnDidGesture(StingerCombo);
+        EventManager.Instance.UnsubscribeFromOnDidGesture(SwordGesture);
         EventManager.Instance.UnsubscribeFromOnPickupWeaponAction(SwordPickedUp);
         EventManager.Instance.UnsubscribeFromOnReleaseWeaponAction(SwordReleased);
     }

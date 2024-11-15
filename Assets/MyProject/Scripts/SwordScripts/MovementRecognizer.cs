@@ -31,7 +31,7 @@ public class MovementRecognizer : MonoBehaviour
 
     private void StartedDrawing(HandData hand)
     {
-        if (movementSource == null && hand.GetComponent<HandController>().HasWeaponInHand)
+        if (movementSource == null && hand.HasWeaponInHand)
         {
             isPressed = true;
             movementSource = hand.transform;
@@ -126,6 +126,8 @@ public class MovementRecognizer : MonoBehaviour
         string fileName = Application.persistentDataPath + "/" + newGestureName + ".xml";
         Debug.Log(Application.persistentDataPath);
         GestureIO.WriteGesture(pointArray, newGestureName, fileName);
+
+        movementSource = null;
     }
 
     private void RecognizeGesture(Gesture newGesture)
