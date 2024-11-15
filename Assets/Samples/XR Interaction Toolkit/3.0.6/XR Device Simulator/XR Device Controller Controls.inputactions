@@ -132,6 +132,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "DrawOnScreenR",
+                    "type": "Button",
+                    "id": "72e25cc1-2eb7-4794-ab1e-fe559ba518fa",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Shoot",
                     "type": "Button",
                     "id": "4b9a073c-1813-4093-ac74-837ccc50d89d",
@@ -392,6 +401,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Shoot",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bc012451-348d-418a-a7d7-de1309e65d21",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DrawOnScreenR",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

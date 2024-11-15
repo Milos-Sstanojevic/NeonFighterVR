@@ -6,10 +6,9 @@ public class EventManager : MonoBehaviour
 {
     public static EventManager Instance { get; private set; }
 
-    private event Action<GameObject, HandData> onPickupWeaponAction;
+    private event Action<GameObject, HandController> onPickupWeaponAction;
     private event Action<GameObject> onReleaseWeaponAction;
     private event Action<Result, GameObject> onDidGestureAction;
-    private event Action onDidSComboAction;
     private event Action<HandData> onStartedDrawingAction;
     private event Action<HandData> onFinishedDrawingAction;
 
@@ -66,17 +65,17 @@ public class EventManager : MonoBehaviour
         onDidGestureAction -= action;
     }
 
-    public void OnPickupWeapon(GameObject weapon, HandData hand)
+    public void OnPickupWeapon(GameObject weapon, HandController hand)
     {
         onPickupWeaponAction?.Invoke(weapon, hand);
     }
 
-    public void SubscribeToOnPickupWeaponAction(Action<GameObject, HandData> action)
+    public void SubscribeToOnPickupWeaponAction(Action<GameObject, HandController> action)
     {
         onPickupWeaponAction += action;
     }
 
-    public void UnsubscribeFromOnPickupWeaponAction(Action<GameObject, HandData> action)
+    public void UnsubscribeFromOnPickupWeaponAction(Action<GameObject, HandController> action)
     {
         onPickupWeaponAction -= action;
     }
@@ -94,20 +93,5 @@ public class EventManager : MonoBehaviour
     public void UnsubscribeFromOnReleaseWeaponAction(Action<GameObject> action)
     {
         onReleaseWeaponAction -= action;
-    }
-
-    public void OnDidSCombo()
-    {
-        onDidSComboAction?.Invoke();
-    }
-
-    public void SubscribeToOnDidSComboAction(Action action)
-    {
-        onDidSComboAction += action;
-    }
-
-    public void UnsubscribeFromOnDidSComboAction(Action action)
-    {
-        onDidSComboAction -= action;
     }
 }

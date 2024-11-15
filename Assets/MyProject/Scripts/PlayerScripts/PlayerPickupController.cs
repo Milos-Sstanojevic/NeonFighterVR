@@ -6,7 +6,7 @@ public class PlayerPickupController : MonoBehaviour
     public void SnapObjectToHand(SelectEnterEventArgs args)
     {
         GameObject weapon = args.interactableObject.transform.gameObject;
-        HandData hand = args.interactorObject.transform.parent.GetComponent<HandData>();
+        HandController hand = args.interactorObject.transform.parent.GetComponent<HandController>();
 
         if (weapon != null && hand != null)
             EventManager.Instance.OnPickupWeapon(weapon, hand);

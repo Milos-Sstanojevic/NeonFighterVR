@@ -27,7 +27,7 @@ public class GunController : MonoBehaviour
         inputActionReferenceVR.action.performed += FireBullet;
     }
 
-    private void GunPickedUp(GameObject weapon, HandData hand)
+    private void GunPickedUp(GameObject weapon, HandController hand)
     {
         if (weapon.GetComponent<GunController>())
             hasGunInHand = true;

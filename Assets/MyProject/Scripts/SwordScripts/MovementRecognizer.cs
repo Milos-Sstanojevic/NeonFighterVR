@@ -24,14 +24,14 @@ public class MovementRecognizer : MonoBehaviour
         EventManager.Instance.SubscribeToOnFinishedDrawingAction(FinishedDrawing);
     }
 
-    private void WeaponPickedUp(GameObject weapon, HandData hand)
+    private void WeaponPickedUp(GameObject weapon, HandController hand)
     {
         canDoGesture = true;
     }
 
     private void StartedDrawing(HandData hand)
     {
-        if (movementSource == null && hand.HasWeaponInHand)
+        if (movementSource == null && hand.GetComponent<HandController>().HasWeaponInHand)
         {
             isPressed = true;
             movementSource = hand.transform;

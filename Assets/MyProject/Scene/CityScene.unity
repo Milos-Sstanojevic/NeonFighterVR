@@ -604,8 +604,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8fea590db85e0642b952ee788099e3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputActionReferenceKeyboard: {fileID: 3264632949728779670, guid: 0be0028c24f2a4c14a96b6aa39055933, type: 3}
-  inputActionReferenceVR: {fileID: -297197526516945025, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   movementSource: {fileID: 0}
   newPositionThresholdDistance: 0.05
   debugCubePrefab: {fileID: 262101664083831130, guid: 34163d61bc869c34c9dc1df61a666383, type: 3}
@@ -755,10 +753,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4272335075550994485, guid: b85efa18cfa84a44fa6a1e9a7264531b, type: 3}
-      propertyPath: drawInputActionReferenceKeyboard
-      value: 
-      objectReference: {fileID: -1882497465160787131, guid: 0be0028c24f2a4c14a96b6aa39055933, type: 3}
     - target: {fileID: 5208559330575133729, guid: b85efa18cfa84a44fa6a1e9a7264531b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
