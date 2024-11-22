@@ -10,5 +10,6 @@ public class HandData : MonoBehaviour
 	public Transform[] FingerBones;
 	public GameObject WeaponInHand;
 	public bool HasWeaponInHand;
+	public Transform GunSpinningPivot;
 
 }

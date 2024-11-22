@@ -11,6 +11,7 @@ public class EventManager : MonoBehaviour
     private event Action<Result, GameObject> onDidGestureAction;
     private event Action<HandData> onStartedDrawingAction;
     private event Action<HandData> onFinishedDrawingAction;
+    private event Action onReloadingInteruptAction;
 
     private void Awake()
     {
@@ -18,6 +19,21 @@ public class EventManager : MonoBehaviour
             Instance = this;
         else
             Destroy(gameObject);
+    }
+
+    public void OnReloadingInteruptAction()
+    {
+        onReloadingInteruptAction?.Invoke();
+    }
+
+    public void SubscribeToOnReloadingInteruptAction(Action action)
+    {
+        onReloadingInteruptAction += action;
+    }
+
+    public void UnsubscribeFromOnReloadingInteruptAction(Action action)
+    {
+        onReloadingInteruptAction -= action;
     }
 
     public void OnStartedDrawing(HandData hand)

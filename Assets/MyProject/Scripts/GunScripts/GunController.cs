@@ -15,6 +15,20 @@ public class GunController : MonoBehaviour
     private float nextFire;
     private int currentAmmo;
     private bool hasGunInHand;
+    private GunSpinner gunSpinner;
+    private Animator holdingHandAnimator;
+    private bool isFiringPending;
+
+    private void Awake()
+    {
+        gunSpinner = GetComponent<GunSpinner>();
+        laserLine = GetComponent<LineRenderer>();
+    }
+
+    private void Start()
+    {
+        currentAmmo = gunData.Ammo;
+    }
 
     private void OnEnable()
     {
@@ -31,8 +45,11 @@ public class GunController : MonoBehaviour
 
     private void GunPickedUp(GameObject weapon, HandController hand)
     {
-        if (weapon.GetComponent<GunController>())
-            hasGunInHand = true;
+        if (!weapon.GetComponent<GunController>())
+            return;
+
+        holdingHandAnimator = hand.GetComponent<HandData>().Animator;
+        hasGunInHand = true;
     }
 
     private void GunReleased(GameObject weapon)
@@ -42,9 +59,14 @@ public class GunController : MonoBehaviour
     }
 
     private void GunGesture(Result result, GameObject source)
-    {//ovde ces da pustas i animaciju za reload i ui da menjas za to koliko je trenutno metaka u sarzeru
-        if (result.GestureClass == "O" && source.GetComponent<HandData>().WeaponInHand.GetComponent<GunController>())
-            currentAmmo = gunData.Ammo;
+    {
+        HandData sourceHand = source.GetComponent<HandData>();
+
+        if (!sourceHand.WeaponInHand.GetComponent<GunController>())
+            return;
+
+        if (result.GestureClass == "O")
+            gunSpinner.ReloadAnimation(sourceHand);
     }
 
     private void FireBullet(InputAction.CallbackContext callback)
@@ -52,6 +74,18 @@ public class GunController : MonoBehaviour
         if (Time.time < nextFire || !hasGunInHand || currentAmmo == 0)
             return;
 
+        if (holdingHandAnimator != null && holdingHandAnimator.GetBool("Reloading"))
+        {
+            isFiringPending = true;
+            EventManager.Instance.OnReloadingInteruptAction();
+            return;
+        }
+
+        ExecuteFire();
+    }
+
+    public void ExecuteFire()
+    {
         currentAmmo--;
 
         nextFire = Time.time + gunData.FireRate;
@@ -74,10 +108,13 @@ public class GunController : MonoBehaviour
         laserLine.enabled = false;
     }
 
-    private void Start()
+    public void OnReadyToShoot()
     {
-        laserLine = GetComponent<LineRenderer>();
-        currentAmmo = gunData.Ammo;
+        if (!isFiringPending)
+            return;
+
+        ExecuteFire();
+        isFiringPending = false;
     }
 
     private void OnDisable()
@@ -90,5 +127,13 @@ public class GunController : MonoBehaviour
 
         inputActionReferenceVR.action.Disable();
         inputActionReferenceVR.action.performed -= FireBullet;
+    }
+
+    public int CurrentAmmo() => currentAmmo;
+    public GunData GetGunData() => gunData;
+    public void IncreaseCurrentAmmo()
+    {
+        if (currentAmmo < gunData.Ammo)
+            currentAmmo++;
     }
 }
