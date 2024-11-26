@@ -88,7 +88,7 @@ public class PlayerController : MonoBehaviour
 		characterController.Move(movement * Time.deltaTime);
 	}
 
-	private bool IsGrounded() => Physics.CheckSphere(transform.position, 0.2f, groundLayer);
+	private bool IsGrounded() => Physics.CheckSphere(characterController.transform.position, 0.5f, groundLayer);
 
 	private void OnDisable()
 	{

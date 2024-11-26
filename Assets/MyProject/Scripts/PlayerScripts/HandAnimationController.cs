@@ -7,10 +7,18 @@ public class HandAnimationController : MonoBehaviour
     [SerializeField] private InputActionProperty gripAction;
 
     private Animator animator;
+    private GunController gun;
+    private SwordComboController sword;
+
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+    }
 
     private void OnEnable()
     {
         EventManager.Instance.SubscribeToOnReloadingInteruptAction(StopReloadingAnimation);
+        EventManager.Instance.SubscribeToOnReleaseWeaponAction(WeaponReleased);
     }
 
     private void StopReloadingAnimation()
@@ -20,9 +28,16 @@ public class HandAnimationController : MonoBehaviour
         animator.SetBool("ReloadingInterupted", true);
     }
 
-    private void Start()
+    private void WeaponReleased(GameObject releasedWeapon)
     {
-        animator = GetComponent<Animator>();
+        gun = releasedWeapon.GetComponent<GunController>();
+        sword = releasedWeapon.GetComponent<SwordComboController>();
+
+        if (gun)
+            StopReloadingAnimation();
+
+        // if(sword)
+
     }
 
     //ovo treba da se prepravi (da bude ono performed a ne ovako u Update)
@@ -37,12 +52,13 @@ public class HandAnimationController : MonoBehaviour
 
     public void ReloadingAnimationFinished()
     {
-        GetComponentInChildren<GunSpinner>().ReloadingAnimationFinished();
+        gun?.GetComponent<GunSpinner>().ReloadingAnimationFinished();   //if interupted by release
+        GetComponentInChildren<GunSpinner>()?.ReloadingAnimationFinished(); //if animation really finished
     }
 
     public void CircleOfReloadingDone()
     {
-        GetComponentInChildren<GunController>().IncreaseCurrentAmmo();
+        GetComponentInChildren<GunController>()?.IncreaseCurrentAmmo();
     }
 
     public void GunReadyAfterReloadInterupt()

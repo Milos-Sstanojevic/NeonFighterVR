@@ -1,26 +1,66 @@
 fileFormatVersion: 2
 guid: e7560344ae83b9c4db7503f0f3fbc620
 ModelImporter:
-  serializedVersion: 22
-  fileIDToRecycleName:
-    100000: Cube.001
-    100002: Cube.002
-    100004: //RootNode
-    400000: Cube.001
-    400002: Cube.002
-    400004: //RootNode
-    2100000: Sheath
-    2100002: Sword
-    2300000: Cube.001
-    2300002: Cube.002
-    3300000: Cube.001
-    3300002: Cube.002
-    4300000: Cube.002
-    4300002: Cube.001
-    2186277476908879412: ImportLogs
-  externalObjects: {}
+  serializedVersion: 22200
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: Cube.001
+  - first:
+      1: 100002
+    second: Cube.002
+  - first:
+      1: 100004
+    second: //RootNode
+  - first:
+      4: 400000
+    second: Cube.001
+  - first:
+      4: 400002
+    second: Cube.002
+  - first:
+      4: 400004
+    second: //RootNode
+  - first:
+      21: 2100000
+    second: Sheath
+  - first:
+      21: 2100002
+    second: Sword
+  - first:
+      23: 2300000
+    second: Cube.001
+  - first:
+      23: 2300002
+    second: Cube.002
+  - first:
+      33: 3300000
+    second: Cube.001
+  - first:
+      33: 3300002
+    second: Cube.002
+  - first:
+      43: 4300000
+    second: Cube.002
+  - first:
+      43: 4300002
+    second: Cube.001
+  - first:
+      41386430: 2186277476908879412
+    second: ImportLogs
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Sheath
+    second: {fileID: 2100000, guid: 5df9ef020986ba3458a9b2e2b4727397, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Sword
+    second: {fileID: 2100000, guid: 4d41618d4b1061145a5f047892388334, type: 2}
   materials:
-    importMaterials: 1
+    materialImportMode: 1
     materialName: 0
     materialSearch: 1
     materialLocation: 1
@@ -29,9 +69,8 @@ ModelImporter:
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
     motionNodeName: 
-    rigImportErrors: 
-    rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
@@ -52,32 +91,49 @@ ModelImporter:
     globalScale: 1
     meshCompression: 0
     addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importPhysicalCameras: 0
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
     importLights: 1
+    nodeNameCollisionStrategy: 0
+    fileIdsGeneration: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
+    bakeAxisConversion: 0
     preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 0
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
     useFileScale: 1
+    strictVertexDataChecks: 0
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
     normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 1
-  copyAvatar: 0
   humanDescription:
-    serializedVersion: 2
+    serializedVersion: 3
     human: []
     skeleton: []
     armTwist: 0.5
@@ -87,14 +143,19 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
+    globalScale: 1
     rootMotionBoneName: 
-    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 0
   humanoidOversampling: 1
+  avatarSetup: 0
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 0
+  importBlendShapeDeformPercent: 0
+  remapMaterialsIfMaterialImportModeIsNone: 1
   additionalBone: 0
   userData: 
   assetBundleName: 

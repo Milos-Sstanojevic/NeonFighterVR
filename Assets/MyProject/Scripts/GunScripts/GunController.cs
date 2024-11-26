@@ -54,8 +54,11 @@ public class GunController : MonoBehaviour
 
     private void GunReleased(GameObject weapon)
     {
-        if (weapon.GetComponent<GunController>())
-            hasGunInHand = false;
+        if (!weapon.GetComponent<GunController>())
+            return;
+
+        hasGunInHand = false;
+
     }
 
     private void GunGesture(Result result, GameObject source)
@@ -127,6 +130,11 @@ public class GunController : MonoBehaviour
 
         inputActionReferenceVR.action.Disable();
         inputActionReferenceVR.action.performed -= FireBullet;
+    }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
     }
 
     public int CurrentAmmo() => currentAmmo;

@@ -40,11 +40,11 @@ public class HandController : MonoBehaviour
 
     private void ReleasedWeapon(GameObject weapon)
     {
-        if (handData.WeaponInHand == weapon)
-        {
-            handData.HasWeaponInHand = false;
-            handData.WeaponInHand = null;
-        }
+        if (handData.WeaponInHand != weapon)
+            return;
+
+        handData.HasWeaponInHand = false;
+        handData.WeaponInHand = null;
     }
 
     private void DrawOnScreen(InputAction.CallbackContext callback)

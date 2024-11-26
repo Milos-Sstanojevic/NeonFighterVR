@@ -12,6 +12,10 @@ public class EventManager : MonoBehaviour
     private event Action<HandData> onStartedDrawingAction;
     private event Action<HandData> onFinishedDrawingAction;
     private event Action onReloadingInteruptAction;
+    private event Action onAlienSMAttackHitAction;
+    private event Action onAlienSMSwordDrawnAction;
+    private event Action onAlienSMOutwardSlashAction;
+    private event Action onAlienSMInwardSlashAction;
 
     private void Awake()
     {
@@ -19,6 +23,66 @@ public class EventManager : MonoBehaviour
             Instance = this;
         else
             Destroy(gameObject);
+    }
+
+    public void OnAlienSMOutwardSlashAction()
+    {
+        onAlienSMOutwardSlashAction?.Invoke();
+    }
+
+    public void SubscribeToOnAlienSMOutwardSlashDone(Action action)
+    {
+        onAlienSMOutwardSlashAction += action;
+    }
+
+    public void UnsubscribeFromOnAlienSMOutwardSlashDone(Action action)
+    {
+        onAlienSMOutwardSlashAction -= action;
+    }
+
+    public void OnAlienSMInwardSlashAction()
+    {
+        onAlienSMInwardSlashAction?.Invoke();
+    }
+
+    public void SubscribeToOnAlienSMInwardSlashDone(Action action)
+    {
+        onAlienSMInwardSlashAction += action;
+    }
+
+    public void UnsubscribeFromOnAlienSMInwardSlashDone(Action action)
+    {
+        onAlienSMInwardSlashAction -= action;
+    }
+
+    public void OnAlienSMSwordDrawnAction()
+    {
+        onAlienSMSwordDrawnAction?.Invoke();
+    }
+
+    public void SubscribeToOnAlienSMSwordDrawnAction(Action action)
+    {
+        onAlienSMSwordDrawnAction += action;
+    }
+
+    public void UnsubscribeFromOnAlienSMSwordDrawnAction(Action action)
+    {
+        onAlienSMSwordDrawnAction -= action;
+    }
+
+    public void OnAlienSMAttackHitAction()
+    {
+        onAlienSMAttackHitAction?.Invoke();
+    }
+
+    public void SubscribeToOnAlienSMAttackHitAction(Action action)
+    {
+        onAlienSMAttackHitAction += action;
+    }
+
+    public void UnsubscribeFromOnAlienSMAttackHitAction(Action action)
+    {
+        onAlienSMAttackHitAction -= action;
     }
 
     public void OnReloadingInteruptAction()
