@@ -107,6 +107,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 605cc4e7cf248ea429dab0b3661cf269, type: 3}
       insertIndex: -1
       addedObject: {fileID: 233957609222777959}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 605cc4e7cf248ea429dab0b3661cf269, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1170823853699353476}
   m_SourcePrefab: {fileID: 100100000, guid: 605cc4e7cf248ea429dab0b3661cf269, type: 3}
 --- !u!1 &524736280252465809 stripped
 GameObject:
@@ -127,7 +130,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 200
-  m_StoppingDistance: 2
+  m_StoppingDistance: 1.5
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -149,8 +152,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Character: {fileID: 0}
   ChaseRange: 7
+  Rigidbody: {fileID: 0}
   LastAttackTime: 0
   NextAttack: 0
+  RotatingSpeed: 10
   AttackCooldown: 2
 --- !u!114 &7786108555247452720
 MonoBehaviour:
@@ -176,6 +181,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32cf6db4384e3e04cb7113bf4be0981e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1170823853699353476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 524736280252465809}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f48354a2119553b489ff3243f370c629, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activeTime: 4
+  meshDestroyDelay: 2
+  meshRefreshRate: 1
+  material:
+  - {fileID: 2100000, guid: c418fc73e753e1548a862573a6e36ebb, type: 2}
+  - {fileID: 2100000, guid: c418fc73e753e1548a862573a6e36ebb, type: 2}
+  shaderVarRef: _Alpha
+  shaderVarRate: 0.1
+  shaderVarRefreshRate: 0.05
 --- !u!4 &6299384195353938780 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -2530251679569251172, guid: 605cc4e7cf248ea429dab0b3661cf269, type: 3}
@@ -256,10 +282,54 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1452415580095162, guid: 005a0c6ce960ba4479b3d1c25105f0f4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2516686585791372997}
+    - targetCorrespondingSourceObject: {fileID: 1452415580095162, guid: 005a0c6ce960ba4479b3d1c25105f0f4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5302433663560967183}
   m_SourcePrefab: {fileID: 100100000, guid: 005a0c6ce960ba4479b3d1c25105f0f4, type: 3}
 --- !u!4 &8693708440281493818 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4312152710120042, guid: 005a0c6ce960ba4479b3d1c25105f0f4, type: 3}
   m_PrefabInstance: {fileID: 8694498296670597968}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &8695387465675829738 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1452415580095162, guid: 005a0c6ce960ba4479b3d1c25105f0f4, type: 3}
+  m_PrefabInstance: {fileID: 8694498296670597968}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &2516686585791372997
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8695387465675829738}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.23256917, y: 0.42780206, z: 7.079577}
+  m_Center: {x: -0.01388241, y: -0.008555487, z: 3.7197037}
+--- !u!114 &5302433663560967183
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8695387465675829738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a9e5eb693f94934387cf5cb6be5c857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

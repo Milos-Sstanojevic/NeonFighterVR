@@ -1,10 +1,8 @@
 using System;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class AlienSwordmasterController : MonoBehaviour
 {
-    [SerializeField] private bool runToPlayer;
     private AlienSwordmasterReferences alienSwordmasterReferences;
     private EnemyStateMachine enemyStateMachine;
 
@@ -19,19 +17,21 @@ public class AlienSwordmasterController : MonoBehaviour
         ASM_State_FightIdle fightIdleState = new ASM_State_FightIdle(alienSwordmasterReferences);
         ASM_State_OutwardSlash outwardSlash = new ASM_State_OutwardSlash(alienSwordmasterReferences);
         ASM_State_InwardSlash inwardSlash = new ASM_State_InwardSlash(alienSwordmasterReferences);
-
+        ASM_State_DashForwardUpAttack dashForwardUpAttack = new ASM_State_DashForwardUpAttack(alienSwordmasterReferences);
+        
         //TRANSITIONS
-        AddTransition(drawSword, chaseState, () => drawSword.IsDone());
 
-        AddTransition(chaseState, fightIdleState, () => ReachedPlayer());
-        AddTransition(fightIdleState, chaseState, () => PlayerRunningAway());
+        AddTransition(drawSword, fightIdleState, () => drawSword.IsDone());
+        AddTransition(fightIdleState, dashForwardUpAttack, () => ShouldDashToPlayer());
+        AddTransition(dashForwardUpAttack, fightIdleState, () => dashForwardUpAttack.IsDone());
 
-        AddTransition(fightIdleState, outwardSlash, () => fightIdleState.ShouldDoOutwardSlash() && outwardSlash.CanAttack());
+
+        AddTransition(fightIdleState, outwardSlash, () => IsInRangeForSlash() && fightIdleState.ShouldDoOutwardSlash() && outwardSlash.CanAttack());
         AddTransition(outwardSlash, fightIdleState, () => outwardSlash.IsDone() && !outwardSlash.AttackHit());
-        AddTransition(fightIdleState, inwardSlash, () => fightIdleState.ShouldDoInwardSlash() && inwardSlash.CanAttack());
+        AddTransition(fightIdleState, inwardSlash, () => IsInRangeForSlash() && fightIdleState.ShouldDoInwardSlash() && inwardSlash.CanAttack());
         AddTransition(inwardSlash, fightIdleState, () => inwardSlash.IsDone());
 
-        // // AddTransition(outwardSlash, inwardSlash, () => outwardSlash.AttackHit());
+        AddTransition(outwardSlash, inwardSlash, () => outwardSlash.AttackHit());
 
         enemyStateMachine.SetState(drawSword);
 
@@ -39,9 +39,23 @@ public class AlienSwordmasterController : MonoBehaviour
         void Any(IState to, Func<bool> condition) => enemyStateMachine.AddAnyTransition(to, condition);
     }
 
-    private bool ReachedPlayer() => alienSwordmasterReferences.NavMeshAgent.remainingDistance <= alienSwordmasterReferences.NavMeshAgent.stoppingDistance;
+    private bool ShouldDashToPlayer() => Vector3.Distance(transform.position, alienSwordmasterReferences.Character.transform.position) > 8;
+    private bool IsInRangeForSlash() => Vector3.Distance(transform.position, alienSwordmasterReferences.Character.transform.position) <= 2;
 
-    private bool PlayerRunningAway() => Vector3.Distance(transform.position, alienSwordmasterReferences.Character.transform.position) >= 4f;
+    private void Update()
+    {
+        enemyStateMachine.Tick();
+        FacePlayer();
+    }
 
-    private void Update() => enemyStateMachine.Tick();
+    private void FacePlayer()
+    {
+        Vector3 directionToPlayer = alienSwordmasterReferences.Character.transform.position - transform.position;
+        directionToPlayer.y = 0;
+        if (directionToPlayer.sqrMagnitude > 0.01f)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * alienSwordmasterReferences.RotatingSpeed);
+        }
+    }
 }

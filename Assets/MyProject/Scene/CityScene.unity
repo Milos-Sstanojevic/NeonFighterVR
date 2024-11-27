@@ -369,7 +369,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &924460869
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -668,6 +668,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: winterblade 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8037875235645128910, guid: 38a12921033fee74783a976befb9326b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -840,6 +844,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Gun
       objectReference: {fileID: 0}
+    - target: {fileID: 7034876496579981215, guid: f3ae0a826905b1b47b225fd7542881da, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8309800149351992119, guid: f3ae0a826905b1b47b225fd7542881da, type: 3}
       propertyPath: m_Data.m_SourceObjects.m_Item0.transform
       value: 
@@ -909,10 +917,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1188256311132107576, guid: 80a89cd541922da4fa769eee01ec4321, type: 3}
-      propertyPath: m_StoppingDistance
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8781656338171885986, guid: 80a89cd541922da4fa769eee01ec4321, type: 3}
       propertyPath: Character
       value: 
@@ -930,13 +934,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1606867354434693165, guid: b85efa18cfa84a44fa6a1e9a7264531b, type: 3}
+      propertyPath: m_Radius
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 2705327119943210710, guid: b85efa18cfa84a44fa6a1e9a7264531b, type: 3}
       propertyPath: m_DeviceSimulatorUI
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 5208559330575133729, guid: b85efa18cfa84a44fa6a1e9a7264531b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -4
       objectReference: {fileID: 0}
     - target: {fileID: 5208559330575133729, guid: b85efa18cfa84a44fa6a1e9a7264531b, type: 3}
       propertyPath: m_LocalPosition.y
@@ -944,7 +952,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5208559330575133729, guid: b85efa18cfa84a44fa6a1e9a7264531b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -11.78
       objectReference: {fileID: 0}
     - target: {fileID: 5208559330575133729, guid: b85efa18cfa84a44fa6a1e9a7264531b, type: 3}
       propertyPath: m_LocalRotation.w

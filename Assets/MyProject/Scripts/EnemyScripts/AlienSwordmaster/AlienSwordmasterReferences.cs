@@ -7,9 +7,10 @@ public class AlienSwordmasterReferences : MonoBehaviour
     [SerializeField] public float ChaseRange;
     public NavMeshAgent NavMeshAgent { get; private set; }
     public Animator Animator { get; private set; }
-
+    public Rigidbody Rigidbody;
     public float LastAttackTime;
     public AttackType NextAttack;
+    public float RotatingSpeed;
 
     [SerializeField] public float AttackCooldown = 2f;
 
@@ -17,6 +18,7 @@ public class AlienSwordmasterReferences : MonoBehaviour
     {
         NavMeshAgent = GetComponent<NavMeshAgent>();
         Animator = GetComponent<Animator>();
+        Rigidbody = GetComponent<Rigidbody>();
     }
 
     public AttackType DecideNextAttack()
