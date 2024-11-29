@@ -5,11 +5,11 @@ public class GunSpinner : MonoBehaviour
 {
     private XRGrabInteractable xrInteractable;
     private HandData sourceHand;
-    private GunController gunController;
+    private GunShootingController gunController;
 
     private void Awake()
     {
-        gunController = GetComponent<GunController>();
+        gunController = GetComponent<GunShootingController>();
         xrInteractable = GetComponent<XRGrabInteractable>();
     }
 

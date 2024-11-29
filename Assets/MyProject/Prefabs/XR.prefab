@@ -179,7 +179,7 @@ Transform:
   m_GameObject: {fileID: 4740342561540672892}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.0073, y: -0, z: 0}
+  m_LocalPosition: {x: 0.0186, y: -0.0082, z: -0.034}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -228,6 +228,7 @@ GameObject:
   - component: {fileID: 1243553616420944193}
   - component: {fileID: 6989632306218015401}
   - component: {fileID: 6668763490261805550}
+  - component: {fileID: 4479121706877056328}
   m_Layer: 0
   m_Name: XR
   m_TagString: Untagged
@@ -360,6 +361,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe8ff5e713504ea4bbafd234cf9dd1d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &4479121706877056328
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7106731911391287042}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 811e7efae2c58c74fb5a26ca84ed41d2, type: 3}
+  m_Controller: {fileID: 9100000, guid: dc7537f2415dca04c849c0bbd59a000d, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &3212605298411019174
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1187,6 +1210,10 @@ PrefabInstance:
       propertyPath: m_NearFarEnableTeleportDuringNearInteraction
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6232745470614056090, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: m_Radius
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 8559622106701032237, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       propertyPath: m_InteractorSourceObject
       value: 
@@ -1759,6 +1786,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5208559330575133729}
     m_Modifications:
+    - target: {fileID: 6598815579406187026, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
+      propertyPath: m_DeviceSimulatorUI
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 6598815579406187026, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
       propertyPath: m_MouseScrollRotateSensitivity
       value: 5

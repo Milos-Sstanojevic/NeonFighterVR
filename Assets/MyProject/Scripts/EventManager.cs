@@ -16,6 +16,7 @@ public class EventManager : MonoBehaviour
     private event Action onAlienSMSwordDrawnAction;
     private event Action onAlienSMOutwardSlashAction;
     private event Action onAlienSMInwardSlashAction;
+    private event Action onBigShotStartedAction;
 
     private void Awake()
     {
@@ -23,6 +24,21 @@ public class EventManager : MonoBehaviour
             Instance = this;
         else
             Destroy(gameObject);
+    }
+
+    public void OnBigShotStartedAction()
+    {
+        onBigShotStartedAction?.Invoke();
+    }
+
+    public void SubscribeToBigShot(Action action)
+    {
+        onBigShotStartedAction += action;
+    }
+
+    public void UnsubscribeFromBigShot(Action action)
+    {
+        onBigShotStartedAction -= action;
     }
 
     public void OnAlienSMOutwardSlashAction()
