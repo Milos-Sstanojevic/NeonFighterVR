@@ -90,11 +90,6 @@ public class PlayerController : MonoBehaviour
 
 	private bool IsGrounded() => Physics.CheckSphere(characterController.transform.position, 0.5f, groundLayer);
 
-	public void ShootBigShot()
-	{
-		EventManager.Instance.OnBigShotStartedAction();
-	}
-
 	private void OnDisable()
 	{
 		UnsubscribeForDashingKeyboard();

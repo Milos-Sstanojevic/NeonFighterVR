@@ -7,7 +7,7 @@ public class EventManager : MonoBehaviour
     public static EventManager Instance { get; private set; }
 
     private event Action<GameObject, HandController> onPickupWeaponAction;
-    private event Action<GameObject> onReleaseWeaponAction;
+    private event Action<GameObject, HandData> onReleaseWeaponAction;
     private event Action<Result, GameObject> onDidGestureAction;
     private event Action<HandData> onStartedDrawingAction;
     private event Action<HandData> onFinishedDrawingAction;
@@ -17,6 +17,9 @@ public class EventManager : MonoBehaviour
     private event Action onAlienSMOutwardSlashAction;
     private event Action onAlienSMInwardSlashAction;
     private event Action onBigShotStartedAction;
+    private event Action onComboAttackStartedAction;
+    private event Action onComboAttackFinishedAction;
+
 
     private void Awake()
     {
@@ -24,6 +27,36 @@ public class EventManager : MonoBehaviour
             Instance = this;
         else
             Destroy(gameObject);
+    }
+
+    public void OnComboAttackFinishedAction()
+    {
+        onComboAttackFinishedAction?.Invoke();
+    }
+
+    public void SubscribeToOnComboAttackFinished(Action action)
+    {
+        onComboAttackFinishedAction += action;
+    }
+
+    public void UnsubscribeFromOnComboAttackFinished(Action action)
+    {
+        onComboAttackFinishedAction -= action;
+    }
+
+    public void OnComboAttackStartedAction()
+    {
+        onComboAttackStartedAction?.Invoke();
+    }
+
+    public void SubscribeToOnComboAttackStarted(Action action)
+    {
+        onComboAttackStartedAction += action;
+    }
+
+    public void UnsubscribeFromOnComboAttackStarted(Action action)
+    {
+        onComboAttackStartedAction -= action;
     }
 
     public void OnBigShotStartedAction()
@@ -176,17 +209,17 @@ public class EventManager : MonoBehaviour
         onPickupWeaponAction -= action;
     }
 
-    public void OnReleaseWeapon(GameObject weapon)
+    public void OnReleaseWeapon(GameObject weapon, HandData hand)
     {
-        onReleaseWeaponAction?.Invoke(weapon);
+        onReleaseWeaponAction?.Invoke(weapon, hand);
     }
 
-    public void SubscribeToOnReleaseWeaponAction(Action<GameObject> action)
+    public void SubscribeToOnReleaseWeaponAction(Action<GameObject, HandData> action)
     {
         onReleaseWeaponAction += action;
     }
 
-    public void UnsubscribeFromOnReleaseWeaponAction(Action<GameObject> action)
+    public void UnsubscribeFromOnReleaseWeaponAction(Action<GameObject, HandData> action)
     {
         onReleaseWeaponAction -= action;
     }

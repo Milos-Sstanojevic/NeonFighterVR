@@ -4,12 +4,12 @@ using UnityEngine;
 public class AlienSwordmasterController : MonoBehaviour
 {
     private AlienSwordmasterReferences alienSwordmasterReferences;
-    private EnemyStateMachine enemyStateMachine;
+    private StateMachine enemyStateMachine;
 
     private void Awake()
     {
         alienSwordmasterReferences = GetComponent<AlienSwordmasterReferences>();
-        enemyStateMachine = new EnemyStateMachine();
+        enemyStateMachine = new StateMachine();
 
         //STATES
         ASM_State_DrawSword drawSword = new ASM_State_DrawSword(alienSwordmasterReferences);
@@ -18,7 +18,7 @@ public class AlienSwordmasterController : MonoBehaviour
         ASM_State_OutwardSlash outwardSlash = new ASM_State_OutwardSlash(alienSwordmasterReferences);
         ASM_State_InwardSlash inwardSlash = new ASM_State_InwardSlash(alienSwordmasterReferences);
         ASM_State_DashForwardUpAttack dashForwardUpAttack = new ASM_State_DashForwardUpAttack(alienSwordmasterReferences);
-        
+
         //TRANSITIONS
 
         AddTransition(drawSword, fightIdleState, () => drawSword.IsDone());

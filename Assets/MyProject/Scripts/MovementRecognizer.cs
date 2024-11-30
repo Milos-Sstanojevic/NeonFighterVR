@@ -88,7 +88,6 @@ public class MovementRecognizer : MonoBehaviour
             Destroy(Instantiate(debugCubePrefab, movementSource.position, Quaternion.identity), 3);
     }
 
-    //Ima bug ako je premali pomeraj on ce da zapamti samo jedan element liste i onda ne moze da se orderi gesture, znaci ovo izvrsavati samo kad je positionsList.Count vece od lupam 5 (barem dok se trenira)
     private void EndMovement()
     {
         isMoving = false;

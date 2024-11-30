@@ -1,47 +1,34 @@
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
-using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
-
 
 public class GrabHandPose : MonoBehaviour
 {
-	[SerializeField] private Transform swordAttachTransformLeft;
-	[SerializeField] private Transform swordAttachTransformRight;
-	[SerializeField] private Transform gunAttachTransformLeft;
-	[SerializeField] private Transform gunAttachTransformRight;
 	[SerializeField] private Transform swordSocket;
 	[SerializeField] private Transform gunSocket;
-
+	[SerializeField] private Transform swordAttachTransform;
+	[SerializeField] private Transform gunAttachTransform;
+	[SerializeField] private XRDirectInteractor xrInteractor;
+	private HandData handData;
+	private GunController gunController;
+	private SwordComboController swordController;
 	private bool swordInInventory;
 	private bool gunInInventory;
 	private Rigidbody swordRb;
 	private MeshCollider swordMeshCollider;
-	private GunController gunController;
-	private SwordComboController swordController;
 
-	private void Start()
+	private void Awake()
 	{
-		XRGrabInteractable grabInteractable = GetComponent<XRGrabInteractable>();
-		swordRb = GetComponent<Rigidbody>();
-		swordMeshCollider = GetComponent<MeshCollider>();
-
-		gunController = transform.GetComponent<GunController>();
-		swordController = transform.GetComponent<SwordComboController>();
-
-		grabInteractable.selectEntered.AddListener(SetHoldingAnimations);
-		grabInteractable.selectExited.AddListener(UnsetHoldingAnimations);
+		handData = GetComponent<HandData>();
 	}
 
-	private void SetHoldingAnimations(BaseInteractionEventArgs arg)
+	public void SetHoldingAnimations(GameObject weapon)
 	{
-		if (!(arg.interactorObject is XRDirectInteractor))
-			return;
+		gunController = weapon.GetComponent<GunController>();
+		swordController = weapon.GetComponent<SwordComboController>();
 
-		HandData handData = arg.interactorObject.transform.parent.GetComponent<HandData>();
-
-		PickedUpGun(handData);
-		PickedupSword(handData);
+		PickedUpGun();
+		PickedupSword();
 
 		if (swordInInventory)
 		{
@@ -49,80 +36,72 @@ public class GrabHandPose : MonoBehaviour
 			swordMeshCollider.enabled = true;
 			swordInInventory = false;
 
-			transform.SetParent(null);
+			swordController.transform.SetParent(null);
 		}
 
 		if (gunInInventory)
 		{
 			gunInInventory = false;
-			transform.SetParent(null);
+			gunController.transform.SetParent(null);
 		}
 	}
 
-	private void PickedUpGun(HandData handData)
+	private void PickedUpGun()
 	{
 		if (!gunController)
 			return;
 
 		handData.Animator.SetBool("PickedupGun", true);
-		if (handData.handModelType == HandData.HandModelType.Left)
-			handData.GetComponentInChildren<XRDirectInteractor>().attachTransform = gunAttachTransformLeft;
-		else
-			handData.GetComponentInChildren<XRDirectInteractor>().attachTransform = gunAttachTransformRight;
-
+		xrInteractor.attachTransform = gunAttachTransform;
 	}
 
-	private void PickedupSword(HandData handData)
+	private void PickedupSword()
 	{
 		if (!swordController)
 			return;
 
+		swordRb = swordController.GetComponent<Rigidbody>();
+		swordMeshCollider = swordController.GetComponent<MeshCollider>();
+
 		handData.Animator.SetBool("PickedupSword", true);
-		if (handData.handModelType == HandData.HandModelType.Left)
-			handData.GetComponentInChildren<XRDirectInteractor>().attachTransform = swordAttachTransformLeft;
-		else
-			handData.GetComponentInChildren<XRDirectInteractor>().attachTransform = swordAttachTransformRight;
+		xrInteractor.attachTransform = swordAttachTransform;
 	}
 
-	private void UnsetHoldingAnimations(BaseInteractionEventArgs arg)
+	public void UnsetHoldingAnimations()
 	{
-		if (!(arg.interactorObject is XRDirectInteractor))
-			return;
-
-		HandData handData = arg.interactorObject.transform.parent.GetComponent<HandData>();
-
 		if (gunController)
+		{
 			handData.Animator.SetBool("PickedupGun", false);
-
-		if (swordController)
-			handData.Animator.SetBool("PickedupSword", false);
-
-		if (swordController)
-			PutSwordInSocket();
-		if (gunController)
 			PutGunInSocket();
+		}
+
+		if (swordController)
+		{
+			handData.Animator.SetBool("PickedupSword", false);
+			PutSwordInSocket();
+		}
 	}
 
 	private void PutSwordInSocket()
 	{
-		transform.SetParent(swordSocket);
+		swordController.transform.SetParent(swordSocket);
 
 		swordRb.useGravity = false;
 		swordMeshCollider.enabled = false;
 		swordRb.freezeRotation = true;
 		swordRb.linearVelocity = Vector3.zero;
 
-		transform.position = swordSocket.position;
-		transform.rotation = swordSocket.rotation;
+		swordController.transform.position = swordSocket.position;
+		swordController.transform.rotation = swordSocket.rotation;
 
 		swordInInventory = true;
 	}
 
 	private void PutGunInSocket()
 	{
-		transform.SetParent(gunSocket);
-		transform.position = gunSocket.position;
-		transform.rotation = gunSocket.rotation;
+		gunController.transform.SetParent(gunSocket);
+		gunController.transform.position = gunSocket.position;
+		gunController.transform.rotation = gunSocket.rotation;
 
 		gunInInventory = true;
 	}

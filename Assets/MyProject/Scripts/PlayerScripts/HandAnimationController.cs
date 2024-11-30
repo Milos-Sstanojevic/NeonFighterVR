@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 public class HandAnimationController : MonoBehaviour
 {
@@ -28,7 +29,7 @@ public class HandAnimationController : MonoBehaviour
         animator.SetBool("ReloadingInterupted", true);
     }
 
-    private void WeaponReleased(GameObject releasedWeapon)
+    private void WeaponReleased(GameObject releasedWeapon, HandData hand)
     {
         gun = releasedWeapon.GetComponent<GunController>();
         sword = releasedWeapon.GetComponent<SwordComboController>();
@@ -66,6 +67,19 @@ public class HandAnimationController : MonoBehaviour
         GunShootingController gunController = GetComponentInChildren<GunShootingController>();
         if (gunController)
             gunController.OnReadyToShoot();
+    }
+
+    public void ShootBigShot()
+    {
+        EventManager.Instance.OnBigShotStartedAction();
+    }
+
+    public void BigShotAnimationDone()
+    {
+        transform.eulerAngles = new Vector3(0, 0, 90);
+        animator.applyRootMotion = true;
+        animator.SetBool("BigShot", false);
+        EventManager.Instance.OnComboAttackFinishedAction();
     }
 
     private void OnDisable()

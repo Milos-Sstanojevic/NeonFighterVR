@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-public class EnemyStateMachine
+public class StateMachine
 {
     private IState currentState;
 
@@ -10,6 +10,8 @@ public class EnemyStateMachine
     private List<Transition> anyTransitions = new List<Transition>();
 
     private static List<Transition> EmptyTransitions = new List<Transition>(capacity: 0);
+
+    public IState CurrentState => currentState;
 
     public void Tick()
     {

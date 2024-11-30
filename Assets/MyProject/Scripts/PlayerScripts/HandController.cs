@@ -38,7 +38,7 @@ public class HandController : MonoBehaviour
         handData.WeaponInHand = weapon;
     }
 
-    private void ReleasedWeapon(GameObject weapon)
+    private void ReleasedWeapon(GameObject weapon, HandData hand)
     {
         if (handData.WeaponInHand != weapon)
             return;

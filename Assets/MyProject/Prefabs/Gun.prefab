@@ -30240,9 +30240,6 @@ PrefabInstance:
       addedObject: {fileID: 7969816094718415400}
     - targetCorrespondingSourceObject: {fileID: 100000, guid: b9b7f814120cc114688b5c66fb600bb9, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 4187099811799376253}
-    - targetCorrespondingSourceObject: {fileID: 100000, guid: b9b7f814120cc114688b5c66fb600bb9, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 289094257961071496}
     - targetCorrespondingSourceObject: {fileID: 100000, guid: b9b7f814120cc114688b5c66fb600bb9, type: 3}
       insertIndex: -1
@@ -30253,9 +30250,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 100000, guid: b9b7f814120cc114688b5c66fb600bb9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3095220767309429247}
-    - targetCorrespondingSourceObject: {fileID: 100000, guid: b9b7f814120cc114688b5c66fb600bb9, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 8309800149351992119}
   m_SourcePrefab: {fileID: 100100000, guid: b9b7f814120cc114688b5c66fb600bb9, type: 3}
 --- !u!4 &7034876496579883967 stripped
 Transform:
@@ -30335,8 +30329,8 @@ MonoBehaviour:
   m_InteractionLayers:
     m_Bits: 1
   m_DistanceCalculationMode: 0
-  m_SelectMode: 1
-  m_FocusMode: 2
+  m_SelectMode: 0
+  m_FocusMode: 1
   m_CustomReticle: {fileID: 0}
   m_AllowGazeInteraction: 0
   m_AllowGazeSelect: 0
@@ -30365,34 +30359,10 @@ MonoBehaviour:
       m_Calls: []
   m_SelectEntered:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: PlayerSwordController, Assembly-CSharp
-        m_MethodName: SnapObjectToHand
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_SelectExited:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: PlayerSwordController, Assembly-CSharp
-        m_MethodName: ReleaseObjectFromHand
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_FirstFocusEntered:
     m_PersistentCalls:
       m_Calls: []
@@ -30487,24 +30457,6 @@ MonoBehaviour:
   m_MinimumScaleRatio: 0.25
   m_MaximumScaleRatio: 2
   m_ScaleMultiplier: 0.25
---- !u!114 &4187099811799376253
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7034876496579981215}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af330a21cc647924d8fe89a2a68e5c2a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  swordAttachTransformLeft: {fileID: 0}
-  swordAttachTransformRight: {fileID: 0}
-  gunAttachTransformLeft: {fileID: 0}
-  gunAttachTransformRight: {fileID: 0}
-  swordSocket: {fileID: 0}
-  gunSocket: {fileID: 0}
 --- !u!65 &289094257961071496
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -30550,7 +30502,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 833d838ded1128049a2107079d2395f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  XR: {fileID: 0}
 --- !u!114 &3095220767309429247
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30580,54 +30531,3 @@ MonoBehaviour:
   - {fileID: 3402032066064965678}
   - {fileID: 3329735271410725709}
   bigShot: {fileID: 1021885613169177049}
---- !u!114 &8309800149351992119
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7034876496579981215}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8935e03361a14ec4b8edc872f76bc822, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Weight: 1
-  m_Data:
-    m_ConstrainedObject: {fileID: 7034876496579883967}
-    m_SourceObjects:
-      m_Length: 1
-      m_Item0:
-        transform: {fileID: 0}
-        weight: 1
-      m_Item1:
-        transform: {fileID: 0}
-        weight: 0
-      m_Item2:
-        transform: {fileID: 0}
-        weight: 0
-      m_Item3:
-        transform: {fileID: 0}
-        weight: 0
-      m_Item4:
-        transform: {fileID: 0}
-        weight: 0
-      m_Item5:
-        transform: {fileID: 0}
-        weight: 0
-      m_Item6:
-        transform: {fileID: 0}
-        weight: 0
-      m_Item7:
-        transform: {fileID: 0}
-        weight: 0
-    m_ConstrainedPositionAxes:
-      x: 1
-      y: 1
-      z: 1
-    m_ConstrainedRotationAxes:
-      x: 1
-      y: 1
-      z: 1
-    m_MaintainPositionOffset: 1
-    m_MaintainRotationOffset: 1

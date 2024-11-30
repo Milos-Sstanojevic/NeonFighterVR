@@ -5,12 +5,12 @@ public class EnemyController : MonoBehaviour
 {
     [SerializeField] private CharacterController character;
     private EnemyReferences enemyReferences;
-    private EnemyStateMachine enemyStateMachine;
+    private StateMachine enemyStateMachine;
 
     private void Awake()
     {
         enemyReferences = GetComponent<EnemyReferences>();
-        enemyStateMachine = new EnemyStateMachine();
+        enemyStateMachine = new StateMachine();
 
         //STATES
         EnemyState_RunToPlayer runToPlayer = new EnemyState_RunToPlayer(enemyReferences, character);
