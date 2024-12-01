@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 public class HandAnimationController : MonoBehaviour
 {
@@ -53,8 +52,10 @@ public class HandAnimationController : MonoBehaviour
 
     public void ReloadingAnimationFinished()
     {
-        gun?.GetComponent<GunSpinner>().ReloadingAnimationFinished();   //if interupted by release
-        GetComponentInChildren<GunSpinner>()?.ReloadingAnimationFinished(); //if animation really finished
+        if (gun)
+            gun.GetComponent<GunReloadController>().ReloadingAnimationFinished();   //if interupted by release
+        else
+            GetComponentInChildren<GunReloadController>()?.ReloadingAnimationFinished(); //if animation really finished
     }
 
     public void CircleOfReloadingDone()
@@ -69,21 +70,25 @@ public class HandAnimationController : MonoBehaviour
             gunController.OnReadyToShoot();
     }
 
-    public void ShootBigShot()
+    public void StartBigShotParticle()
     {
         EventManager.Instance.OnBigShotStartedAction();
     }
 
     public void BigShotAnimationDone()
     {
-        transform.eulerAngles = new Vector3(0, 0, 90);
-        animator.applyRootMotion = true;
-        animator.SetBool("BigShot", false);
+        EventManager.Instance.OnBigShotAnimationDoneAction(animator);
         EventManager.Instance.OnComboAttackFinishedAction();
+    }
+
+    public void FireBigBulletEvent()
+    {
+        EventManager.Instance.OnFireBigBulletAction();
     }
 
     private void OnDisable()
     {
         EventManager.Instance.UnsubscribeFromOnReloadingInteruptAction(StopReloadingAnimation);
+        EventManager.Instance.UnsubscribeFromOnReleaseWeaponAction(WeaponReleased);
     }
 }

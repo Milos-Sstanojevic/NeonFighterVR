@@ -5,19 +5,19 @@ using UnityEngine.InputSystem;
 
 public class GunShootingController : MonoBehaviour
 {
-    [SerializeField] private float speed = 5;
+    // [SerializeField] private float speed = 5;
     [SerializeField] private GunData gunData;
     [SerializeField] private InputActionReference inputActionReferenceKeyboard;
     [SerializeField] private InputActionReference inputActionReferenceVR;
     [SerializeField] private List<Transform> shootingPoints;
     [SerializeField] private List<ParticleSystem> bullets;
     [SerializeField] private List<ParticleSystem> muzzles;
-    [SerializeField] private ParticleSystem bigShot;
 
     private GunController gunController;
     private float nextFire;
     private bool isFiringPending;
     private int currentAmmo;
+    private bool fireBigBullet;
 
     private void Awake()
     {
@@ -31,12 +31,17 @@ public class GunShootingController : MonoBehaviour
 
     private void OnEnable()
     {
-        EventManager.Instance.SubscribeToBigShot(BigShot);
+        EventManager.Instance.SubscribeToOnFireBigBulletAction(FireBigBullet);
         inputActionReferenceKeyboard.action.Enable();
         inputActionReferenceKeyboard.action.performed += FireBullet;
 
         inputActionReferenceVR.action.Enable();
         inputActionReferenceVR.action.performed += FireBullet;
+    }
+
+    private void FireBigBullet()
+    {
+        currentAmmo = 0;
     }
 
     private void FireBullet(InputAction.CallbackContext callback)
@@ -65,7 +70,7 @@ public class GunShootingController : MonoBehaviour
         if (Physics.Raycast(shootingPoints[currentAmmo].position, shootingPoints[currentAmmo].forward, out hit, gunData.WeaponRange))
             targetPosition = hit.point;
         else
-            targetPosition = shootingPoints[currentAmmo].position + shootingPoints[currentAmmo].forward * speed;
+            targetPosition = shootingPoints[currentAmmo].position + shootingPoints[currentAmmo].forward * gunData.BulletSpeed;
 
         StartCoroutine(MoveBullet(currentAmmo, targetPosition));
     }
@@ -78,9 +83,8 @@ public class GunShootingController : MonoBehaviour
 
         Vector3 startPosition = shootingPoints[barrelIndex].transform.position;
         float distance = Vector3.Distance(startPosition, targetPoint);
-        float travelTime = distance / speed;
+        float travelTime = distance / gunData.BulletSpeed;
         float elapsedTime = 0f;
-        Transform parent = bullets[barrelIndex].gameObject.transform.parent;
         bullets[barrelIndex].gameObject.transform.SetParent(null);
 
         while (elapsedTime < travelTime)
@@ -92,9 +96,9 @@ public class GunShootingController : MonoBehaviour
             yield return null;
         }
 
-        bullets[barrelIndex].gameObject.SetActive(false);
-        bullets[barrelIndex].gameObject.transform.SetParent(parent);
         bullets[barrelIndex].transform.position = targetPoint;
+        bullets[barrelIndex].gameObject.SetActive(false);
+        bullets[barrelIndex].gameObject.transform.SetParent(transform);
         bullets[barrelIndex].transform.localPosition = Vector3.zero;
         bullets[barrelIndex].transform.localEulerAngles = new Vector3(-90, 0, 0);
     }
@@ -108,15 +112,9 @@ public class GunShootingController : MonoBehaviour
         isFiringPending = false;
     }
 
-    public void BigShot()
-    {
-        bigShot.Play();
-    }
-
     private void OnDisable()
     {
-        EventManager.Instance.UnsubscribeFromBigShot(BigShot);
-
+        EventManager.Instance.UnsubscribeFromOnFireBigBulletAction(FireBigBullet);
         inputActionReferenceKeyboard.action.Disable();
         inputActionReferenceKeyboard.action.performed -= FireBullet;
 

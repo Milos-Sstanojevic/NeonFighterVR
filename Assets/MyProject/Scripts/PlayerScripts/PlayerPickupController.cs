@@ -50,6 +50,8 @@ public class PlayerPickupController : MonoBehaviour
         if (weapon == null)
             return;
 
+        weapon.transform.SetParent(transform);
+
         if (isComboActive)
             queuedWeaponToDrop = weapon;
         else

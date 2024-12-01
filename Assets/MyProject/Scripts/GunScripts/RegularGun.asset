@@ -15,5 +15,8 @@ MonoBehaviour:
   GunDamage: 40
   FireRate: 0.25
   WeaponRange: 100
+  BigBulletWeaponRange: 300
   HitForce: 50
   Ammo: 3
+  BulletSpeed: 5
+  BigBulletSpeed: 10

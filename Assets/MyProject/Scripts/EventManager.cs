@@ -19,6 +19,8 @@ public class EventManager : MonoBehaviour
     private event Action onBigShotStartedAction;
     private event Action onComboAttackStartedAction;
     private event Action onComboAttackFinishedAction;
+    private event Action<Animator> onBigShotAnimationDoneAction;
+    private event Action onFireBigBulletAction;
 
 
     private void Awake()
@@ -27,6 +29,36 @@ public class EventManager : MonoBehaviour
             Instance = this;
         else
             Destroy(gameObject);
+    }
+
+    public void OnFireBigBulletAction()
+    {
+        onFireBigBulletAction?.Invoke();
+    }
+
+    public void SubscribeToOnFireBigBulletAction(Action action)
+    {
+        onFireBigBulletAction += action;
+    }
+
+    public void UnsubscribeFromOnFireBigBulletAction(Action action)
+    {
+        onFireBigBulletAction -= action;
+    }
+
+    public void OnBigShotAnimationDoneAction(Animator animator)
+    {
+        onBigShotAnimationDoneAction?.Invoke(animator);
+    }
+
+    public void SubscribeToOnBigShotAnimationDoneAction(Action<Animator> action)
+    {
+        onBigShotAnimationDoneAction += action;
+    }
+
+    public void UnsubscribeFromOnBigShotAnimationDoneAction(Action<Animator> action)
+    {
+        onBigShotAnimationDoneAction -= action;
     }
 
     public void OnComboAttackFinishedAction()
@@ -64,12 +96,12 @@ public class EventManager : MonoBehaviour
         onBigShotStartedAction?.Invoke();
     }
 
-    public void SubscribeToBigShot(Action action)
+    public void SubscribeToBigShotAction(Action action)
     {
         onBigShotStartedAction += action;
     }
 
-    public void UnsubscribeFromBigShot(Action action)
+    public void UnsubscribeFromBigShotAction(Action action)
     {
         onBigShotStartedAction -= action;
     }

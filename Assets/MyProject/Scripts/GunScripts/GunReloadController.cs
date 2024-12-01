@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
-public class GunSpinner : MonoBehaviour
+public class GunReloadController : MonoBehaviour
 {
     private XRGrabInteractable xrInteractable;
     private HandData sourceHand;
@@ -34,8 +34,6 @@ public class GunSpinner : MonoBehaviour
 
     private void SetAnimatorParameters(Animator animator)
     {
-        animator.applyRootMotion = false;
-        animator.enabled = true;
         animator.SetBool("Reloading", true);
     }
 
@@ -49,7 +47,6 @@ public class GunSpinner : MonoBehaviour
 
     private void UnsetAnimatorParameters(Animator animator)
     {
-        animator.applyRootMotion = true;
         animator.SetBool("Reloading", false);
         animator.SetBool("ReloadingInterupted", false);
     }

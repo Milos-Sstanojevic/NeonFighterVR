@@ -2,6 +2,9 @@ using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
+
+//SPLIT INTO TWO OR THREE COMPONENTS
+
 public class GrabHandPose : MonoBehaviour
 {
 	[SerializeField] private Transform swordSocket;
@@ -36,13 +39,13 @@ public class GrabHandPose : MonoBehaviour
 			swordMeshCollider.enabled = true;
 			swordInInventory = false;
 
-			swordController.transform.SetParent(null);
+			swordController.transform.SetParent(swordAttachTransform);
 		}
 
 		if (gunInInventory)
 		{
 			gunInInventory = false;
-			gunController.transform.SetParent(null);
+			gunController.transform.SetParent(gunAttachTransform);
 		}
 	}
 
@@ -52,6 +55,7 @@ public class GrabHandPose : MonoBehaviour
 			return;
 
 		handData.Animator.SetBool("PickedupGun", true);
+		gunController.transform.SetParent(gunAttachTransform);
 		xrInteractor.attachTransform = gunAttachTransform;
 	}
 
