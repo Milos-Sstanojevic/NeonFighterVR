@@ -40,7 +40,6 @@ public class HandAnimationController : MonoBehaviour
 
     }
 
-    //ovo treba da se prepravi (da bude ono performed a ne ovako u Update)
     private void Update()
     {
         float triggerValue = triggerAction.action.ReadValue<float>();
@@ -77,6 +76,7 @@ public class HandAnimationController : MonoBehaviour
 
     public void BigShotAnimationDone()
     {
+        transform.position = Vector3.zero;
         EventManager.Instance.OnBigShotAnimationDoneAction(animator);
         EventManager.Instance.OnComboAttackFinishedAction();
     }

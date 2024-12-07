@@ -7,10 +7,14 @@ public class PlayerPickupController : MonoBehaviour
     private GameObject queuedWeaponToDrop;
     private HandData hand;
     private GrabHandPose grabHandPose;
+    private GunInteractionController gunInteractionController;
+    private SwordInteractionController swordInteractionController;
 
     private void Awake()
     {
-        grabHandPose = GetComponentInChildren<GrabHandPose>();
+        grabHandPose = GetComponent<GrabHandPose>();
+        gunInteractionController = GetComponent<GunInteractionController>();
+        swordInteractionController = GetComponent<SwordInteractionController>();
     }
 
     private void OnEnable()
@@ -22,12 +26,19 @@ public class PlayerPickupController : MonoBehaviour
     private void ComboAttackFinished()
     {
         isComboActive = false;
-        if (queuedWeaponToDrop)
-        {
-            EventManager.Instance.OnReleaseWeapon(queuedWeaponToDrop, hand);
-            grabHandPose.UnsetHoldingAnimations();
-            queuedWeaponToDrop = null;
-        }
+        if (!queuedWeaponToDrop)
+            return;
+
+        EventManager.Instance.OnReleaseWeapon(queuedWeaponToDrop, hand);
+        // grabHandPose.UnsetHoldingAnimations();
+        UnsetHoldingAnimations();
+        queuedWeaponToDrop = null;
+    }
+
+    private void UnsetHoldingAnimations()
+    {
+        gunInteractionController.UnsetHoldingAnimation();
+        swordInteractionController.UnsetHoldingAnimation();
     }
 
     public void SnapObjectToHand(SelectEnterEventArgs args)
@@ -35,11 +46,13 @@ public class PlayerPickupController : MonoBehaviour
         GameObject weapon = args.interactableObject.transform.gameObject;
         HandController hand = args.interactorObject.transform.parent.GetComponent<HandController>();
 
-        if (weapon != null && hand != null)
-        {
-            EventManager.Instance.OnPickupWeapon(weapon, hand);
-            grabHandPose.SetHoldingAnimations(weapon);
-        }
+        if (weapon == null || hand == null)
+            return;
+
+        EventManager.Instance.OnPickupWeapon(weapon, hand);
+        // grabHandPose.SetHoldingAnimations(weapon);
+        gunInteractionController.PickedUpGun(weapon);
+        swordInteractionController.PickedUpSword(weapon);
     }
 
     public void ReleaseObjectFromHand(SelectExitEventArgs args)
@@ -53,11 +66,13 @@ public class PlayerPickupController : MonoBehaviour
         weapon.transform.SetParent(transform);
 
         if (isComboActive)
+        {
             queuedWeaponToDrop = weapon;
+        }
         else
         {
             EventManager.Instance.OnReleaseWeapon(weapon, hand);
-            grabHandPose.UnsetHoldingAnimations();
+            UnsetHoldingAnimations();
         }
     }
 }

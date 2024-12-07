@@ -5,19 +5,19 @@ using UnityEngine.InputSystem;
 
 public class GunShootingController : MonoBehaviour
 {
-    // [SerializeField] private float speed = 5;
     [SerializeField] private GunData gunData;
     [SerializeField] private InputActionReference inputActionReferenceKeyboard;
     [SerializeField] private InputActionReference inputActionReferenceVR;
     [SerializeField] private List<Transform> shootingPoints;
     [SerializeField] private List<ParticleSystem> bullets;
     [SerializeField] private List<ParticleSystem> muzzles;
-
+    [SerializeField] private float lineTime;
     private GunController gunController;
     private float nextFire;
     private bool isFiringPending;
     private int currentAmmo;
-    private bool fireBigBullet;
+
+    private List<LineRenderer> lineRenderers = new List<LineRenderer>();
 
     private void Awake()
     {
@@ -27,6 +27,8 @@ public class GunShootingController : MonoBehaviour
     private void Start()
     {
         currentAmmo = gunData.Ammo;
+        foreach (ParticleSystem bullet in bullets)
+            lineRenderers.Add(bullet.GetComponentInChildren<LineRenderer>(true));
     }
 
     private void OnEnable()
@@ -87,20 +89,34 @@ public class GunShootingController : MonoBehaviour
         float elapsedTime = 0f;
         bullets[barrelIndex].gameObject.transform.SetParent(null);
 
+        LineRenderer line = lineRenderers[barrelIndex];
+        line.positionCount = 2;
+        line.SetPosition(0, startPosition);
+        line.SetPosition(1, startPosition);
+
         while (elapsedTime < travelTime)
         {
             elapsedTime += Time.deltaTime;
             float t = elapsedTime / travelTime;
-            bullets[barrelIndex].transform.position = Vector3.Lerp(startPosition, targetPoint, t);
+            Vector3 currentPosition = Vector3.Lerp(startPosition, targetPoint, t);
+            bullets[barrelIndex].transform.position = currentPosition;
+
+            line.SetPosition(1, currentPosition);
 
             yield return null;
         }
 
-        bullets[barrelIndex].transform.position = targetPoint;
+        yield return new WaitForSeconds(lineTime);
+
         bullets[barrelIndex].gameObject.SetActive(false);
-        bullets[barrelIndex].gameObject.transform.SetParent(transform);
+        bullets[barrelIndex].transform.position = targetPoint;
+        bullets[barrelIndex].gameObject.transform.SetParent(shootingPoints[barrelIndex]);
         bullets[barrelIndex].transform.localPosition = Vector3.zero;
         bullets[barrelIndex].transform.localEulerAngles = new Vector3(-90, 0, 0);
+        line.SetPosition(0, Vector3.zero);
+        line.SetPosition(1, Vector3.zero);
+
+
     }
 
     public void OnReadyToShoot()

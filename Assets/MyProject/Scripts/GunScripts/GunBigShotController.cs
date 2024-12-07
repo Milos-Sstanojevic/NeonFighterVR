@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class GunBigShotController : MonoBehaviour
 {
-    [SerializeField] private ParticleSystem bigBullet;
+    [SerializeField] private GameObject beam;
+    [SerializeField] private ParticleSystem projectile;
     [SerializeField] private ParticleSystem bigShot;
     [SerializeField] private Transform bigShotShootingPoint;
     [SerializeField] private GunData gunData;
@@ -43,6 +44,7 @@ public class GunBigShotController : MonoBehaviour
 
     public void FireBigBullet()
     {
+
         RaycastHit hit;
         Vector3 targetPosition;
         if (Physics.Raycast(bigShotShootingPoint.position, bigShotShootingPoint.forward, out hit, gunData.BigBulletWeaponRange))
@@ -55,29 +57,29 @@ public class GunBigShotController : MonoBehaviour
 
     private IEnumerator MoveBullet(Vector3 targetPoint)
     {
-        bigBullet.gameObject.SetActive(true);
-        bigShot.Play();
-
+        beam.SetActive(true);
+        beam.transform.SetParent(null);
+        projectile.gameObject.transform.SetParent(null);
         Vector3 startPosition = bigShotShootingPoint.position;
         float distance = Vector3.Distance(startPosition, targetPoint);
         float travelTime = distance / gunData.BigBulletSpeed;
         float elapsedTime = 0f;
-        bigBullet.gameObject.transform.SetParent(null);
+
 
         while (elapsedTime < travelTime)
         {
             elapsedTime += Time.deltaTime;
             float t = elapsedTime / travelTime;
-            bigBullet.transform.position = Vector3.Lerp(startPosition, targetPoint, t);
+            projectile.transform.position = Vector3.Lerp(startPosition, targetPoint, t);
 
             yield return null;
         }
 
-        bigBullet.transform.position = targetPoint;
-        bigBullet.gameObject.SetActive(false);
-        bigBullet.gameObject.transform.SetParent(transform);
-        bigBullet.transform.localPosition = Vector3.zero;
-        bigBullet.transform.localEulerAngles = new Vector3(-90, 0, 0);
+        projectile.transform.position = targetPoint;
+        beam.gameObject.SetActive(false);
+        beam.transform.SetParent(bigShotShootingPoint);
+        projectile.gameObject.transform.SetParent(beam.transform);
+        projectile.transform.localEulerAngles = new Vector3(-90, 0, 0);
     }
 
     public void BigShot()
