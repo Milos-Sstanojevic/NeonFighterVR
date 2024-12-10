@@ -13,17 +13,17 @@ public class AlienSwordmasterController : MonoBehaviour
 
         //STATES
         ASM_State_DrawSword drawSword = new ASM_State_DrawSword(alienSwordmasterReferences);
+        ASM_State_DashToPlayer dashToPlayer = new ASM_State_DashToPlayer(alienSwordmasterReferences);
         ASM_State_Chase chaseState = new ASM_State_Chase(alienSwordmasterReferences);
         ASM_State_FightIdle fightIdleState = new ASM_State_FightIdle(alienSwordmasterReferences);
         ASM_State_OutwardSlash outwardSlash = new ASM_State_OutwardSlash(alienSwordmasterReferences);
         ASM_State_InwardSlash inwardSlash = new ASM_State_InwardSlash(alienSwordmasterReferences);
-        ASM_State_DashForwardUpAttack dashForwardUpAttack = new ASM_State_DashForwardUpAttack(alienSwordmasterReferences);
 
         //TRANSITIONS
 
         AddTransition(drawSword, fightIdleState, () => drawSword.IsDone());
-        AddTransition(fightIdleState, dashForwardUpAttack, () => ShouldDashToPlayer());
-        AddTransition(dashForwardUpAttack, fightIdleState, () => dashForwardUpAttack.IsDone());
+        AddTransition(fightIdleState, dashToPlayer, () => ShouldDashToPlayer());
+        AddTransition(dashToPlayer, fightIdleState, () => dashToPlayer.IsDone());
 
 
         AddTransition(fightIdleState, outwardSlash, () => IsInRangeForSlash() && fightIdleState.ShouldDoOutwardSlash() && outwardSlash.CanAttack());

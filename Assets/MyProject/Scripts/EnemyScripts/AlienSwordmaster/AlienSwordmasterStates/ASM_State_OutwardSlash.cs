@@ -17,12 +17,6 @@ public class ASM_State_OutwardSlash : IState
         references.LastAttackTime = Time.time;
     }
 
-    private void HandleAttackHit()
-    {
-        attackHit = true;
-        references.Animator.SetBool("AttackSuccess", true);
-    }
-
     public void OnEnter()
     {
         attackHit = false;
@@ -31,11 +25,19 @@ public class ASM_State_OutwardSlash : IState
         EventManager.Instance.SubscribeToOnAlienSMAttackHitAction(HandleAttackHit);
     }
 
+    private void HandleAttackHit()
+    {
+        attackHit = true;
+        references.Animator.SetBool("AttackSuccess", true);
+    }
+
     public void OnExit()
     {
-        if (attackHit)
-            references.Animator.SetBool("AttackSuccess", false);
         references.Animator.SetBool("OutwardAttack", false);
+
+        // if (attackHit)
+        //     references.Animator.SetBool("AttackSuccess", false);
+
         outwardSlashAnimationDone = false;
         EventManager.Instance.UnsubscribeFromOnAlienSMOutwardSlashDone(HandleOutwardSlashDone);
         EventManager.Instance.UnsubscribeFromOnAlienSMAttackHitAction(HandleAttackHit);
