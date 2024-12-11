@@ -10,7 +10,7 @@ public class ASM_State_FightIdle : IState
 
     public void OnEnter()
     {
-        references.Animator.Play("FightingIdle");
+        references.IsAttacing = false;
         references.Animator.SetBool("FightIdle", true);
         references.DecideNextAttack();
     }
@@ -18,6 +18,7 @@ public class ASM_State_FightIdle : IState
     public void OnExit()
     {
         references.Animator.SetBool("FightIdle", false);
+        references.IsAttacing = true;
     }
 
     public void Tick()

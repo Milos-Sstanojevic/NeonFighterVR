@@ -5,6 +5,7 @@ public class AlienSwordmasterController : MonoBehaviour
 {
     private AlienSwordmasterReferences alienSwordmasterReferences;
     private StateMachine enemyStateMachine;
+    private bool firstAttackHit;
 
     private void Awake()
     {
@@ -31,7 +32,7 @@ public class AlienSwordmasterController : MonoBehaviour
         AddTransition(fightIdleState, inwardSlash, () => IsInRangeForSlash() && fightIdleState.ShouldDoInwardSlash() && inwardSlash.CanAttack());
         AddTransition(inwardSlash, fightIdleState, () => inwardSlash.IsDone());
 
-        AddTransition(outwardSlash, inwardSlash, () => outwardSlash.AttackHit());
+        AddTransition(outwardSlash, inwardSlash, () => DidFirstAttackHit(outwardSlash));
 
         enemyStateMachine.SetState(drawSword);
 
@@ -39,6 +40,11 @@ public class AlienSwordmasterController : MonoBehaviour
         void Any(IState to, Func<bool> condition) => enemyStateMachine.AddAnyTransition(to, condition);
     }
 
+    private bool DidFirstAttackHit(ASM_State_OutwardSlash outwardSlash)
+    {
+        firstAttackHit = true;
+        return outwardSlash.AttackHit();
+    }
     private bool ShouldDashToPlayer() => Vector3.Distance(transform.position, alienSwordmasterReferences.Character.transform.position) > 8;
     private bool IsInRangeForSlash() => Vector3.Distance(transform.position, alienSwordmasterReferences.Character.transform.position) <= 2;
 
@@ -50,6 +56,9 @@ public class AlienSwordmasterController : MonoBehaviour
 
     private void FacePlayer()
     {
+        // if (alienSwordmasterReferences.IsAttacing && !firstAttackHit)
+        //     return;
+
         Vector3 directionToPlayer = alienSwordmasterReferences.Character.transform.position - transform.position;
         directionToPlayer.y = 0;
         if (directionToPlayer.sqrMagnitude > 0.01f)

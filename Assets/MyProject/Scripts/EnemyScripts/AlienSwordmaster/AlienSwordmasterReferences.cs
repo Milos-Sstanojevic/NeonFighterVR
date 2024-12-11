@@ -17,7 +17,7 @@ public class AlienSwordmasterReferences : MonoBehaviour
     public float DelayAfterDashParticles = 1f;
     public ParticleSystem DashingParticleSystem;
     public MonoBehaviour Mono;
-
+    public bool IsAttacing;
 
     private void Awake()
     {
