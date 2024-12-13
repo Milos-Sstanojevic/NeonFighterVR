@@ -16,4 +16,9 @@ public class AlienSwordmasterAnimationEvents : MonoBehaviour
     {
         EventManager.Instance.OnAlienSMInwardSlashAction();
     }
+
+    private void JumpAwayFromPlayerAnimationDone()
+    {
+        EventManager.Instance.OnAlienSMJumpAwayAnimationDone();
+    }
 }

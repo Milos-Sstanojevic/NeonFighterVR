@@ -1,59 +1,62 @@
 using System.Collections;
 using UnityEngine;
 
-public class ASM_State_DashToPlayer : IState
+public class ASM_State_DashAwayFromPlayer : IState
 {
+    private float dashSpeed;
+    private float dashDistance;
     private float delayForEnemy;
     private AlienSwordmasterReferences references;
     private Transform playerTransform;
-    private float dashSpeed;
     private bool dashDone;
-    private float stopDistance;
     private ParticleSystem dashParticle;
     private Renderer enemyRenderer;
 
-
-    public ASM_State_DashToPlayer(AlienSwordmasterReferences references)
+    public ASM_State_DashAwayFromPlayer(AlienSwordmasterReferences references)
     {
         this.references = references;
+        this.dashDistance = references.DashAwayDistance;
         dashParticle = references.DashingParticleSystem;
         enemyRenderer = references.EnemyRenderer;
-        stopDistance = references.AttackRange - 0.3f;
         dashSpeed = references.DashSpeed;
         delayForEnemy = references.DelayAfterDashParticles;
     }
 
     public void OnEnter()
     {
+        if (references.NumberOfAttacksDone > references.NumberOfAttacksBeforeDashingAway)
+            references.NumberOfAttacksDone = 0;
+
+        references.IsAttacing = false;
+
         dashDone = false;
         playerTransform = references.Character.transform;
 
-        float distanceToPlayer = Vector3.Distance(references.transform.position, playerTransform.position) - stopDistance;
-        float travelTime = distanceToPlayer / dashSpeed;
+        float travelTime = dashDistance / dashSpeed;
 
         var particleMain = dashParticle.main;
         particleMain.startLifetime = travelTime * delayForEnemy;
-        particleMain.startSpeed = distanceToPlayer / (travelTime * delayForEnemy);
+        particleMain.startSpeed = dashDistance / (travelTime * delayForEnemy);
 
         dashParticle.Play();
         enemyRenderer.enabled = false;
         references.EnemySword.SetActive(false);
 
-        references.Mono.StartCoroutine(DashToPlayer(travelTime));
+        references.Mono.StartCoroutine(DashAwayFromPlayer(travelTime));
     }
 
-    private IEnumerator DashToPlayer(float travelTime)
+    private IEnumerator DashAwayFromPlayer(float travelTime)
     {
-        Vector3 direction = (playerTransform.position - references.transform.position).normalized;
-        Vector3 targetPosition = playerTransform.position - direction * stopDistance;
+        Vector3 direction = (references.transform.position - playerTransform.position).normalized;
+        Vector3 targetPosition = references.transform.position + direction * dashDistance;
 
-        float elapesedTime = 0f;
+        float elapsedTime = 0f;
         Vector3 startPosition = references.transform.position;
 
-        while (elapesedTime < travelTime)
+        while (elapsedTime < travelTime)
         {
-            elapesedTime += Time.deltaTime;
-            references.transform.position = Vector3.Lerp(startPosition, targetPosition, elapesedTime / travelTime);
+            elapsedTime += Time.deltaTime;
+            references.transform.position = Vector3.Lerp(startPosition, targetPosition, elapsedTime / travelTime);
             yield return null;
         }
 

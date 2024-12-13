@@ -21,6 +21,7 @@ public class EventManager : MonoBehaviour
     private event Action onComboAttackFinishedAction;
     private event Action<Animator> onBigShotAnimationDoneAction;
     private event Action onFireBigBulletAction;
+    private event Action onAlienSMJumpAwayAnimationDone;
 
 
     private void Awake()
@@ -29,6 +30,21 @@ public class EventManager : MonoBehaviour
             Instance = this;
         else
             Destroy(gameObject);
+    }
+
+    public void OnAlienSMJumpAwayAnimationDone()
+    {
+        onAlienSMJumpAwayAnimationDone?.Invoke();
+    }
+
+    public void SubscribeToOnAlienSMJumpAwayAnimationDone(Action action)
+    {
+        onAlienSMJumpAwayAnimationDone += action;
+    }
+
+    public void UnsubscribeFromOnAlienSMJumpAwayAnimationDone(Action action)
+    {
+        onAlienSMJumpAwayAnimationDone -= action;
     }
 
     public void OnFireBigBulletAction()

@@ -1052,6 +1052,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7786108555247452720, guid: 80a89cd541922da4fa769eee01ec4321, type: 3}
+      propertyPath: HasDash
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8781656338171885986, guid: 80a89cd541922da4fa769eee01ec4321, type: 3}
+      propertyPath: RunSpeed
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 8781656338171885986, guid: 80a89cd541922da4fa769eee01ec4321, type: 3}
       propertyPath: Character
       value: 
@@ -1069,10 +1077,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1606867354434693165, guid: b85efa18cfa84a44fa6a1e9a7264531b, type: 3}
-      propertyPath: m_Height
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 5208559330575133729, guid: b85efa18cfa84a44fa6a1e9a7264531b, type: 3}
       propertyPath: m_LocalPosition.x
       value: -4
