@@ -11,6 +11,7 @@ public class ASM_State_WalkTowardsPlayer : IState
 
     public void OnEnter()
     {
+        references.IsAttacking = false;
         references.Animator.SetTrigger("Walk");
     }
 

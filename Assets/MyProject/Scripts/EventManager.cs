@@ -22,7 +22,8 @@ public class EventManager : MonoBehaviour
     private event Action<Animator> onBigShotAnimationDoneAction;
     private event Action onFireBigBulletAction;
     private event Action onAlienSMJumpAwayAnimationDone;
-
+    private event Action onAlienSMSlashParticlePlay;
+    private event Action onAlienSMSpecialAttackDone;
 
     private void Awake()
     {
@@ -30,6 +31,37 @@ public class EventManager : MonoBehaviour
             Instance = this;
         else
             Destroy(gameObject);
+    }
+
+    public void OnAlienSMSpecialAttackDone()
+    {
+        onAlienSMSpecialAttackDone?.Invoke();
+    }
+
+    public void SubscribeToOnAlienSMSpecialAttackDone(Action action)
+    {
+        onAlienSMSpecialAttackDone += action;
+    }
+
+    public void UnsubscribeFromOnAlienSMSpecialAttackDone(Action action)
+    {
+        onAlienSMSpecialAttackDone -= action;
+    }
+
+    public void OnAlienSMSlashParticlePlay()
+    {
+        onAlienSMSlashParticlePlay?.Invoke();
+    }
+
+    public void SubscribeToOnAlienSMSlashParticlePlay(Action action)
+    {
+        onAlienSMSlashParticlePlay += action;
+    }
+
+
+    public void UnsubscribeFromOnAlienSMSlashParticlePlay(Action action)
+    {
+        onAlienSMSlashParticlePlay -= action;
     }
 
     public void OnAlienSMJumpAwayAnimationDone()

@@ -1,6 +1,3 @@
-
-using UnityEngine;
-
 public class ASM_State_FightIdle : IState
 {
     private AlienSwordmasterReferences references;
@@ -16,7 +13,7 @@ public class ASM_State_FightIdle : IState
             references.NumberOfAttacksDone = 0;
 
         references.NumberOfAttacksDone++;
-        references.IsAttacing = false;
+        references.IsAttacking = false;
         references.Animator.SetBool("FightIdle", true);
         references.DecideNextAttack();
     }
@@ -29,8 +26,6 @@ public class ASM_State_FightIdle : IState
     public void Tick()
     {
     }
-
-    public bool ShouldDashToPlayer() => Vector3.Distance(references.transform.position, references.Character.transform.position) > references.DashDistance;
 }
 
 public enum AttackType

@@ -20,7 +20,7 @@ public class ASM_State_OutwardSlash : IState
     public void OnEnter()
     {
         attackHit = false;
-        references.IsAttacing = true;
+        references.IsAttacking = true;
         references.Animator.SetBool("OutwardAttack", true);
         EventManager.Instance.SubscribeToOnAlienSMOutwardSlashDone(HandleOutwardSlashDone);
         EventManager.Instance.SubscribeToOnAlienSMAttackHitAction(HandleAttackHit);

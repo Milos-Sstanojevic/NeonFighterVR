@@ -18,7 +18,7 @@ public class ASM_State_InwardSlash : IState
 
     public void OnEnter()
     {
-        references.IsAttacing = true;
+        references.IsAttacking = true;
         inwardSlashAnimationDone = false;
         references.Animator.SetBool("InwardAttack", true);
         EventManager.Instance.SubscribeToOnAlienSMInwardSlashDone(HandleInwardSlashDone);

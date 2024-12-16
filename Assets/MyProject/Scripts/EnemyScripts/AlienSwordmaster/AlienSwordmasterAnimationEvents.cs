@@ -21,4 +21,14 @@ public class AlienSwordmasterAnimationEvents : MonoBehaviour
     {
         EventManager.Instance.OnAlienSMJumpAwayAnimationDone();
     }
+
+    private void PlayRegularSlashProjectileEffect()
+    {
+        EventManager.Instance.OnAlienSMSlashParticlePlay();
+    }
+
+    private void SpecialAttackAnimationDone()
+    {
+        EventManager.Instance.OnAlienSMSpecialAttackDone();
+    }
 }

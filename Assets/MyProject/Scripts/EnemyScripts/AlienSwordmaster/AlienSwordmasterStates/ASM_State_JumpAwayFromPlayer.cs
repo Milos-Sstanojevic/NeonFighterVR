@@ -15,9 +15,7 @@ public class ASM_State_JumpAwayFromPlayer : IState
         if (references.NumberOfAttacksDone > references.NumberOfAttacksBeforeDashingAway)
             references.NumberOfAttacksDone = 0;
 
-        // references.NumberOfAttacksDone++;
-
-        references.IsAttacing = false;
+        references.IsAttacking = false;
         jumpedAway = false;
         EventManager.Instance.SubscribeToOnAlienSMJumpAwayAnimationDone(JumpAnimationDone);
         references.Animator.SetTrigger("JumpAway");
