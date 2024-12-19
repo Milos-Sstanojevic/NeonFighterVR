@@ -19,7 +19,11 @@ public class ASM_State_OutwardSlash : IState
 
     public void OnEnter()
     {
-        attackHit = false;
+        if (references.NumberOfAttacksDone > references.NumberOfAttacksBeforeDashingAway)
+            references.NumberOfAttacksDone = 0;
+
+        references.NumberOfAttacksDone++;
+
         references.IsAttacking = true;
         references.Animator.SetBool("OutwardAttack", true);
         EventManager.Instance.SubscribeToOnAlienSMOutwardSlashDone(HandleOutwardSlashDone);
@@ -28,7 +32,7 @@ public class ASM_State_OutwardSlash : IState
 
     private void HandleAttackHit()
     {
-        attackHit = true;
+        references.AttackHit = true;
         references.Animator.SetBool("AttackSuccess", true);
     }
 
@@ -46,7 +50,7 @@ public class ASM_State_OutwardSlash : IState
 
     public bool ShouldDoOutwardSlash() => references.NextAttack == AttackType.OutwardSlash;
     public bool CanAttack() => Time.time - references.LastAttackTime >= references.AttackCooldown;
-    public bool AttackHit() => attackHit;
+    // public bool AttackHit() => attackHit;
     public bool IsDone()
     {
         return outwardSlashAnimationDone;

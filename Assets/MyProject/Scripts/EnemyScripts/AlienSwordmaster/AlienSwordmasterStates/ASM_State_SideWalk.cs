@@ -19,7 +19,7 @@ public class ASM_State_SideWalk : IState
 
     public void OnExit()
     {
-        references.Rigidbody.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
+        references.Rigidbody.constraints = RigidbodyConstraints.FreezeAll;
     }
 
     public void Tick()

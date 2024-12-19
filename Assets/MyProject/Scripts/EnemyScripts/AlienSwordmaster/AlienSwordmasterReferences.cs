@@ -1,8 +1,13 @@
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 
 public class AlienSwordmasterReferences : MonoBehaviour
 {
+    public MultiAimConstraint MultiAimContraintHips;
+    public MultiAimConstraint MultiAimContraintHead;
+    public EnemyDamageController DamageController;
+    public AlienSMBrokenStanceController BrokenStanceController;
+    public RigBuilder RigBuilder;
     public CharacterController Character;
     public Animator Animator { get; private set; }
     public Rigidbody Rigidbody;
@@ -21,17 +26,15 @@ public class AlienSwordmasterReferences : MonoBehaviour
     public int NumberOfAttacksBeforeDashingAway = 3;
     public int NumberOfAttacksDone = 0;
     public bool IsAttacking;
+    public bool AttackHit;
 
     private void Awake()
     {
+        BrokenStanceController = GetComponent<AlienSMBrokenStanceController>();
+        DamageController = GetComponent<EnemyDamageController>();
         Animator = GetComponent<Animator>();
         Rigidbody = GetComponent<Rigidbody>();
-    }
-
-    public AttackType DecideNextAttack()
-    {
-        NextAttack = Random.value < 0.5f ? AttackType.OutwardSlash : AttackType.InwardSlash;
-
-        return NextAttack;
+        Character = Camera.main.GetComponentInParent<CharacterController>();
     }
 }
+

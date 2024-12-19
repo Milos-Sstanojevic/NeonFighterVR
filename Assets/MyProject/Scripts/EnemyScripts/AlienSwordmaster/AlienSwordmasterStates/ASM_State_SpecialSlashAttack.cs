@@ -12,11 +12,14 @@ public class ASM_State_SpecialSlashAttack : IState
 
     public void OnEnter()
     {
+        EventManager.Instance.SubscribeToOnAlienSMSpecialAttackDone(AttackDone);
+
         specialAttackDone = false;
-        slashAttack.SetParentActive();
+        slashAttack.gameObject.SetActive(true);
+
         references.Animator.SetBool("SpecialSlash", true);
         references.IsAttacking = true;
-        EventManager.Instance.SubscribeToOnAlienSMSpecialAttackDone(AttackDone);
+
         slashAttack.PlayParticles();
     }
 

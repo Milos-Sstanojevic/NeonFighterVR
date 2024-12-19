@@ -74,7 +74,18 @@ public class GunShootingController : MonoBehaviour
         else
             targetPosition = shootingPoints[currentAmmo].position + shootingPoints[currentAmmo].forward * gunData.BulletSpeed;
 
+        DealDamageToTarget(hit);
+
         StartCoroutine(MoveBullet(currentAmmo, targetPosition));
+    }
+
+    private void DealDamageToTarget(RaycastHit hit)
+    {
+        EnemyDamageController alien = hit.rigidbody?.GetComponent<EnemyDamageController>();
+        if (!alien)
+            return;
+
+        alien.TakeDamage(gunData.GunDamage);
     }
 
     private IEnumerator MoveBullet(int barrelIndex, Vector3 targetPoint)

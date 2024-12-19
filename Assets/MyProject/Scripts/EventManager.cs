@@ -24,6 +24,7 @@ public class EventManager : MonoBehaviour
     private event Action onAlienSMJumpAwayAnimationDone;
     private event Action onAlienSMSlashParticlePlay;
     private event Action onAlienSMSpecialAttackDone;
+    private event Action onBreakStanceAnimationDone;
 
     private void Awake()
     {
@@ -31,6 +32,21 @@ public class EventManager : MonoBehaviour
             Instance = this;
         else
             Destroy(gameObject);
+    }
+
+    public void OnBreakStanceAnimationDone()
+    {
+        onBreakStanceAnimationDone?.Invoke();
+    }
+
+    public void SubscribeToOnBreakStanceAnimationDone(Action action)
+    {
+        onBreakStanceAnimationDone += action;
+    }
+
+    public void UnsubscribeFromOnBreakStanceAnimationDone(Action action)
+    {
+        onBreakStanceAnimationDone -= action;
     }
 
     public void OnAlienSMSpecialAttackDone()

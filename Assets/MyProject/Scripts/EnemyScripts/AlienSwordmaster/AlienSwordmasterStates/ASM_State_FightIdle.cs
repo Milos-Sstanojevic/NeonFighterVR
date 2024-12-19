@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class ASM_State_FightIdle : IState
 {
     private AlienSwordmasterReferences references;
@@ -9,13 +11,16 @@ public class ASM_State_FightIdle : IState
 
     public void OnEnter()
     {
-        if (references.NumberOfAttacksDone > references.NumberOfAttacksBeforeDashingAway)
-            references.NumberOfAttacksDone = 0;
-
-        references.NumberOfAttacksDone++;
         references.IsAttacking = false;
         references.Animator.SetBool("FightIdle", true);
-        references.DecideNextAttack();
+        DecideNextAttack();
+    }
+
+    private AttackType DecideNextAttack()
+    {
+        references.NextAttack = Random.value < 0.5f ? AttackType.OutwardSlash : AttackType.InwardSlash;
+
+        return references.NextAttack;
     }
 
     public void OnExit()
@@ -33,3 +38,4 @@ public enum AttackType
     OutwardSlash,
     InwardSlash
 }
+

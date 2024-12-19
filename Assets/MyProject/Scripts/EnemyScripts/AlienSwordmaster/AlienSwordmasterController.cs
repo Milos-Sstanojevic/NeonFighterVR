@@ -1,19 +1,31 @@
 using System;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 
 public class AlienSwordmasterController : MonoBehaviour
 {
     private AlienSwordmasterReferences alienSwordmasterReferences;
-    private StateMachine enemyStateMachine;
+    private StateMachine firstPhaseStateMachine;
+    private StateMachine secondPhaseStateMachine;
     public bool HasDash = false; //this will be bool that will be set true for second fase of the boss
     public bool SpecialAttack = false;
+
+    private void Start()
+    {
+        var sourceObjects = new WeightedTransformArray();
+        sourceObjects.Add(new WeightedTransform(alienSwordmasterReferences.Character.transform, 1));
+        alienSwordmasterReferences.MultiAimContraintHips.data.sourceObjects = sourceObjects;
+        alienSwordmasterReferences.MultiAimContraintHead.data.sourceObjects = sourceObjects;
+        alienSwordmasterReferences.RigBuilder.Build();
+    }
 
     private void Awake()
     {
         alienSwordmasterReferences = GetComponent<AlienSwordmasterReferences>();
-        enemyStateMachine = new StateMachine();
 
-        //STATES
+        firstPhaseStateMachine = new StateMachine();
+        secondPhaseStateMachine = new StateMachine();
+
         ASM_State_DrawSword drawSword = new ASM_State_DrawSword(alienSwordmasterReferences);
         ASM_State_DashToPlayer dashToPlayer = new ASM_State_DashToPlayer(alienSwordmasterReferences);
         ASM_State_DashAwayFromPlayer dashAwayFromPlayer = new ASM_State_DashAwayFromPlayer(alienSwordmasterReferences);
@@ -25,57 +37,96 @@ public class AlienSwordmasterController : MonoBehaviour
         ASM_State_JumpAwayFromPlayer jumpAwayFromPlayer = new ASM_State_JumpAwayFromPlayer(alienSwordmasterReferences);
         ASM_State_RunTowardsPlayer runTowardsPlayer = new ASM_State_RunTowardsPlayer(alienSwordmasterReferences);
         ASM_State_SpecialSlashAttack specialSlashAttack = new ASM_State_SpecialSlashAttack(alienSwordmasterReferences);
-        //TRANSITIONS
-        AddTransition(drawSword, dashToPlayer, () => drawSword.IsDone() && HasDash);
-        AddTransition(drawSword, runTowardsPlayer, () => drawSword.IsDone() && !HasDash);
-
-        //SECOND PHASE WITH DASH
-        AddTransition(fightIdleState, dashToPlayer, () => alienSwordmasterReferences.DashToController.ShouldDashToPlayer() && HasDash);  //this will alien do at some other condition not like this
-        AddTransition(dashToPlayer, outwardSlash, () => IsInRangeForSlash() && outwardSlash.ShouldDoOutwardSlash() && outwardSlash.CanAttack() && HasDash);
-        AddTransition(dashToPlayer, inwardSlash, () => IsInRangeForSlash() && inwardSlash.ShouldDoInwardSlash() && inwardSlash.CanAttack() && HasDash);
-        AddTransition(outwardSlash, dashAwayFromPlayer, () => ShouldMakeDistanceFromPlayer() && outwardSlash.IsDone() && !outwardSlash.AttackHit() && HasDash);
-        AddTransition(inwardSlash, dashAwayFromPlayer, () => ShouldMakeDistanceFromPlayer() && inwardSlash.IsDone() && HasDash);
-        AddTransition(dashAwayFromPlayer, sideWalk, () => alienSwordmasterReferences.DashFromController.IsDone());
-        AddTransition(sideWalk, dashToPlayer, () => sideWalk.StopWalking() && HasDash && !SpecialAttack);   //bool for spacial attack should be somewhat random WIP
-        AddTransition(sideWalk, specialSlashAttack, () => sideWalk.StopWalking() && SpecialAttack && HasDash);
-        AddTransition(specialSlashAttack, dashToPlayer, () => specialSlashAttack.IsDone());
+        ASM_State_TakeDamage takeDamage = new ASM_State_TakeDamage(alienSwordmasterReferences);
+        ASM_State_BreakStance breakStance = new ASM_State_BreakStance(alienSwordmasterReferences);
 
 
-        //FIRST PHASE NO DASH
-        AddTransition(outwardSlash, jumpAwayFromPlayer, () => ShouldMakeDistanceFromPlayer() && outwardSlash.IsDone() && !outwardSlash.AttackHit() && !HasDash);
-        AddTransition(inwardSlash, jumpAwayFromPlayer, () => ShouldMakeDistanceFromPlayer() && inwardSlash.IsDone() && !HasDash);
-        AddTransition(jumpAwayFromPlayer, sideWalk, () => jumpAwayFromPlayer.IsDone());
-        AddTransition(sideWalk, walkTowardsPlayer, () => sideWalk.StopWalking() && !HasDash);
-        AddTransition(runTowardsPlayer, outwardSlash, () => IsInRangeForSlash() && outwardSlash.ShouldDoOutwardSlash() && outwardSlash.CanAttack() && !HasDash);
-        AddTransition(runTowardsPlayer, inwardSlash, () => IsInRangeForSlash() && inwardSlash.ShouldDoInwardSlash() && inwardSlash.CanAttack() && !HasDash);
+        AddFirstPhaseTransitions(firstPhaseStateMachine, fightIdleState, drawSword, runTowardsPlayer, outwardSlash, inwardSlash, jumpAwayFromPlayer, sideWalk, walkTowardsPlayer, takeDamage, breakStance);
 
-        //GENERAL TRANSITIONS
-        AddTransition(fightIdleState, dashAwayFromPlayer, () => !IsInRangeForSlash() && ShouldDashFromPlayerOrWalkToPlayer());
-        AddTransition(fightIdleState, walkTowardsPlayer, () => !IsInRangeForSlash() && !ShouldDashFromPlayerOrWalkToPlayer());
-        AddTransition(outwardSlash, walkTowardsPlayer, () => !IsInRangeForSlash() && outwardSlash.IsDone() && !ShouldDashFromPlayerOrWalkToPlayer());
-        AddTransition(inwardSlash, walkTowardsPlayer, () => !IsInRangeForSlash() && inwardSlash.IsDone() && !ShouldDashFromPlayerOrWalkToPlayer());
-        AddTransition(walkTowardsPlayer, outwardSlash, () => IsInRangeForSlash() && outwardSlash.ShouldDoOutwardSlash() && outwardSlash.CanAttack());
-        AddTransition(walkTowardsPlayer, inwardSlash, () => IsInRangeForSlash() && inwardSlash.ShouldDoInwardSlash() && inwardSlash.CanAttack());
-        AddTransition(fightIdleState, inwardSlash, () => IsInRangeForSlash() && inwardSlash.ShouldDoInwardSlash() && inwardSlash.CanAttack());
-        AddTransition(fightIdleState, outwardSlash, () => IsInRangeForSlash() && outwardSlash.ShouldDoOutwardSlash() && outwardSlash.CanAttack());
+        AddSecondPhaseTransitions(secondPhaseStateMachine, fightIdleState, walkTowardsPlayer, drawSword, dashToPlayer, dashAwayFromPlayer, outwardSlash, inwardSlash, sideWalk, specialSlashAttack, breakStance, takeDamage);
 
-        AddTransition(outwardSlash, fightIdleState, () => outwardSlash.IsDone() && !outwardSlash.AttackHit());
-        AddTransition(inwardSlash, fightIdleState, () => inwardSlash.IsDone());
-
-        AddTransition(outwardSlash, inwardSlash, () => outwardSlash.AttackHit()); //combo of two moves
-
-        enemyStateMachine.SetState(drawSword);
-
-        void AddTransition(IState from, IState to, Func<bool> condition) => enemyStateMachine.AddTransition(from, to, condition);
-        void Any(IState to, Func<bool> condition) => enemyStateMachine.AddAnyTransition(to, condition);
+        firstPhaseStateMachine.SetState(drawSword);
+        secondPhaseStateMachine.SetState(drawSword);
     }
 
-    public bool IsInRangeForSlash() => Vector3.Distance(transform.position, alienSwordmasterReferences.Character.transform.position) <= alienSwordmasterReferences.AttackRange;
+    private void AddFirstPhaseTransitions(StateMachine firstPhaseStateMachine, ASM_State_FightIdle fightIdleState, ASM_State_DrawSword drawSword, ASM_State_RunTowardsPlayer runTowardsPlayer, ASM_State_OutwardSlash outwardSlash, ASM_State_InwardSlash inwardSlash,
+                                        ASM_State_JumpAwayFromPlayer jumpAwayFromPlayer, ASM_State_SideWalk sideWalk, ASM_State_WalkTowardsPlayer walkTowardsPlayer, ASM_State_TakeDamage takeDamage, ASM_State_BreakStance breakStance)
+    {
+        AddTransition(firstPhaseStateMachine, runTowardsPlayer, outwardSlash, () => IsInRangeForSlash() && outwardSlash.ShouldDoOutwardSlash() && outwardSlash.CanAttack());
+        AddTransition(firstPhaseStateMachine, drawSword, runTowardsPlayer, () => drawSword.IsDone());
+        AddTransition(firstPhaseStateMachine, runTowardsPlayer, inwardSlash, () => IsInRangeForSlash() && inwardSlash.ShouldDoInwardSlash() && inwardSlash.CanAttack());
+        AddTransition(firstPhaseStateMachine, outwardSlash, jumpAwayFromPlayer, () => ShouldMakeDistanceFromPlayer() && outwardSlash.IsDone() && !alienSwordmasterReferences.AttackHit);
+        AddTransition(firstPhaseStateMachine, inwardSlash, jumpAwayFromPlayer, () => ShouldMakeDistanceFromPlayer() && inwardSlash.IsDone());
+        AddTransition(firstPhaseStateMachine, jumpAwayFromPlayer, sideWalk, () => jumpAwayFromPlayer.IsDone());
+        AddTransition(firstPhaseStateMachine, sideWalk, walkTowardsPlayer, () => sideWalk.StopWalking());
+        AddTransition(firstPhaseStateMachine, fightIdleState, walkTowardsPlayer, () => !IsInRangeForSlash());
+        AddTransition(firstPhaseStateMachine, outwardSlash, walkTowardsPlayer, () => !IsInRangeForSlash() && outwardSlash.IsDone());
+        AddTransition(firstPhaseStateMachine, inwardSlash, walkTowardsPlayer, () => !IsInRangeForSlash() && inwardSlash.IsDone());
+        AddTransition(firstPhaseStateMachine, walkTowardsPlayer, outwardSlash, () => IsInRangeForSlash() && outwardSlash.ShouldDoOutwardSlash() && outwardSlash.CanAttack());
+        AddTransition(firstPhaseStateMachine, walkTowardsPlayer, inwardSlash, () => IsInRangeForSlash() && inwardSlash.ShouldDoInwardSlash() && inwardSlash.CanAttack());
+        AddTransition(firstPhaseStateMachine, fightIdleState, inwardSlash, () => IsInRangeForSlash() && inwardSlash.ShouldDoInwardSlash() && inwardSlash.CanAttack());
+        AddTransition(firstPhaseStateMachine, fightIdleState, outwardSlash, () => IsInRangeForSlash() && outwardSlash.ShouldDoOutwardSlash() && outwardSlash.CanAttack());
+        AddTransition(firstPhaseStateMachine, outwardSlash, fightIdleState, () => outwardSlash.IsDone() && !alienSwordmasterReferences.AttackHit);
+        AddTransition(firstPhaseStateMachine, inwardSlash, fightIdleState, () => IsInRangeForSlash() && inwardSlash.IsDone());
+        AddTransition(firstPhaseStateMachine, outwardSlash, inwardSlash, () => alienSwordmasterReferences.AttackHit);
+
+        Any(firstPhaseStateMachine, breakStance, () => alienSwordmasterReferences.DamageController.ReceivedBigDamage());
+        AddTransition(firstPhaseStateMachine, breakStance, takeDamage, () => alienSwordmasterReferences.DamageController.ReceivedDamage() && breakStance.IsDone());
+        AddTransition(firstPhaseStateMachine, breakStance, jumpAwayFromPlayer, () => alienSwordmasterReferences.BrokenStanceController.RecoverFromBrokenStance() && breakStance.IsDone());
+    }
+
+    private void AddSecondPhaseTransitions(StateMachine secondPhaseStateMachine, ASM_State_FightIdle fightIdleState, ASM_State_WalkTowardsPlayer walkTowardsPlayer,
+                                    ASM_State_DrawSword drawSword, ASM_State_DashToPlayer dashToPlayer, ASM_State_DashAwayFromPlayer dashAwayFromPlayer, ASM_State_OutwardSlash outwardSlash,
+                                     ASM_State_InwardSlash inwardSlash, ASM_State_SideWalk sideWalk, ASM_State_SpecialSlashAttack specialSlashAttack, ASM_State_BreakStance breakStance, ASM_State_TakeDamage takeDamage)
+    {
+        AddTransition(secondPhaseStateMachine, drawSword, dashToPlayer, () => drawSword.IsDone());
+        AddTransition(secondPhaseStateMachine, dashToPlayer, outwardSlash, () => IsInRangeForSlash() && outwardSlash.ShouldDoOutwardSlash() && outwardSlash.CanAttack());
+        AddTransition(secondPhaseStateMachine, dashToPlayer, inwardSlash, () => IsInRangeForSlash() && inwardSlash.ShouldDoInwardSlash() && inwardSlash.CanAttack());
+
+        AddTransition(secondPhaseStateMachine, dashToPlayer, walkTowardsPlayer, () => !IsInRangeForSlash() && !ShouldDashFromPlayerOrWalkToPlayer() && alienSwordmasterReferences.DashToController.IsDone());
+        AddTransition(secondPhaseStateMachine, dashToPlayer, dashAwayFromPlayer, () => !IsInRangeForSlash() && ShouldDashFromPlayerOrWalkToPlayer() && alienSwordmasterReferences.DashToController.IsDone());
+
+        AddTransition(secondPhaseStateMachine, dashAwayFromPlayer, sideWalk, () => alienSwordmasterReferences.DashFromController.IsDone());
+        AddTransition(secondPhaseStateMachine, sideWalk, dashToPlayer, () => sideWalk.StopWalking() && !SpecialAttack);   //bool for spacial attack should be somewhat random WIP
+        AddTransition(secondPhaseStateMachine, sideWalk, specialSlashAttack, () => sideWalk.StopWalking() && SpecialAttack);
+        AddTransition(secondPhaseStateMachine, specialSlashAttack, dashToPlayer, () => specialSlashAttack.IsDone());
+
+        AddTransition(secondPhaseStateMachine, outwardSlash, dashAwayFromPlayer, () => ShouldMakeDistanceFromPlayer() && outwardSlash.IsDone() && !alienSwordmasterReferences.AttackHit);
+        AddTransition(secondPhaseStateMachine, inwardSlash, dashAwayFromPlayer, () => ShouldMakeDistanceFromPlayer() && inwardSlash.IsDone());
+        AddTransition(secondPhaseStateMachine, fightIdleState, dashAwayFromPlayer, () => !IsInRangeForSlash() && ShouldDashFromPlayerOrWalkToPlayer());
+        AddTransition(secondPhaseStateMachine, fightIdleState, walkTowardsPlayer, () => !IsInRangeForSlash() && !ShouldDashFromPlayerOrWalkToPlayer());
+
+        AddTransition(secondPhaseStateMachine, outwardSlash, walkTowardsPlayer, () => !IsInRangeForSlash() && outwardSlash.IsDone() && !ShouldDashFromPlayerOrWalkToPlayer());
+        AddTransition(secondPhaseStateMachine, inwardSlash, walkTowardsPlayer, () => !IsInRangeForSlash() && inwardSlash.IsDone() && !ShouldDashFromPlayerOrWalkToPlayer());
+        AddTransition(secondPhaseStateMachine, walkTowardsPlayer, outwardSlash, () => IsInRangeForSlash() && outwardSlash.ShouldDoOutwardSlash() && outwardSlash.CanAttack());
+        AddTransition(secondPhaseStateMachine, walkTowardsPlayer, inwardSlash, () => IsInRangeForSlash() && inwardSlash.ShouldDoInwardSlash() && inwardSlash.CanAttack());
+        AddTransition(secondPhaseStateMachine, fightIdleState, inwardSlash, () => IsInRangeForSlash() && inwardSlash.ShouldDoInwardSlash() && inwardSlash.CanAttack());
+        AddTransition(secondPhaseStateMachine, fightIdleState, outwardSlash, () => IsInRangeForSlash() && outwardSlash.ShouldDoOutwardSlash() && outwardSlash.CanAttack());
+
+        AddTransition(secondPhaseStateMachine, outwardSlash, fightIdleState, () => outwardSlash.IsDone() && !alienSwordmasterReferences.AttackHit);
+        AddTransition(secondPhaseStateMachine, inwardSlash, fightIdleState, () => IsInRangeForSlash() && inwardSlash.IsDone());
+
+        AddTransition(secondPhaseStateMachine, outwardSlash, inwardSlash, () => alienSwordmasterReferences.AttackHit);
+
+        Any(secondPhaseStateMachine, breakStance, () => alienSwordmasterReferences.DamageController.ReceivedBigDamage());
+        AddTransition(secondPhaseStateMachine, breakStance, takeDamage, () => alienSwordmasterReferences.DamageController.ReceivedDamage() && breakStance.IsDone());
+        AddTransition(secondPhaseStateMachine, breakStance, dashAwayFromPlayer, () => alienSwordmasterReferences.BrokenStanceController.RecoverFromBrokenStance() && breakStance.IsDone());
+    }
+
+    private void AddTransition(StateMachine stateMachine, IState from, IState to, Func<bool> condition) => stateMachine.AddTransition(from, to, condition);
+    private void Any(StateMachine stateMachine, IState to, Func<bool> condition) => stateMachine.AddAnyTransition(to, condition);
+
+    public bool IsInRangeForSlash() => (transform.position - alienSwordmasterReferences.Character.transform.position).sqrMagnitude <= alienSwordmasterReferences.AttackRange * alienSwordmasterReferences.AttackRange;
 
     private void Update()
     {
-        enemyStateMachine.Tick();
-        FacePlayer();
+        if (HasDash)
+            secondPhaseStateMachine.Tick();
+        else
+            firstPhaseStateMachine.Tick();
+
+
+        // FacePlayer();
         if (transform.position.y != 0)
             transform.position = new Vector3(transform.position.x, 0, transform.position.z);
     }
@@ -104,9 +155,6 @@ public class AlienSwordmasterController : MonoBehaviour
 
     private bool ShouldDashFromPlayerOrWalkToPlayer()
     {
-        if (!HasDash)
-            return false;
-
         return UnityEngine.Random.value < alienSwordmasterReferences.DashFromController.GetDashChance();
     }
 }

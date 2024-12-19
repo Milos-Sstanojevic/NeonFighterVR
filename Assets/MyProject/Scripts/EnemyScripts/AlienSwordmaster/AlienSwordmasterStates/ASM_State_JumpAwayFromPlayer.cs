@@ -30,7 +30,7 @@ public class ASM_State_JumpAwayFromPlayer : IState
     public void OnExit()
     {
         EventManager.Instance.UnsubscribeFromOnAlienSMJumpAwayAnimationDone(JumpAnimationDone);
-        references.Rigidbody.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
+        references.Rigidbody.constraints = RigidbodyConstraints.FreezeAll;
     }
 
     public void Tick()

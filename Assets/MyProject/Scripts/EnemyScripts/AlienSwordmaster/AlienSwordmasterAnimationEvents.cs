@@ -31,4 +31,9 @@ public class AlienSwordmasterAnimationEvents : MonoBehaviour
     {
         EventManager.Instance.OnAlienSMSpecialAttackDone();
     }
+
+    private void BreakStanceAnimationDone()
+    {
+        EventManager.Instance.OnBreakStanceAnimationDone();
+    }
 }

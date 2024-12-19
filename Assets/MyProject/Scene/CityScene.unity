@@ -433,7 +433,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!65 &924460869
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -777,7 +777,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8037875235645128910, guid: 38a12921033fee74783a976befb9326b, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -892,15 +892,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 265999398112756198, guid: c390a4962854c7b499f82bfbd66ce97a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.594
+      value: -4.677
       objectReference: {fileID: 0}
     - target: {fileID: 265999398112756198, guid: c390a4962854c7b499f82bfbd66ce97a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.859
+      value: 2.045
       objectReference: {fileID: 0}
     - target: {fileID: 265999398112756198, guid: c390a4962854c7b499f82bfbd66ce97a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -8.339
+      value: -11.368
       objectReference: {fileID: 0}
     - target: {fileID: 265999398112756198, guid: c390a4962854c7b499f82bfbd66ce97a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -933,10 +933,6 @@ PrefabInstance:
     - target: {fileID: 647064412003949404, guid: c390a4962854c7b499f82bfbd66ce97a, type: 3}
       propertyPath: m_Name
       value: RedKatana1 (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 647064412003949404, guid: c390a4962854c7b499f82bfbd66ce97a, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1013,7 +1009,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7034876496579981215, guid: f3ae0a826905b1b47b225fd7542881da, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1072,10 +1068,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8781656338171885986, guid: 80a89cd541922da4fa769eee01ec4321, type: 3}
-      propertyPath: Character
-      value: 
-      objectReference: {fileID: 2088572866}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

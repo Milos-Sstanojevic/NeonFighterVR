@@ -50,11 +50,6 @@ public class SlashAttack : MonoBehaviour
         transform.localEulerAngles = Vector3.zero;
     }
 
-    public void SetParentActive()
-    {
-        transform.gameObject.SetActive(true);
-    }
-
     private void Update()
     {
         if (!launchSlash) return;
