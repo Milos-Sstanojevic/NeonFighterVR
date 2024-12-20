@@ -9,15 +9,14 @@ public class AlienSMDashAwayController : MonoBehaviour
     [SerializeField] private float dashDistance = 9;
     [SerializeField] private float delayForEnemy = 1f;
     [SerializeField] private GameObject enemySword;
+    [SerializeField] private ParticleSystem dashParticle;
     private AlienSwordmasterReferences references;
     private Transform playerTransform;
-    private ParticleSystem dashParticle;
     private bool dashDone;
 
 
     private void Awake()
     {
-        dashParticle = GetComponent<ParticleSystem>();
         references = GetComponentInParent<AlienSwordmasterReferences>();
     }
 

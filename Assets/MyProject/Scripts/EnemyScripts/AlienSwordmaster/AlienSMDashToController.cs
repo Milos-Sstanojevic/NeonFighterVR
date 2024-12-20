@@ -8,15 +8,16 @@ public class AlienSMDashToController : MonoBehaviour
     [SerializeField] private float stopDistance = 8f;
     [SerializeField] private Renderer enemyRenderer;
     [SerializeField] private GameObject enemySword;
+    [SerializeField] private ParticleSystem dashParticle;
     private bool dashDone;
-    private ParticleSystem dashParticle;
     private AlienSwordmasterReferences references;
     private Transform playerTransform;
+    private GhostTrail ghostTrail;
 
     private void Awake()
     {
+        ghostTrail = GetComponent<GhostTrail>();
         references = GetComponentInParent<AlienSwordmasterReferences>();
-        dashParticle = GetComponent<ParticleSystem>();
         stopDistance = references.AttackRange - 0.3f;
     }
 
@@ -44,15 +45,28 @@ public class AlienSMDashToController : MonoBehaviour
         Vector3 direction = (playerTransform.position - references.transform.position).normalized;
         Vector3 targetPosition = playerTransform.position - direction * stopDistance;
 
-        float elapesedTime = 0f;
+        float elapsedTime = 0f;
         Vector3 startPosition = references.transform.position;
 
-        while (elapesedTime < travelTime)
+        bool halfwayGhostPlaced = false;
+
+        while (elapsedTime < travelTime)
         {
-            elapesedTime += Time.deltaTime;
-            references.transform.position = Vector3.Lerp(startPosition, targetPosition, elapesedTime / travelTime);
+            elapsedTime += Time.deltaTime;
+            float progress = elapsedTime / travelTime;
+
+            references.transform.position = Vector3.Lerp(startPosition, targetPosition, elapsedTime / travelTime);
+
+            if (!halfwayGhostPlaced && progress >= 0.5f)
+            {
+                PlaceGhostTrail();
+                halfwayGhostPlaced = true;
+            }
+
             yield return null;
         }
+
+        PlaceGhostTrail();
 
         references.transform.position = targetPosition;
         dashDone = true;
@@ -60,6 +74,11 @@ public class AlienSMDashToController : MonoBehaviour
         dashParticle.Stop();
         enemySword.SetActive(true);
         enemyRenderer.enabled = true;
+    }
+
+    private void PlaceGhostTrail()
+    {
+        StartCoroutine(ghostTrail.ActivateTrail());
     }
 
     public bool IsDone() => dashDone;

@@ -1,10 +1,6 @@
-using UnityEngine;
-
 public class ASM_State_DashAwayFromPlayer : IState
 {
     private AlienSwordmasterReferences references;
-    private ParticleSystem dashParticle;
-    private Renderer enemyRenderer;
     private AlienSMDashAwayController dashController;
 
     public ASM_State_DashAwayFromPlayer(AlienSwordmasterReferences references)
@@ -15,7 +11,7 @@ public class ASM_State_DashAwayFromPlayer : IState
 
     public void OnEnter()
     {
-        if (references.NumberOfAttacksDone > references.NumberOfAttacksBeforeDashingAway)
+        if (references.NumberOfAttacksDone >= references.NumberOfAttacksBeforeDashingAway)
             references.NumberOfAttacksDone = 0;
 
         references.IsAttacking = false;

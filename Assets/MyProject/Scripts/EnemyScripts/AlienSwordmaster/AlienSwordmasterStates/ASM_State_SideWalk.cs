@@ -24,6 +24,8 @@ public class ASM_State_SideWalk : IState
 
     public void Tick()
     {
+        float speed = references.SideWalkSpeed;
+        references.transform.localPosition += references.transform.right * -1f * speed * Time.deltaTime;
     }
 
     public bool StopWalking() => Time.time - startWalkingTime >= references.SideWalkingTime;

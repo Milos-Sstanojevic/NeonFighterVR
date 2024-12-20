@@ -14,25 +14,14 @@ public class GhostTrail : MonoBehaviour
     [SerializeField] private string shaderVarRef;
     [SerializeField] private float shaderVarRate = 0.1f;
     [SerializeField] private float shaderVarRefreshRate = 0.05f;
-    private bool isTrailActive;
-    private SkinnedMeshRenderer[] skinnedMeshRenderers;
+    [SerializeField] private SkinnedMeshRenderer[] skinnedMeshRenderers;
 
-    private void Update()
+    public IEnumerator ActivateTrail()
     {
-        if (Input.GetKeyDown(KeyCode.CapsLock) && !isTrailActive)
-        {
-            isTrailActive = true;
-            StartCoroutine(ActivateTrail(activeTime));
-        }
-    }
-
-    private IEnumerator ActivateTrail(float timeActive)
-    {
+        float timeActive = activeTime;
         while (timeActive > 0)
         {
             timeActive -= meshRefreshRate;
-            if (skinnedMeshRenderers == null)
-                skinnedMeshRenderers = GetComponentsInChildren<SkinnedMeshRenderer>(true);
 
             for (int i = 0; i < skinnedMeshRenderers.Length; i++)
             {
@@ -54,8 +43,6 @@ public class GhostTrail : MonoBehaviour
 
             yield return new WaitForSeconds(meshRefreshRate);
         }
-
-        isTrailActive = false;
     }
 
     private IEnumerator AnimateMaterialFloat(Material[] mat, float goal, float rate, float refreshRate)

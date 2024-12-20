@@ -145,8 +145,6 @@ GameObject:
   - component: {fileID: 513819465994284719}
   - component: {fileID: 6834018368868980640}
   - component: {fileID: 2045567154774287624}
-  - component: {fileID: 5586496125477851488}
-  - component: {fileID: 5053412615207948624}
   m_Layer: 6
   m_Name: DashParticles
   m_TagString: Untagged
@@ -4970,41 +4968,6 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &5586496125477851488
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4615195350231596081}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac80d8f646a969648977300fc11a097a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemyRenderer: {fileID: 2763863126438334112}
-  dashChanceInSecondPhase: 0.7
-  dashSpeed: 50
-  dashDistance: 9
-  delayForEnemy: 1
-  enemySword: {fileID: 6760920174144454530}
---- !u!114 &5053412615207948624
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4615195350231596081}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 777a04158bda7c847ad2a81191b2597c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  delayForEnemy: 1
-  dashSpeed: 50
-  stopDistance: 8
-  enemyRenderer: {fileID: 2763863126438334112}
-  enemySword: {fileID: 6760920174144454530}
 --- !u!1 &7012046268657683914
 GameObject:
   m_ObjectHideFlags: 0
@@ -5153,7 +5116,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 605cc4e7cf248ea429dab0b3661cf269, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 17.37
+      value: 14.32
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 605cc4e7cf248ea429dab0b3661cf269, type: 3}
       propertyPath: m_LocalRotation.w
@@ -5429,6 +5392,12 @@ PrefabInstance:
       addedObject: {fileID: 940291693945009934}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 605cc4e7cf248ea429dab0b3661cf269, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 3650164819211789716}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 605cc4e7cf248ea429dab0b3661cf269, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7474726996032740478}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 605cc4e7cf248ea429dab0b3661cf269, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 3549722089361901606}
   m_SourcePrefab: {fileID: 100100000, guid: 605cc4e7cf248ea429dab0b3661cf269, type: 3}
 --- !u!4 &408073914011469980 stripped
@@ -5453,6 +5422,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fefb15acb0ad32469cfdbb3ce1099cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AlienSMData: {fileID: 11400000, guid: 28a539d8999434f4c97de5ffb5d6c01f, type: 2}
   MultiAimContraintHips: {fileID: 55346284342195048}
   MultiAimContraintHead: {fileID: 24186088269827928}
   DamageController: {fileID: 0}
@@ -5461,12 +5431,13 @@ MonoBehaviour:
   Character: {fileID: 0}
   Rigidbody: {fileID: 0}
   SlashAttack: {fileID: 2258622134553421240}
-  DashFromController: {fileID: 5586496125477851488}
-  DashToController: {fileID: 5053412615207948624}
+  DashFromController: {fileID: 7474726996032740478}
+  DashToController: {fileID: 3650164819211789716}
   NextAttack: 0
   LastAttackTime: 0
   RotatingSpeed: 10
   WalkSpeed: 2
+  SideWalkSpeed: 1
   RunSpeed: 15
   SlashSpeed: 10
   SideWalkingTime: 2
@@ -5488,8 +5459,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddd8c28bcb1befe49bbf3a3e27ffb406, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HasDash: 0
-  SpecialAttack: 0
+  HasDash: 1
+  SpecialAttack: 1
 --- !u!114 &233957609222777959
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5514,8 +5485,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f48354a2119553b489ff3243f370c629, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activeTime: 4
-  meshDestroyDelay: 2
+  activeTime: 0.4
+  meshDestroyDelay: 0.6
   meshRefreshRate: 1
   material:
   - {fileID: 2100000, guid: c418fc73e753e1548a862573a6e36ebb, type: 2}
@@ -5523,6 +5494,8 @@ MonoBehaviour:
   shaderVarRef: _Alpha
   shaderVarRate: 0.1
   shaderVarRefreshRate: 0.05
+  skinnedMeshRenderers:
+  - {fileID: 2763863126438334112}
 --- !u!54 &5085815699404508906
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5666,6 +5639,43 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxStanceTime: 10
   damageWindow: 4
+--- !u!114 &3650164819211789716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 524736280252465809}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 777a04158bda7c847ad2a81191b2597c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delayForEnemy: 1
+  dashSpeed: 50
+  stopDistance: 8
+  enemyRenderer: {fileID: 2763863126438334112}
+  enemySword: {fileID: 6760920174144454530}
+  dashParticle: {fileID: 6834018368868980640}
+--- !u!114 &7474726996032740478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 524736280252465809}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac80d8f646a969648977300fc11a097a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyRenderer: {fileID: 2763863126438334112}
+  dashChanceInSecondPhase: 0.7
+  dashSpeed: 50
+  dashDistance: 9
+  delayForEnemy: 1
+  enemySword: {fileID: 6760920174144454530}
+  dashParticle: {fileID: 6834018368868980640}
 --- !u!136 &3549722089361901606
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -6186,7 +6196,9 @@ PrefabInstance:
       propertyPath: playOnAwake
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1911863361792805686, guid: a2253dd4972ecf541b906360a41b96da, type: 3}
+    - {fileID: 759859400028122593, guid: a2253dd4972ecf541b906360a41b96da, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -6199,6 +6211,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7141112741674223358, guid: a2253dd4972ecf541b906360a41b96da, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2258622134553421240}
+    - targetCorrespondingSourceObject: {fileID: 7141112741674223358, guid: a2253dd4972ecf541b906360a41b96da, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6509413964588867670}
   m_SourcePrefab: {fileID: 100100000, guid: a2253dd4972ecf541b906360a41b96da, type: 3}
 --- !u!198 &1103024912351868127 stripped
 ParticleSystem:
@@ -6229,6 +6244,27 @@ MonoBehaviour:
   - {fileID: 6026587929108167420}
   - {fileID: 3160068941116206547}
   - {fileID: 6538279472341746437}
+--- !u!65 &6509413964588867670
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2677546055718750595}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Size: {x: 1.6492289, y: 0.15206411, z: 0.75043404}
+  m_Center: {x: -0.104578495, y: 0.06054478, z: -0.11141618}
 --- !u!198 &3160068941116206547 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 7919588955851760302, guid: a2253dd4972ecf541b906360a41b96da, type: 3}

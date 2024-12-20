@@ -8,7 +8,12 @@ public class SlashAttack : MonoBehaviour
     [SerializeField] private List<ParticleSystem> slashParticles;
     private bool launchSlash;
     private Transform oldParent;
+    private BoxCollider particleCollider;
 
+    private void Awake()
+    {
+        particleCollider = GetComponent<BoxCollider>();
+    }
 
     private void OnEnable()
     {
@@ -17,6 +22,7 @@ public class SlashAttack : MonoBehaviour
 
     private void LaunchTowardsPlayer()
     {
+        particleCollider.enabled = true;
         references.IsAttacking = false;
         launchSlash = true;
         oldParent = transform.parent;
@@ -46,6 +52,7 @@ public class SlashAttack : MonoBehaviour
         launchSlash = false;
         transform.gameObject.SetActive(false);
 
+        particleCollider.enabled = false;
         transform.localPosition = Vector3.zero;
         transform.localEulerAngles = Vector3.zero;
     }
@@ -55,6 +62,12 @@ public class SlashAttack : MonoBehaviour
         if (!launchSlash) return;
 
         transform.position += transform.forward * Time.deltaTime * references.SlashSpeed;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.GetComponent<CharacterController>())
+            EventManager.Instance.OnPlayerHitAction(references.AlienSMData.SpecialAttackDamage);
     }
 
     private void OnDisable()

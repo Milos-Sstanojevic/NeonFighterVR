@@ -433,7 +433,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &924460869
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -777,7 +777,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8037875235645128910, guid: 38a12921033fee74783a976befb9326b, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1009,7 +1009,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7034876496579981215, guid: f3ae0a826905b1b47b225fd7542881da, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1038,7 +1038,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 865795525533046827, guid: 80a89cd541922da4fa769eee01ec4321, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 17.37
+      value: 14.32
       objectReference: {fileID: 0}
     - target: {fileID: 865795525533046827, guid: 80a89cd541922da4fa769eee01ec4321, type: 3}
       propertyPath: m_LocalRotation.w

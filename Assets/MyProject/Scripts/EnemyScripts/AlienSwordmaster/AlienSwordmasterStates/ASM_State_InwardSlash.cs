@@ -18,9 +18,6 @@ public class ASM_State_InwardSlash : IState
 
     public void OnEnter()
     {
-        if (references.NumberOfAttacksDone > references.NumberOfAttacksBeforeDashingAway)
-            references.NumberOfAttacksDone = 0;
-
         if (!references.AttackHit)
             references.NumberOfAttacksDone++;
 

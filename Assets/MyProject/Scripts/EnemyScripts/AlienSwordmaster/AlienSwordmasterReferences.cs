@@ -3,6 +3,7 @@ using UnityEngine.Animations.Rigging;
 
 public class AlienSwordmasterReferences : MonoBehaviour
 {
+    public EnemyData AlienSMData;
     public MultiAimConstraint MultiAimContraintHips;
     public MultiAimConstraint MultiAimContraintHead;
     public EnemyDamageController DamageController;
@@ -18,6 +19,7 @@ public class AlienSwordmasterReferences : MonoBehaviour
     public float LastAttackTime;
     public float RotatingSpeed;
     public float WalkSpeed = 3f;
+    public float SideWalkSpeed = 2f;
     public float RunSpeed = 5f;
     public int SlashSpeed;
     public float SideWalkingTime = 1;

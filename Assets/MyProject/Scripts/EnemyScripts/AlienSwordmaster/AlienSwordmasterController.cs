@@ -125,29 +125,13 @@ public class AlienSwordmasterController : MonoBehaviour
         else
             firstPhaseStateMachine.Tick();
 
-
-        // FacePlayer();
         if (transform.position.y != 0)
             transform.position = new Vector3(transform.position.x, 0, transform.position.z);
     }
 
-    private void FacePlayer()
-    {
-        if (alienSwordmasterReferences.IsAttacking)
-            return;
-
-        Vector3 directionToPlayer = alienSwordmasterReferences.Character.transform.position - transform.position;
-        directionToPlayer.y = 0;
-        if (directionToPlayer.sqrMagnitude > 0.01f)
-        {
-            Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * alienSwordmasterReferences.RotatingSpeed);
-        }
-    }
-
     public bool ShouldMakeDistanceFromPlayer()
     {
-        if (alienSwordmasterReferences.NumberOfAttacksDone <= alienSwordmasterReferences.NumberOfAttacksBeforeDashingAway)
+        if (alienSwordmasterReferences.NumberOfAttacksDone < alienSwordmasterReferences.NumberOfAttacksBeforeDashingAway)
             return false;
 
         return true;

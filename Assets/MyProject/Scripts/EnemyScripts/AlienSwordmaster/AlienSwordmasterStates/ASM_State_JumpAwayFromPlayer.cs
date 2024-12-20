@@ -12,9 +12,6 @@ public class ASM_State_JumpAwayFromPlayer : IState
 
     public void OnEnter()
     {
-        if (references.NumberOfAttacksDone > references.NumberOfAttacksBeforeDashingAway)
-            references.NumberOfAttacksDone = 0;
-
         references.IsAttacking = false;
         jumpedAway = false;
         EventManager.Instance.SubscribeToOnAlienSMJumpAwayAnimationDone(JumpAnimationDone);
