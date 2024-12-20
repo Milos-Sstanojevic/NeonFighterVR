@@ -5439,12 +5439,13 @@ MonoBehaviour:
   WalkSpeed: 2
   SideWalkSpeed: 1
   RunSpeed: 15
-  SlashSpeed: 10
+  SlashSpeed: 30
   SideWalkingTime: 2
   AttackCooldown: 1
   AttackRange: 1.3
   NumberOfAttacksBeforeDashingAway: 3
   NumberOfAttacksDone: 0
+  ChanceForSpecialAttack: 0.7
   IsAttacking: 0
   AttackHit: 0
 --- !u!114 &7786108555247452720
@@ -5460,7 +5461,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HasDash: 1
-  SpecialAttack: 1
+  SpecialAttack: 0
 --- !u!114 &233957609222777959
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5639,6 +5640,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxStanceTime: 10
   damageWindow: 4
+  poiseCooldown: 5
 --- !u!114 &3650164819211789716
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5695,10 +5697,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.3408807
-  m_Height: 1.7063383
+  m_Radius: 0.27712885
+  m_Height: 1.5384471
   m_Direction: 1
-  m_Center: {x: 0, y: 0.78580314, z: 0}
+  m_Center: {x: 0, y: 0.8697487, z: 0.06375185}
 --- !u!4 &607435592608509066 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 281297371296666442, guid: 605cc4e7cf248ea429dab0b3661cf269, type: 3}
@@ -6244,6 +6246,7 @@ MonoBehaviour:
   - {fileID: 6026587929108167420}
   - {fileID: 3160068941116206547}
   - {fileID: 6538279472341746437}
+  timeForResetParticle: 2
 --- !u!65 &6509413964588867670
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6257,7 +6260,7 @@ BoxCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 65
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0

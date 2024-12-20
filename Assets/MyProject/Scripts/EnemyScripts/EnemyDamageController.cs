@@ -6,7 +6,7 @@ public class EnemyDamageController : MonoBehaviour
     private int health = 100;
     private bool receivedDamage;
     private bool receivedBigDamage;
-    private float damageResetTimer = 0.5f;
+    private float damageResetTimer = 0.1f;
 
     private void Start()
     {

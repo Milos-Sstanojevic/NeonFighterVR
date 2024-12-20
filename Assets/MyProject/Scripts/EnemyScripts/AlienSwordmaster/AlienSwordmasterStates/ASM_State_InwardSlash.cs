@@ -21,8 +21,6 @@ public class ASM_State_InwardSlash : IState
         if (!references.AttackHit)
             references.NumberOfAttacksDone++;
 
-        references.AttackHit = false;
-
         references.IsAttacking = true;
         inwardSlashAnimationDone = false;
         references.Animator.SetBool("InwardAttack", true);
@@ -31,6 +29,7 @@ public class ASM_State_InwardSlash : IState
 
     public void OnExit()
     {
+        references.AttackHit = false;
         references.Animator.SetBool("AttackSuccess", false);
         references.Animator.SetBool("InwardAttack", false);
         EventManager.Instance.UnsubscribeFromOnAlienSMInwardSlashDone(HandleInwardSlashDone);

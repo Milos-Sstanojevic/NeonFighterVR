@@ -27,6 +27,7 @@ public class AlienSwordmasterReferences : MonoBehaviour
     public float AttackRange = 2f;
     public int NumberOfAttacksBeforeDashingAway = 3;
     public int NumberOfAttacksDone = 0;
+    public float ChanceForSpecialAttack = 0.7f;
     public bool IsAttacking;
     public bool AttackHit;
 

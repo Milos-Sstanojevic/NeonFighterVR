@@ -70,14 +70,14 @@ public class AlienSwordmasterController : MonoBehaviour
         AddTransition(firstPhaseStateMachine, inwardSlash, fightIdleState, () => IsInRangeForSlash() && inwardSlash.IsDone());
         AddTransition(firstPhaseStateMachine, outwardSlash, inwardSlash, () => alienSwordmasterReferences.AttackHit);
 
-        Any(firstPhaseStateMachine, breakStance, () => alienSwordmasterReferences.DamageController.ReceivedBigDamage());
+        Any(firstPhaseStateMachine, breakStance, () => alienSwordmasterReferences.DamageController.ReceivedBigDamage() && !alienSwordmasterReferences.AttackHit);
         AddTransition(firstPhaseStateMachine, breakStance, takeDamage, () => alienSwordmasterReferences.DamageController.ReceivedDamage() && breakStance.IsDone());
         AddTransition(firstPhaseStateMachine, breakStance, jumpAwayFromPlayer, () => alienSwordmasterReferences.BrokenStanceController.RecoverFromBrokenStance() && breakStance.IsDone());
     }
 
     private void AddSecondPhaseTransitions(StateMachine secondPhaseStateMachine, ASM_State_FightIdle fightIdleState, ASM_State_WalkTowardsPlayer walkTowardsPlayer,
                                     ASM_State_DrawSword drawSword, ASM_State_DashToPlayer dashToPlayer, ASM_State_DashAwayFromPlayer dashAwayFromPlayer, ASM_State_OutwardSlash outwardSlash,
-                                     ASM_State_InwardSlash inwardSlash, ASM_State_SideWalk sideWalk, ASM_State_SpecialSlashAttack specialSlashAttack, ASM_State_BreakStance breakStance, ASM_State_TakeDamage takeDamage)
+                                    ASM_State_InwardSlash inwardSlash, ASM_State_SideWalk sideWalk, ASM_State_SpecialSlashAttack specialSlashAttack, ASM_State_BreakStance breakStance, ASM_State_TakeDamage takeDamage)
     {
         AddTransition(secondPhaseStateMachine, drawSword, dashToPlayer, () => drawSword.IsDone());
         AddTransition(secondPhaseStateMachine, dashToPlayer, outwardSlash, () => IsInRangeForSlash() && outwardSlash.ShouldDoOutwardSlash() && outwardSlash.CanAttack());
@@ -87,8 +87,8 @@ public class AlienSwordmasterController : MonoBehaviour
         AddTransition(secondPhaseStateMachine, dashToPlayer, dashAwayFromPlayer, () => !IsInRangeForSlash() && ShouldDashFromPlayerOrWalkToPlayer() && alienSwordmasterReferences.DashToController.IsDone());
 
         AddTransition(secondPhaseStateMachine, dashAwayFromPlayer, sideWalk, () => alienSwordmasterReferences.DashFromController.IsDone());
-        AddTransition(secondPhaseStateMachine, sideWalk, dashToPlayer, () => sideWalk.StopWalking() && !SpecialAttack);   //bool for spacial attack should be somewhat random WIP
-        AddTransition(secondPhaseStateMachine, sideWalk, specialSlashAttack, () => sideWalk.StopWalking() && SpecialAttack);
+        AddTransition(secondPhaseStateMachine, sideWalk, dashToPlayer, () => sideWalk.StopWalking() && !ShouldDoSpecialAttackOrDashToPlayer());
+        AddTransition(secondPhaseStateMachine, sideWalk, specialSlashAttack, () => sideWalk.StopWalking() && ShouldDoSpecialAttackOrDashToPlayer());
         AddTransition(secondPhaseStateMachine, specialSlashAttack, dashToPlayer, () => specialSlashAttack.IsDone());
 
         AddTransition(secondPhaseStateMachine, outwardSlash, dashAwayFromPlayer, () => ShouldMakeDistanceFromPlayer() && outwardSlash.IsDone() && !alienSwordmasterReferences.AttackHit);
@@ -108,7 +108,7 @@ public class AlienSwordmasterController : MonoBehaviour
 
         AddTransition(secondPhaseStateMachine, outwardSlash, inwardSlash, () => alienSwordmasterReferences.AttackHit);
 
-        Any(secondPhaseStateMachine, breakStance, () => alienSwordmasterReferences.DamageController.ReceivedBigDamage());
+        Any(secondPhaseStateMachine, breakStance, () => alienSwordmasterReferences.DamageController.ReceivedBigDamage() && AlienIsNotPerformingAnyComboOrSpecialMove(specialSlashAttack, dashToPlayer, dashAwayFromPlayer));
         AddTransition(secondPhaseStateMachine, breakStance, takeDamage, () => alienSwordmasterReferences.DamageController.ReceivedDamage() && breakStance.IsDone());
         AddTransition(secondPhaseStateMachine, breakStance, dashAwayFromPlayer, () => alienSwordmasterReferences.BrokenStanceController.RecoverFromBrokenStance() && breakStance.IsDone());
     }
@@ -118,16 +118,10 @@ public class AlienSwordmasterController : MonoBehaviour
 
     public bool IsInRangeForSlash() => (transform.position - alienSwordmasterReferences.Character.transform.position).sqrMagnitude <= alienSwordmasterReferences.AttackRange * alienSwordmasterReferences.AttackRange;
 
-    private void Update()
-    {
-        if (HasDash)
-            secondPhaseStateMachine.Tick();
-        else
-            firstPhaseStateMachine.Tick();
+    private bool AlienIsNotPerformingAnyComboOrSpecialMove(ASM_State_SpecialSlashAttack specialSlashAttack, ASM_State_DashToPlayer dashToPlayer, ASM_State_DashAwayFromPlayer dashAwayFromPlayer)
+                                                    => !alienSwordmasterReferences.AttackHit && secondPhaseStateMachine.CurrentState != specialSlashAttack &&
+                                                     secondPhaseStateMachine.CurrentState != dashAwayFromPlayer && secondPhaseStateMachine.CurrentState != dashToPlayer;
 
-        if (transform.position.y != 0)
-            transform.position = new Vector3(transform.position.x, 0, transform.position.z);
-    }
 
     public bool ShouldMakeDistanceFromPlayer()
     {
@@ -141,4 +135,18 @@ public class AlienSwordmasterController : MonoBehaviour
     {
         return UnityEngine.Random.value < alienSwordmasterReferences.DashFromController.GetDashChance();
     }
+
+    private bool ShouldDoSpecialAttackOrDashToPlayer() => UnityEngine.Random.value < alienSwordmasterReferences.ChanceForSpecialAttack;
+
+    private void Update()
+    {
+        if (HasDash)
+            secondPhaseStateMachine.Tick();
+        else
+            firstPhaseStateMachine.Tick();
+
+        if (transform.position.y != 0)
+            transform.position = new Vector3(transform.position.x, 0, transform.position.z);
+    }
+
 }

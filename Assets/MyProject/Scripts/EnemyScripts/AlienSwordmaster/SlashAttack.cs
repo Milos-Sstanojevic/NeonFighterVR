@@ -6,6 +6,7 @@ public class SlashAttack : MonoBehaviour
 {
     [SerializeField] private AlienSwordmasterReferences references;
     [SerializeField] private List<ParticleSystem> slashParticles;
+    [SerializeField] private float timeForResetParticle = 2;
     private bool launchSlash;
     private Transform oldParent;
     private BoxCollider particleCollider;
@@ -47,7 +48,7 @@ public class SlashAttack : MonoBehaviour
 
     public IEnumerator ResetParticles()
     {
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(timeForResetParticle);
         transform.SetParent(oldParent);
         launchSlash = false;
         transform.gameObject.SetActive(false);
