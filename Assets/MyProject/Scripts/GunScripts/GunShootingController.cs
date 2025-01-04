@@ -82,10 +82,13 @@ public class GunShootingController : MonoBehaviour
     private void DealDamageToTarget(RaycastHit hit)
     {
         EnemyDamageController alien = hit.rigidbody?.GetComponent<EnemyDamageController>();
-        if (!alien)
-            return;
+        ShieldController shield = hit.rigidbody?.GetComponent<ShieldController>();
 
-        alien.TakeDamage(gunData.GunDamage);
+        if (alien)
+            alien.TakeDamage(gunData.GunDamage);
+
+        if (shield)
+            shield.ActivateRipples();
     }
 
     private IEnumerator MoveBullet(int barrelIndex, Vector3 targetPoint)

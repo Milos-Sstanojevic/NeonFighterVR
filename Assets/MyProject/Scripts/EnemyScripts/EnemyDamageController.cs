@@ -7,6 +7,13 @@ public class EnemyDamageController : MonoBehaviour
     private bool receivedDamage;
     private bool receivedBigDamage;
     private float damageResetTimer = 0.1f;
+    private EnemyHealthController enemyHealthController;
+
+
+    private void Awake()
+    {
+        enemyHealthController = GetComponent<EnemyHealthController>();
+    }
 
     private void Start()
     {
@@ -15,10 +22,10 @@ public class EnemyDamageController : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.GetComponent<SwordComboController>())
-            TakeDamage(other.gameObject.GetComponent<SwordComboController>().GetSwordData().damage);
+        SwordComboController sword = other.gameObject.GetComponent<SwordComboController>();
+        if (sword)
+            TakeDamage(sword.GetSwordData().damage);
     }
-
 
     public void TakeDamage(int damage)
     {
@@ -27,10 +34,7 @@ public class EnemyDamageController : MonoBehaviour
         else
             receivedDamage = true;
 
-        health -= damage;
-
-        // if (health <= 0)
-        //     Die();
+        enemyHealthController.DecreaseHealth(damage);
 
         StartCoroutine(ResetDamageState());
     }
@@ -42,14 +46,10 @@ public class EnemyDamageController : MonoBehaviour
         receivedBigDamage = false;
     }
 
-    private void Die()
-    {
-        Destroy(gameObject);
-    }
-
     public bool ReceivedDamage()
     {
-        bool result = receivedDamage; receivedBigDamage = false;
+        bool result = receivedDamage;
+        receivedDamage = false;
         return result;
     }
 

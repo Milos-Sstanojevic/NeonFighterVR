@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EventManager : MonoBehaviour
 {
+
     public static EventManager Instance { get; private set; }
 
     private event Action<GameObject, HandController> onPickupWeaponAction;
@@ -26,6 +27,11 @@ public class EventManager : MonoBehaviour
     private event Action onAlienSMSpecialAttackDone;
     private event Action onBreakStanceAnimationDone;
     private event Action<int> onPlayerHitAction;
+    private event Action onStartSecondPhaseAction;
+    private event Action onDrawGunsAnimationFinished;
+    private event Action onSpawnTwoHolesAroundHead;
+    private event Action onSpawningHolesAroundHeadFinished;
+    private event Action onShieldBrokenAction;
 
     private void Awake()
     {
@@ -33,6 +39,21 @@ public class EventManager : MonoBehaviour
             Instance = this;
         else
             Destroy(gameObject);
+    }
+
+    public void OnStartSecondPhaseAction()
+    {
+        onStartSecondPhaseAction?.Invoke();
+    }
+
+    public void SubscribeToOnStartSecondPhaseAction(Action action)
+    {
+        onStartSecondPhaseAction += action;
+    }
+
+    public void UnsubscribeFromOnStartSecondPhaseAction(Action action)
+    {
+        onStartSecondPhaseAction -= action;
     }
 
     public void OnPlayerHitAction(int enemy)
@@ -334,5 +355,65 @@ public class EventManager : MonoBehaviour
     public void UnsubscribeFromOnReleaseWeaponAction(Action<GameObject, HandData> action)
     {
         onReleaseWeaponAction -= action;
+    }
+
+    public void OnDrawGunsAnimationFinished()
+    {
+        onDrawGunsAnimationFinished?.Invoke();
+    }
+
+    public void SubscribeToOnDrawGunsAnimationFinished(Action action)
+    {
+        onDrawGunsAnimationFinished += action;
+    }
+
+    public void UnsubscribeFromOnDrawGunsAnimationFinished(Action action)
+    {
+        onDrawGunsAnimationFinished -= action;
+    }
+
+    public void OnSpawnTwoHolesAroundHead()
+    {
+        onSpawnTwoHolesAroundHead?.Invoke();
+    }
+
+    public void SubscribeToOnSpawnTwoHolesAroundHead(Action action)
+    {
+        onSpawnTwoHolesAroundHead += action;
+    }
+
+    public void UnsubscribeFromOnSpawnTwoHolesAroundHead(Action action)
+    {
+        onSpawnTwoHolesAroundHead -= action;
+    }
+
+    public void OnSpawningHolesAroundHeadFinished()
+    {
+        onSpawningHolesAroundHeadFinished?.Invoke();
+    }
+
+    public void SubscribeToOnSpawningHolesAroundHeadFinished(Action action)
+    {
+        onSpawningHolesAroundHeadFinished += action;
+    }
+
+    public void UnsubscribeFromOnSpawningHolesAroundHeadFinished(Action action)
+    {
+        onSpawningHolesAroundHeadFinished -= action;
+    }
+
+    public void OnShieldBrokenAction()
+    {
+        onShieldBrokenAction?.Invoke();
+    }
+
+    public void SubscribeToOnShieldBrokenAction(Action action)
+    {
+        onShieldBrokenAction += action;
+    }
+
+    public void UnsubscribeFromOnShieldBrokenAction(Action action)
+    {
+        onShieldBrokenAction -= action;
     }
 }

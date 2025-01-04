@@ -1,26 +1,18 @@
 using System;
+using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 
 public class AlienSwordmasterController : MonoBehaviour
 {
+    [SerializeField] private bool HasDash;
     private AlienSwordmasterReferences alienSwordmasterReferences;
     private StateMachine firstPhaseStateMachine;
     private StateMachine secondPhaseStateMachine;
-    public bool HasDash = false; //this will be bool that will be set true for second fase of the boss
-    public bool SpecialAttack = false;
-
-    private void Start()
-    {
-        var sourceObjects = new WeightedTransformArray();
-        sourceObjects.Add(new WeightedTransform(alienSwordmasterReferences.Character.transform, 1));
-        alienSwordmasterReferences.MultiAimContraintHips.data.sourceObjects = sourceObjects;
-        alienSwordmasterReferences.MultiAimContraintHead.data.sourceObjects = sourceObjects;
-        alienSwordmasterReferences.RigBuilder.Build();
-    }
 
     private void Awake()
     {
+        HasDash = false;
         alienSwordmasterReferences = GetComponent<AlienSwordmasterReferences>();
 
         firstPhaseStateMachine = new StateMachine();
@@ -131,12 +123,22 @@ public class AlienSwordmasterController : MonoBehaviour
         return true;
     }
 
-    private bool ShouldDashFromPlayerOrWalkToPlayer()
+    private bool ShouldDashFromPlayerOrWalkToPlayer() => UnityEngine.Random.value < alienSwordmasterReferences.DashFromController.GetDashChance();
+    private bool ShouldDoSpecialAttackOrDashToPlayer() => UnityEngine.Random.value < alienSwordmasterReferences.ChanceForSpecialAttack;
+
+    private void OnEnable()
     {
-        return UnityEngine.Random.value < alienSwordmasterReferences.DashFromController.GetDashChance();
+        EventManager.Instance.SubscribeToOnStartSecondPhaseAction(() => HasDash = true);
     }
 
-    private bool ShouldDoSpecialAttackOrDashToPlayer() => UnityEngine.Random.value < alienSwordmasterReferences.ChanceForSpecialAttack;
+    private void Start()
+    {
+        var sourceObjects = new WeightedTransformArray();
+        sourceObjects.Add(new WeightedTransform(alienSwordmasterReferences.Character.transform, 1));
+        alienSwordmasterReferences.MultiAimContraintHips.data.sourceObjects = sourceObjects;
+        alienSwordmasterReferences.MultiAimContraintHead.data.sourceObjects = sourceObjects;
+        alienSwordmasterReferences.RigBuilder.Build();
+    }
 
     private void Update()
     {
@@ -149,4 +151,8 @@ public class AlienSwordmasterController : MonoBehaviour
             transform.position = new Vector3(transform.position.x, 0, transform.position.z);
     }
 
+    private void OnDisable()
+    {
+        EventManager.Instance.UnsubscribeFromOnStartSecondPhaseAction(() => HasDash = true);
+    }
 }

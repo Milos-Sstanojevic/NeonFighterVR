@@ -124,9 +124,8 @@ MonoBehaviour:
   debuffTimeLast: 1
   knockbackDistance: 2
   knockbackSpeed: 20
-  cameraTransform: {fileID: 4626205772378108869}
-  shakeDuration: 0.2
-  shakeIntensity: 0.05
+  shakeDuration: 0.5
+  shakeMagnitude: 1
 --- !u!1001 &4626205772791956663
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -808,11 +807,6 @@ Transform:
 --- !u!4 &4338992761453201955 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8936451517083848340, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
-  m_PrefabInstance: {fileID: 4626205772791956663}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &4626205772378108869 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1767192434, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
   m_PrefabInstance: {fileID: 4626205772791956663}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &4760472422407520630 stripped

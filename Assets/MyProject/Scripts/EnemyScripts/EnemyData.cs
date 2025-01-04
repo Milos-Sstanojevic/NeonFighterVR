@@ -6,4 +6,5 @@ public class EnemyData : ScriptableObject
     public int Health;
     public int Damage;
     public int SpecialAttackDamage;
+    public float SecondPhaseHPRatio;
 }

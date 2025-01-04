@@ -44,7 +44,6 @@ public class GunBigShotController : MonoBehaviour
 
     public void FireBigBullet()
     {
-
         RaycastHit hit;
         Vector3 targetPosition;
         if (Physics.Raycast(bigShotShootingPoint.position, bigShotShootingPoint.forward, out hit, gunData.BigBulletWeaponRange))
@@ -52,7 +51,15 @@ public class GunBigShotController : MonoBehaviour
         else
             targetPosition = bigShotShootingPoint.position + bigShotShootingPoint.forward * gunData.BigBulletSpeed;
 
+        CheckIfShieldIsHit(hit);
         StartCoroutine(MoveBullet(targetPosition));
+    }
+
+    private void CheckIfShieldIsHit(RaycastHit hit)
+    {
+        ShieldController shield = hit.rigidbody?.GetComponent<ShieldController>();
+        if (shield)
+            shield.ActivateRipples();
     }
 
     private IEnumerator MoveBullet(Vector3 targetPoint)

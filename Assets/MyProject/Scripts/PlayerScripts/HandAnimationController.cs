@@ -59,7 +59,12 @@ public class HandAnimationController : MonoBehaviour
 
     public void CircleOfReloadingDone()
     {
-        GetComponentInChildren<GunShootingController>()?.IncreaseCurrentAmmo();
+        GunShootingController gun = GetComponentInChildren<GunShootingController>();
+        if (!gun)
+            return;
+        gun.IncreaseCurrentAmmo();
+        if (gun.CurrentAmmo() >= gun.GetGunData().Ammo)
+            gun.GetComponent<GunReloadController>().ReloadingAnimationFinished();
     }
 
     public void GunReadyAfterReloadInterupt()

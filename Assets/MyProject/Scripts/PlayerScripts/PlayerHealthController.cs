@@ -14,9 +14,9 @@ public class PlayerHealthController : MonoBehaviour
     [SerializeField] private float debuffTimeLast = 10f;
     [SerializeField] private float knockbackDistance = 2f; // Distance to move player backward
     [SerializeField] private float knockbackSpeed = 5f; // Speed of knockback
-    [SerializeField] private Transform cameraTransform;  // Reference to the camera
+    // [SerializeField] private Transform cameraTransform;  // Reference to the camera
     [SerializeField] private float shakeDuration = 0.2f; // Duration of camera shake
-    [SerializeField] private float shakeIntensity = 0.05f; // Intensity of camera shake
+    [SerializeField] private float shakeMagnitude = 0.05f; // Intensity of camera shake
 
     private float originalSpeed;
     private float originalRotationSpeed;
@@ -41,6 +41,7 @@ public class PlayerHealthController : MonoBehaviour
         {
             StartCoroutine(DebuffPlayer());
             StartCoroutine(KnockbackPlayer());
+            StartCoroutine(ShakeCamera());
         }
 
         currentHealth -= damage;
@@ -76,5 +77,27 @@ public class PlayerHealthController : MonoBehaviour
         }
 
         transform.position = targetPosition;
+    }
+
+    private IEnumerator ShakeCamera()
+    {
+        Vector3 originalRotation = transform.localEulerAngles;
+        float elapsed = 0.0f;
+
+        while (elapsed < shakeDuration)
+        {
+            float x = Random.Range(-shakeMagnitude, shakeMagnitude);
+            float y = Random.Range(-shakeMagnitude, shakeMagnitude);
+            float z = Random.Range(-shakeMagnitude, shakeMagnitude);
+
+            transform.localEulerAngles = new Vector3(originalRotation.x + x, originalRotation.y + y, originalRotation.z + z);
+
+            elapsed += Time.deltaTime;
+
+            yield return null;
+        }
+
+        transform.localEulerAngles = originalRotation;
+
     }
 }
