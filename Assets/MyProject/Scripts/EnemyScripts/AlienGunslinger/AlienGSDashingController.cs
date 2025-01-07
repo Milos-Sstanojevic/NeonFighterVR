@@ -3,11 +3,12 @@ using UnityEngine;
 
 public class AlienGSDashingController : MonoBehaviour
 {
-    [SerializeField] private float timeForPlayerAttacking = 2f;
     [SerializeField] private float dashDistance = 7f;
     private AlienGunslingerReferences references;
-    private bool dashDone;
     private Transform playerTransform;
+    private bool isDashing;
+    private Coroutine dashingCoroutine;
+    private bool dashDone;
 
     private void Awake()
     {
@@ -42,14 +43,9 @@ public class AlienGSDashingController : MonoBehaviour
             Debug.LogError("Dash direction is zero");
             return;
         }
-
-        StartCoroutine(DashCoroutine(dashDirection));
-    }
-
-    private IEnumerator DashCoroutine(Vector3 dashDirection)
-    {
-        yield return new WaitForSeconds(timeForPlayerAttacking);
         transform.position += dashDirection * dashDistance;
+
+        dashDone = true;
     }
 
     private Vector3 CalculateDashDirection()
@@ -67,4 +63,25 @@ public class AlienGSDashingController : MonoBehaviour
                 return Vector3.zero;
         }
     }
+
+    public void StartDashingCoroutine()
+    {
+        dashingCoroutine = StartCoroutine(DashingCoroutine());
+    }
+
+    private IEnumerator DashingCoroutine()
+    {
+        yield return new WaitForSeconds(references.TimeForPlayerAttacking);
+        isDashing = true;
+    }
+
+    public void StopDashingCoroutine()
+    {
+        isDashing = false;
+        StopCoroutine(dashingCoroutine);
+    }
+
+    public bool IsDashing() => isDashing;
+    public bool GetDashDone() => dashDone;
+    public void ResetDashDone() => dashDone = false;
 }

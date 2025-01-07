@@ -1,6 +1,3 @@
-using UnityEngine;
-using UnityEngine.Animations.Rigging;
-
 public class AGS_State_SideWalkAndShoot : IState
 {
     private AlienGunslingerReferences references;
@@ -13,7 +10,8 @@ public class AGS_State_SideWalkAndShoot : IState
     public void OnEnter()
     {
         references.Animator.SetBool("StandShoot", true);
-        references.ShootingController.Shoot();
+        references.ShootingController.SetupShooting();
+        references.CachedAttackType = null;
     }
 
     public void OnExit()

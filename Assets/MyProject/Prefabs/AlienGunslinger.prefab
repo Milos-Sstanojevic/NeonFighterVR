@@ -1,5 +1,71 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &135583297175336056
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8510747457200274645}
+  - component: {fileID: 7175556439448479214}
+  - component: {fileID: 5251742849678635030}
+  m_Layer: 6
+  m_Name: ProximityTrigger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8510747457200274645
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 135583297175336056}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7319302442161673712}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &7175556439448479214
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 135583297175336056}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 2.3868132
+  m_Center: {x: 0, y: 1.5119934, z: 0.2173338}
+--- !u!114 &5251742849678635030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 135583297175336056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8467efe1cf36ce944be79e16739ce7ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1736070565008991885
 GameObject:
   m_ObjectHideFlags: 0
@@ -6132,6 +6198,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 605cc4e7cf248ea429dab0b3661cf269, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1605241613999272430}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 605cc4e7cf248ea429dab0b3661cf269, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8510747457200274645}
     - targetCorrespondingSourceObject: {fileID: 5472622940992281205, guid: 605cc4e7cf248ea429dab0b3661cf269, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5138514389920968494}
@@ -6172,6 +6241,15 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 605cc4e7cf248ea429dab0b3661cf269, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3894028664865424336}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 605cc4e7cf248ea429dab0b3661cf269, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7906507790908122025}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 605cc4e7cf248ea429dab0b3661cf269, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1912956891810720379}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 605cc4e7cf248ea429dab0b3661cf269, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8988320272214268722}
   m_SourcePrefab: {fileID: 100100000, guid: 605cc4e7cf248ea429dab0b3661cf269, type: 3}
 --- !u!4 &229937381063801902 stripped
 Transform:
@@ -6576,6 +6654,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Character: {fileID: 0}
+  ShootingController: {fileID: 0}
+  DashingController: {fileID: 0}
+  ShieldController: {fileID: 0}
   EnemyData: {fileID: 11400000, guid: e639d802e47a9b241bae249cf6a72a98, type: 2}
   Animator: {fileID: 3707392809847738250}
   Shield: {fileID: 3474292654446417327}
@@ -6584,6 +6665,14 @@ MonoBehaviour:
   RightHandAimConstraint: {fileID: 4222090880758131295}
   RigBuilder: {fileID: 0}
   SideWalkSpeed: 1.5
+  TimeToRecoverShield: 2
+  TimeForPlayerAttacking: 2
+  ProvokingChance: 0.6
+  SideWalkAndShootChance: 0.7
+  SideToSideShootChance: 0.4
+  AroundHeadAttackChance: 0.6
+  IdleChance: 0.7
+  SideWalkChance: 0.4
 --- !u!114 &5120215467995433582
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6609,6 +6698,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnAroundHead: 0
+  shouldSideToSideShoot: 0
 --- !u!114 &3894028664865424336
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6628,6 +6718,44 @@ MonoBehaviour:
   - {fileID: 1736070565008991885}
   - {fileID: 8782538773665002180}
   - {fileID: 3163320697425374016}
+--- !u!114 &7906507790908122025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7987330091069886282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76f2a83b2e246674bb6a55f195e18533, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dashDistance: 7
+--- !u!114 &1912956891810720379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7987330091069886282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b541317762b3f04c99139128c83272f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shootingTime: 2
+--- !u!114 &8988320272214268722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7987330091069886282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2301657ec8ec6e24296581e3ea3ea3e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &8195049967903994140 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1415099163316650759, guid: 605cc4e7cf248ea429dab0b3661cf269, type: 3}

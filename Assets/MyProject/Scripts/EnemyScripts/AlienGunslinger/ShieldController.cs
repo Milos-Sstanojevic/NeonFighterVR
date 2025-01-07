@@ -24,6 +24,8 @@ public class ShieldController : MonoBehaviour
     public void ActivateRipples()
     {
         hitCount++;
+        EventManager.Instance.OnShieldHitAction();
+
         if (hitCount >= maxHits)
         {
             BreakShield();
@@ -52,7 +54,6 @@ public class ShieldController : MonoBehaviour
         StopCoroutine(decreaseCoroutine);
         gameObject.SetActive(false);
         Debug.Log("SHIELD BROKEN");
-        // alienGunslingerController.ShieldBroken();
         EventManager.Instance.OnShieldBrokenAction();
         hitCount = 0;
         shieldVFX.SetVector4("FresnelColor", originalColor);

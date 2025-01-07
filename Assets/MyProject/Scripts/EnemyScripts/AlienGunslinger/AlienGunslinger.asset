@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e07ac0acd10fc284ebecfb7219c46259, type: 3}
   m_Name: AlienGunslinger
   m_EditorClassIdentifier: 
-  Health: 0
-  Damage: 0
-  SpecialAttackDamage: 0
-  SecondPhaseHPRatio: 0
+  Health: 100
+  Damage: 10
+  SpecialAttackDamage: 10
+  SecondPhaseHPRatio: 0.6

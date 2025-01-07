@@ -13,6 +13,7 @@ public class ASG_State_AroundHeadAttack : IState
         EventManager.Instance.SubscribeToOnSpawningHolesAroundHeadFinished(FinishedAnimation);
         references.Animator.SetBool("HandSeparate", true);
         isDone = false;
+        references.CachedAttackType = null;
     }
 
     private void FinishedAnimation()
@@ -24,6 +25,7 @@ public class ASG_State_AroundHeadAttack : IState
     {
         EventManager.Instance.UnsubscribeFromOnSpawningHolesAroundHeadFinished(FinishedAnimation);
         references.Animator.SetBool("HandSeparate", false);
+        references.AroundHeadAttackController.ShootFromTwoHoles();
     }
 
     public void Tick()

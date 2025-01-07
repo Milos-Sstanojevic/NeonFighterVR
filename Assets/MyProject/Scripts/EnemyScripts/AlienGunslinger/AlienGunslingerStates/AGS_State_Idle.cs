@@ -13,6 +13,7 @@ public class AGS_State_Idle : IState
     {
         references.Animator.SetBool("Idle", true);
         Debug.Log("Idle");
+        references.CachedIdleOrIdleProvoking = null;
     }
 
     public void OnExit()

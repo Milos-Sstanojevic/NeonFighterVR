@@ -2,8 +2,6 @@ public class AGS_State_SideToSideShoot : IState
 {
     private AlienGunslingerReferences references;
 
-    private bool isDone;//ovo ce biti u posebnoj skripti za side to side
-
     public AGS_State_SideToSideShoot(AlienGunslingerReferences references)
     {
         this.references = references;
@@ -12,6 +10,8 @@ public class AGS_State_SideToSideShoot : IState
     public void OnEnter()
     {
         references.Animator.SetBool("CrouchShoot", true);
+        references.CachedAttackType = null;
+        references.SideToSideShootController.StartShooting();
     }
 
     public void OnExit()
@@ -22,6 +22,4 @@ public class AGS_State_SideToSideShoot : IState
     public void Tick()
     {
     }
-
-    public bool IsDone() => isDone;
 }

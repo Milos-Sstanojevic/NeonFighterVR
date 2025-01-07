@@ -14,6 +14,7 @@ public class AGS_State_DashFromPlayer : IState
 
     public void OnExit()
     {
+        references.DashingController.ResetDashDone();
     }
 
     public void Tick()

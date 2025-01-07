@@ -32,6 +32,7 @@ public class EventManager : MonoBehaviour
     private event Action onSpawnTwoHolesAroundHead;
     private event Action onSpawningHolesAroundHeadFinished;
     private event Action onShieldBrokenAction;
+    private event Action onShieldHitAction;
 
     private void Awake()
     {
@@ -415,5 +416,20 @@ public class EventManager : MonoBehaviour
     public void UnsubscribeFromOnShieldBrokenAction(Action action)
     {
         onShieldBrokenAction -= action;
+    }
+
+    public void OnShieldHitAction()
+    {
+        onShieldHitAction?.Invoke();
+    }
+
+    public void SubscribeToOnShieldHitAction(Action action)
+    {
+        onShieldHitAction += action;
+    }
+
+    public void UnsubscribeFromOnShieldHitAction(Action action)
+    {
+        onShieldHitAction -= action;
     }
 }
