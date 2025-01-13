@@ -13,7 +13,7 @@ public class AGS_State_BrokenShieldIdle : IState
     public void OnEnter()
     {
         isDone = false;
-        references.Animator.SetBool("BrokenShieldIdle", true);
+        references.Animator.SetTrigger("BrokenShieldIdle");
         Debug.Log("BrokenShieldIdle");
     }
 
@@ -24,7 +24,6 @@ public class AGS_State_BrokenShieldIdle : IState
 
     public void OnExit()
     {
-        references.Animator.SetBool("BrokenShieldIdle", false);
     }
 
     public void Tick()

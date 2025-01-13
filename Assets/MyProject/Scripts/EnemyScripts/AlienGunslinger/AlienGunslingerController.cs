@@ -1,13 +1,12 @@
 using System;
 using System.Collections;
+using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 
 public class AlienGunslingerController : MonoBehaviour
 {
     private bool playerTriedToAttack = false;
-    private bool shotPlayer = false;//ovo nece postojati nego kad u shoot controlleru on pogodi igraca ovo se postavi na true
-    private bool punishOver = false;
     private bool shieldBroken = false;
     private bool shieldRecovered;
     private bool secondPhase;
@@ -19,7 +18,6 @@ public class AlienGunslingerController : MonoBehaviour
         EventManager.Instance.SubscribeToOnShieldBrokenAction(ShieldBroken);
         EventManager.Instance.SubscribeToOnStartSecondPhaseAction(StartSecondPhase);
         EventManager.Instance.SubscribeToOnShieldHitAction(PlayerTriedToAttack);
-        EventManager.Instance.SubscribeToOnPlayerHitAction(ShotPlayer);
     }
 
     private void ShieldBroken()
@@ -45,12 +43,6 @@ public class AlienGunslingerController : MonoBehaviour
         playerTriedToAttack = false;
     }
 
-    private void ShotPlayer(int damage)
-    {
-        if (stateMachine.CurrentState.GetType() == typeof(AGS_State_SideToSideShoot))
-            shotPlayer = true;
-    }
-
     private void Awake()
     {
         secondPhase = false;
@@ -72,48 +64,48 @@ public class AlienGunslingerController : MonoBehaviour
 
         AddTransition(drawGun, sideWalkAndShoot, () => drawGun.IsDone());
 
-        AddTransition(aroundHeadAttack, sideWalkAndShoot, () => aroundHeadAttack.IsDone() && !ShouldGoToIdleProvoking() && secondPhase);
-        AddTransition(aroundHeadAttack, idle, () => aroundHeadAttack.IsDone() && !ShouldGoToIdleProvoking() && ShouldSideWalkOrIdle() == typeof(AGS_State_Idle));
-        AddTransition(aroundHeadAttack, idleProvoking, () => aroundHeadAttack.IsDone() && ShouldGoToIdleProvoking()); //da li da dozvolim da ga provocira dok mu je aktivno pucanje oko glave?
-        AddTransition(aroundHeadAttack, sideWalk, () => !secondPhase && ShouldSideWalkOrIdle() == typeof(AGS_State_SideWalk) && aroundHeadAttack.IsDone());
+        // AddTransition(aroundHeadAttack, sideWalkAndShoot, () => aroundHeadAttack.IsDone() && !ShouldGoToIdleProvoking() && secondPhase);
+        // AddTransition(aroundHeadAttack, idle, () => aroundHeadAttack.IsDone() && !ShouldGoToIdleProvoking() && ShouldSideWalkOrIdle() == typeof(AGS_State_Idle));
+        // AddTransition(aroundHeadAttack, idleProvoking, () => aroundHeadAttack.IsDone() && ShouldGoToIdleProvoking()); //da li da dozvolim da ga provocira dok mu je aktivno pucanje oko glave?
+        // AddTransition(aroundHeadAttack, sideWalk, () => !secondPhase && ShouldSideWalkOrIdle() == typeof(AGS_State_SideWalk) && aroundHeadAttack.IsDone());
 
-        AddTransition(sideWalkAndShoot, aroundHeadAttack, () => !alienGunslingerReferences.ShootingController.IsShooting() && GetOrComputeAttackSelectionChance() == typeof(ASG_State_AroundHeadAttack) && !ShouldGoToIdleProvoking());
-        AddTransition(sideToSideShoot, idle, () => alienGunslingerReferences.SideToSideShootController.DoneShooting() && !shotPlayer && !ShouldGoToIdleProvoking());
-        AddTransition(sideToSideShoot, idleProvoking, () => alienGunslingerReferences.SideToSideShootController.DoneShooting() && !shotPlayer && ShouldGoToIdleProvoking());
-        AddTransition(sideToSideShoot, punishPlayer, () => shotPlayer);
+        // AddTransition(sideWalkAndShoot, aroundHeadAttack, () => !alienGunslingerReferences.ShootingController.IsShooting() && GetOrComputeAttackSelectionChance() == typeof(ASG_State_AroundHeadAttack) && !ShouldGoToIdleProvoking());
+        // AddTransition(sideToSideShoot, idle, () => alienGunslingerReferences.SideToSideShootController.DoneShooting() && !alienGunslingerReferences.SideToSideShootController.ShotPlayer() && !ShouldGoToIdleProvoking());
+        // AddTransition(sideToSideShoot, idleProvoking, () => alienGunslingerReferences.SideToSideShootController.DoneShooting() && !alienGunslingerReferences.SideToSideShootController.ShotPlayer() && ShouldGoToIdleProvoking());
+        // AddTransition(sideToSideShoot, punishPlayer, () => alienGunslingerReferences.SideToSideShootController.ShotPlayer());
 
-        AddTransition(sideWalkAndShoot, sideToSideShoot, () => !alienGunslingerReferences.ShootingController.IsShooting() && GetOrComputeAttackSelectionChance() == typeof(AGS_State_SideToSideShoot) && !ShouldGoToIdleProvoking());
-        AddTransition(sideWalkAndShoot, idle, () => !alienGunslingerReferences.ShootingController.IsShooting() && !ShouldGoToIdleProvoking());
-        AddTransition(sideWalkAndShoot, idleProvoking, () => !alienGunslingerReferences.ShootingController.IsShooting() && ShouldGoToIdleProvoking());
+        // AddTransition(sideWalkAndShoot, sideToSideShoot, () => !alienGunslingerReferences.ShootingController.IsShooting() && GetOrComputeAttackSelectionChance() == typeof(AGS_State_SideToSideShoot) && !ShouldGoToIdleProvoking());
+        // AddTransition(sideWalkAndShoot, idle, () => !alienGunslingerReferences.ShootingController.IsShooting() && !ShouldGoToIdleProvoking());
+        // AddTransition(sideWalkAndShoot, idleProvoking, () => !alienGunslingerReferences.ShootingController.IsShooting() && ShouldGoToIdleProvoking());
 
-        AddTransition(idle, sideToSideShoot, () => GetOrComputeAttackSelectionChance() == typeof(AGS_State_SideToSideShoot) && !ShouldGoToIdleProvoking() && CanDoMultipleSpecialAttacks());
-        AddTransition(idle, aroundHeadAttack, () => GetOrComputeAttackSelectionChance() == typeof(ASG_State_AroundHeadAttack) && !ShouldGoToIdleProvoking() && !alienGunslingerReferences.AroundHeadAttackController.HasActiveHolesAroundHead());
-        AddTransition(idle, sideWalkAndShoot, () => GetOrComputeAttackSelectionChance() == typeof(AGS_State_SideWalkAndShoot) && !ShouldGoToIdleProvoking());
-        AddTransition(idle, idleProvoking, () => ShouldGoToIdleProvoking());
+        // AddTransition(idle, sideToSideShoot, () => GetOrComputeAttackSelectionChance() == typeof(AGS_State_SideToSideShoot) && !ShouldGoToIdleProvoking() && CanDoMultipleSpecialAttacks());
+        // AddTransition(idle, aroundHeadAttack, () => GetOrComputeAttackSelectionChance() == typeof(ASG_State_AroundHeadAttack) && !ShouldGoToIdleProvoking() && !alienGunslingerReferences.AroundHeadAttackController.HasActiveHolesAroundHead());
+        // AddTransition(idle, sideWalkAndShoot, () => GetOrComputeAttackSelectionChance() == typeof(AGS_State_SideWalkAndShoot) && !ShouldGoToIdleProvoking());
+        // AddTransition(idle, idleProvoking, () => ShouldGoToIdleProvoking());
+        // AddTransition(idle, dashFromPlayer, () => alienGunslingerReferences.DashingController.IsDashing());
 
-        AddTransition(idleProvoking, sideToSideShoot, () => !playerTriedToAttack && GetOrComputeAttackSelectionChance() == typeof(AGS_State_SideToSideShoot) && CanDoMultipleSpecialAttacks());
-        AddTransition(idleProvoking, aroundHeadAttack, () => !playerTriedToAttack && GetOrComputeAttackSelectionChance() == typeof(ASG_State_AroundHeadAttack) && !alienGunslingerReferences.AroundHeadAttackController.HasActiveHolesAroundHead());
-        AddTransition(idleProvoking, sideWalkAndShoot, () => !playerTriedToAttack && GetOrComputeAttackSelectionChance() == typeof(AGS_State_SideWalkAndShoot));
-        AddTransition(idleProvoking, punishPlayer, () => playerTriedToAttack); //da li da dozvolim da ga punishuje dok ima rupe oko glave??
+        // AddTransition(idleProvoking, sideToSideShoot, () => !playerTriedToAttack && GetOrComputeAttackSelectionChance() == typeof(AGS_State_SideToSideShoot) && CanDoMultipleSpecialAttacks() && idleProvoking.IsDone());
+        // AddTransition(idleProvoking, aroundHeadAttack, () => !playerTriedToAttack && GetOrComputeAttackSelectionChance() == typeof(ASG_State_AroundHeadAttack) && !alienGunslingerReferences.AroundHeadAttackController.HasActiveHolesAroundHead() && idleProvoking.IsDone());
+        // AddTransition(idleProvoking, sideWalkAndShoot, () => !playerTriedToAttack && GetOrComputeAttackSelectionChance() == typeof(AGS_State_SideWalkAndShoot) && idleProvoking.IsDone());
+        // AddTransition(idleProvoking, punishPlayer, () => playerTriedToAttack); //da li da dozvolim da ga punishuje dok ima rupe oko glave??
+        // AddTransition(idleProvoking, dashFromPlayer, () => alienGunslingerReferences.DashingController.IsDashing());
 
-        AddTransition(punishPlayer, idle, () => punishOver);
+        // AddTransition(punishPlayer, idle, () => alienGunslingerReferences.ShootingController.IsPunishOver());
 
-        AddTransition(sideWalk, sideToSideShoot, () => GetOrComputeAttackSelectionChance() == typeof(AGS_State_SideToSideShoot) && !ShouldGoToIdleProvoking() && CanDoMultipleSpecialAttacks());
-        AddTransition(sideWalk, aroundHeadAttack, () => GetOrComputeAttackSelectionChance() == typeof(ASG_State_AroundHeadAttack) && !ShouldGoToIdleProvoking() && !alienGunslingerReferences.AroundHeadAttackController.HasActiveHolesAroundHead());
-        AddTransition(sideWalk, sideWalkAndShoot, () => GetOrComputeAttackSelectionChance() == typeof(AGS_State_SideWalkAndShoot) && !ShouldGoToIdleProvoking());
-        AddTransition(sideWalk, idleProvoking, () => ShouldGoToIdleProvoking()); //da li da dozvolim da ga provocira dok ima rupe oko glave??
+        // AddTransition(sideWalk, sideToSideShoot, () => GetOrComputeAttackSelectionChance() == typeof(AGS_State_SideToSideShoot) && !ShouldGoToIdleProvoking() && CanDoMultipleSpecialAttacks());
+        // AddTransition(sideWalk, aroundHeadAttack, () => GetOrComputeAttackSelectionChance() == typeof(ASG_State_AroundHeadAttack) && !ShouldGoToIdleProvoking() && !alienGunslingerReferences.AroundHeadAttackController.HasActiveHolesAroundHead());
+        // AddTransition(sideWalk, sideWalkAndShoot, () => GetOrComputeAttackSelectionChance() == typeof(AGS_State_SideWalkAndShoot) && !ShouldGoToIdleProvoking());
+        // AddTransition(sideWalk, idleProvoking, () => ShouldGoToIdleProvoking()); //da li da dozvolim da ga provocira dok ima rupe oko glave??
 
-        AddTransition(idle, dashFromPlayer, () => alienGunslingerReferences.DashingController.IsDashing());
-        AddTransition(idleProvoking, dashFromPlayer, () => alienGunslingerReferences.DashingController.IsDashing());
-        AddTransition(sideWalk, dashFromPlayer, () => alienGunslingerReferences.DashingController.IsDashing());
-        AddTransition(sideWalkAndShoot, dashFromPlayer, () => alienGunslingerReferences.DashingController.IsDashing());
+        // AddTransition(sideWalk, dashFromPlayer, () => alienGunslingerReferences.DashingController.IsDashing());
+        // AddTransition(sideWalkAndShoot, dashFromPlayer, () => alienGunslingerReferences.DashingController.IsDashing());
 
-        AddTransition(dashFromPlayer, idle, () => alienGunslingerReferences.DashingController.GetDashDone() && !ShouldGoToIdleProvoking());
-        AddTransition(dashFromPlayer, idleProvoking, () => alienGunslingerReferences.DashingController.GetDashDone() && ShouldGoToIdleProvoking());
+        // AddTransition(dashFromPlayer, idle, () => alienGunslingerReferences.DashingController.GetDashDone() && !ShouldGoToIdleProvoking());
+        // AddTransition(dashFromPlayer, idleProvoking, () => alienGunslingerReferences.DashingController.GetDashDone() && ShouldGoToIdleProvoking());
 
-        Any(brokenShieldIdle, () => shieldBroken);
-        AddTransition(brokenShieldIdle, recoverShield, () => shieldRecovered);
-        AddTransition(recoverShield, idle, () => recoverShield.IsDone());
+        // Any(brokenShieldIdle, () => shieldBroken);
+        // AddTransition(brokenShieldIdle, recoverShield, () => shieldRecovered);
+        // AddTransition(recoverShield, idle, () => recoverShield.IsDone());
 
         stateMachine.SetState(drawGun);
     }
@@ -155,7 +147,8 @@ public class AlienGunslingerController : MonoBehaviour
         if (alienGunslingerReferences.CachedAttackType == null)
             alienGunslingerReferences.CachedAttackType = AttackSelectionChance();
 
-        return alienGunslingerReferences.CachedAttackType;
+        // return alienGunslingerReferences.CachedAttackType;
+        return typeof(AGS_State_SideToSideShoot);
     }
 
     private Type AttackSelectionChance()
@@ -186,9 +179,15 @@ public class AlienGunslingerController : MonoBehaviour
 
     private void Start()
     {
+        SetupAimContraint();
+    }
+
+    public void SetupAimContraint()
+    {
         var sourceObjects = new WeightedTransformArray();
         sourceObjects.Add(new WeightedTransform(alienGunslingerReferences.Character.transform, 1f));
         alienGunslingerReferences.HipsAimConstraint.data.sourceObjects = sourceObjects;
+        alienGunslingerReferences.SpineAimContraint.data.sourceObjects = sourceObjects;
         alienGunslingerReferences.RigBuilder.Build();
     }
 
@@ -204,13 +203,11 @@ public class AlienGunslingerController : MonoBehaviour
         shieldBroken = false;
     }
 
-    public void PunishOver()
-    {
-        punishOver = true;
-    }
+    public Type GetCurrentState() => stateMachine.CurrentState.GetType();
 
     private void OnDisable()
     {
+        EventManager.Instance.UnsubscribeFromOnShieldHitAction(PlayerTriedToAttack);
         EventManager.Instance.UnsubscribeFromOnStartSecondPhaseAction(StartSecondPhase);
         EventManager.Instance.UnsubscribeFromOnShieldBrokenAction(ShieldBroken);
     }

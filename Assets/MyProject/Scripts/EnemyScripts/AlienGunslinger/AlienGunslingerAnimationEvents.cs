@@ -17,4 +17,9 @@ public class AlienGunslingerAnimationEvents : MonoBehaviour
         EventManager.Instance.OnSpawningHolesAroundHeadFinished();
     }
 
+    public void IdleProvokingAnimationFinished()
+    {
+        EventManager.Instance.OnIdleProvokingAnimationFinished();
+    }
+
 }

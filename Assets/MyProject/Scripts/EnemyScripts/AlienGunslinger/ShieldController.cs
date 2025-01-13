@@ -13,16 +13,23 @@ public class ShieldController : MonoBehaviour
     private Color originalColor;
     private Coroutine decreaseCoroutine;
     private AlienGunslingerController alienGunslingerController;
+    private bool bulletSteered;
 
     private void Awake()
     {
-        alienGunslingerController = GetComponent<AlienGunslingerController>();
+        alienGunslingerController = GetComponentInParent<AlienGunslingerController>();
         shieldVFX = GetComponent<VisualEffect>();
         originalColor = shieldVFX.GetVector4("FresnelColor");
     }
 
     public void ActivateRipples()
     {
+        if (bulletSteered)
+        {
+            bulletSteered = false;
+            return;
+        }
+
         hitCount++;
         EventManager.Instance.OnShieldHitAction();
 
@@ -83,6 +90,11 @@ public class ShieldController : MonoBehaviour
     public void RecoverShield()
     {
         gameObject.SetActive(true);
+        hitCount = 0;
+        shieldRipples.SetActive(false);
         alienGunslingerController.ShieldRecovered();
+        EventManager.Instance.OnShieldRecoveredAction();
     }
+
+    public void BulletSteered() => bulletSteered = true;
 }

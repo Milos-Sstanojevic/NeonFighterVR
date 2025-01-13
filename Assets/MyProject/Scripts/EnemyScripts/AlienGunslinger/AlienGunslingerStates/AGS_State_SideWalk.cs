@@ -13,6 +13,7 @@ public class AGS_State_SideWalk : IState
     public void OnEnter()
     {
         references.Animator.SetBool("SideWalk", true);
+        Debug.Log("Side Walk");
         direction = DirectionToMove();
     }
 

@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class ASG_State_AroundHeadAttack : IState
 {
     private AlienGunslingerReferences references;
@@ -12,6 +14,7 @@ public class ASG_State_AroundHeadAttack : IState
     {
         EventManager.Instance.SubscribeToOnSpawningHolesAroundHeadFinished(FinishedAnimation);
         references.Animator.SetBool("HandSeparate", true);
+        Debug.Log("Around Head Attack");
         isDone = false;
         references.CachedAttackType = null;
     }

@@ -1,9 +1,15 @@
 using System.Collections;
+using Mono.Cecil;
 using UnityEngine;
 
 public class AlienGSDashingController : MonoBehaviour
 {
     [SerializeField] private float dashDistance = 7f;
+    [SerializeField] private GameObject enemyMesh;
+    [SerializeField] private GameObject shield;
+    [SerializeField] private GameObject guns;
+    [SerializeField] private float dashSpeed = 50;
+    [SerializeField] private ParticleSystem dashParticle;
     private AlienGunslingerReferences references;
     private Transform playerTransform;
     private bool isDashing;
@@ -27,7 +33,7 @@ public class AlienGSDashingController : MonoBehaviour
 
     public void DashAwayFromPlayer()
     {
-        transform.position += -playerTransform.forward * dashDistance;
+        transform.position += -references.Character.transform.forward * dashDistance;
     }
 
     public void Dash()
@@ -43,9 +49,45 @@ public class AlienGSDashingController : MonoBehaviour
             Debug.LogError("Dash direction is zero");
             return;
         }
-        transform.position += dashDirection * dashDistance;
 
+        float travelTime = dashDistance / dashSpeed;
+        var particleMain = dashParticle.main;
+        particleMain.startLifetime = travelTime;
+        particleMain.startSpeed = dashDistance / travelTime;
+
+        dashParticle.Play();
+        enemyMesh.SetActive(false);
+        shield.SetActive(false);
+        guns.SetActive(false);
+
+        StartCoroutine(DashCoroutine(dashDirection, travelTime));
+
+        // transform.position += dashDirection * dashDistance;
+
+        // dashDone = true;
+    }
+
+    private IEnumerator DashCoroutine(Vector3 direction, float travelTime)
+    {
+        Vector3 targetPosition = transform.position + direction * dashDistance;
+
+        float elapsedTime = 0f;
+        Vector3 startPosition = transform.position;
+
+        while (elapsedTime < travelTime)
+        {
+            elapsedTime += Time.deltaTime;
+            transform.position = Vector3.Lerp(startPosition, targetPosition, elapsedTime / travelTime);
+            yield return null;
+        }
+
+        transform.position = targetPosition;
         dashDone = true;
+
+        dashParticle.Stop();
+        enemyMesh.SetActive(true);
+        shield.SetActive(true);
+        guns.SetActive(true);
     }
 
     private Vector3 CalculateDashDirection()
@@ -54,11 +96,11 @@ public class AlienGSDashingController : MonoBehaviour
         switch (randomDirection)
         {
             case 0:
-                return -playerTransform.right; // Dash to the left
+                return -playerTransform.right;
             case 1:
-                return playerTransform.right; // Dash to the right
+                return playerTransform.right;
             case 2:
-                return -playerTransform.forward; // Dash to the back
+                return -playerTransform.forward;
             default:
                 return Vector3.zero;
         }

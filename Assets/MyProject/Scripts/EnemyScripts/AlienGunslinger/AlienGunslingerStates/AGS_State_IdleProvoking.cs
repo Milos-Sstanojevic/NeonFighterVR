@@ -14,8 +14,9 @@ public class AGS_State_IdleProvoking : IState
 
     public void OnEnter()
     {
+        EventManager.Instance.SubscribeToOnIdleProvokingAnimationFinished(AnimationFinished);
         isDone = false;
-        references.Animator.SetBool("IdleProvoking", true);
+        references.Animator.SetTrigger("IdleProvoking");
         alienGunslingerController.UnsetPlayerTriedToAttack();
         Debug.Log("IdleProvoking");
         references.CachedIdleOrIdleProvoking = null;
@@ -28,7 +29,7 @@ public class AGS_State_IdleProvoking : IState
 
     public void OnExit()
     {
-        references.Animator.SetBool("IdleProvoking", false);
+        EventManager.Instance.UnsubscribeFromOnIdleProvokingAnimationFinished(AnimationFinished);
     }
 
     public void Tick()

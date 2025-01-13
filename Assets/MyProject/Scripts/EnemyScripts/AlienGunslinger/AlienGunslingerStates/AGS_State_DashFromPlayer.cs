@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class AGS_State_DashFromPlayer : IState
 {
     private AlienGunslingerReferences references;
@@ -10,6 +12,7 @@ public class AGS_State_DashFromPlayer : IState
     public void OnEnter()
     {
         references.DashingController.Dash();
+        Debug.Log("Dash From Player");
     }
 
     public void OnExit()

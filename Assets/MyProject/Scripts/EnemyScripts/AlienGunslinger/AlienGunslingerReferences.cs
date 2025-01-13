@@ -15,8 +15,7 @@ public class AlienGunslingerReferences : MonoBehaviour
     public Animator Animator;
     public GameObject Shield;
     public MultiAimConstraint HipsAimConstraint;
-    public MultiAimConstraint LeftHandAimConstraint;
-    public MultiAimConstraint RightHandAimConstraint;
+    public MultiAimConstraint SpineAimContraint;
     public RigBuilder RigBuilder;
     public float SideWalkSpeed = 1.5f;
     public float TimeToRecoverShield = 2f;
@@ -33,6 +32,8 @@ public class AlienGunslingerReferences : MonoBehaviour
 
     private void Awake()
     {
+        SideToSideShootController = GetComponent<AlienGSSideToSideShootController>();
+        AroundHeadAttackController = GetComponent<AlienGSAroundHeadAttackController>();
         ShootingController = GetComponent<AlienGSShootingController>();
         DashingController = GetComponent<AlienGSDashingController>();
         Animator = GetComponent<Animator>();

@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class AGS_State_RecoverShield : IState
 {
     private AlienGunslingerReferences references;
@@ -10,6 +12,7 @@ public class AGS_State_RecoverShield : IState
 
     public void OnEnter()
     {
+        Debug.Log("Recover Shield");
         references.DashingController.DashAwayFromPlayer();
         references.ShieldController.RecoverShield();
         isDone = true;

@@ -33,6 +33,10 @@ public class EventManager : MonoBehaviour
     private event Action onSpawningHolesAroundHeadFinished;
     private event Action onShieldBrokenAction;
     private event Action onShieldHitAction;
+    private event Action onIdleProvokingAnimationFinished;
+    private event Action onShieldRecoveredAction;
+    public delegate void BulletSteerEvent(ref Vector3 targetPosition, Vector3 currentPosition);
+    private static event BulletSteerEvent onChanceToSteerBulletAway;
 
     private void Awake()
     {
@@ -431,5 +435,50 @@ public class EventManager : MonoBehaviour
     public void UnsubscribeFromOnShieldHitAction(Action action)
     {
         onShieldHitAction -= action;
+    }
+
+    public void OnIdleProvokingAnimationFinished()
+    {
+        onIdleProvokingAnimationFinished?.Invoke();
+    }
+
+    public void SubscribeToOnIdleProvokingAnimationFinished(Action action)
+    {
+        onIdleProvokingAnimationFinished += action;
+    }
+
+    public void UnsubscribeFromOnIdleProvokingAnimationFinished(Action action)
+    {
+        onIdleProvokingAnimationFinished -= action;
+    }
+
+    public void OnShieldRecoveredAction()
+    {
+        onShieldRecoveredAction?.Invoke();
+    }
+
+    public void SubscribeToOnShieldRecoveredAction(Action action)
+    {
+        onShieldRecoveredAction += action;
+    }
+
+    public void UnsubscribeFromOnShieldRecoveredAction(Action action)
+    {
+        onShieldRecoveredAction -= action;
+    }
+
+    public void ChanceToSteerBulletAway(ref Vector3 targetPoint, Vector3 currentPosition)
+    {
+        onChanceToSteerBulletAway?.Invoke(ref targetPoint, currentPosition);
+    }
+
+    public void SubscribeToOnChanceToSteerBulletAway(BulletSteerEvent action)
+    {
+        onChanceToSteerBulletAway += action;
+    }
+
+    public void UnsubscribeFromOnChanceToSteerBulletAway(BulletSteerEvent action)
+    {
+        onChanceToSteerBulletAway -= action;
     }
 }

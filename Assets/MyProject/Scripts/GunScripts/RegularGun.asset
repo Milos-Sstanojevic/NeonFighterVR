@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GunDamage: 40
   FireRate: 0.25
-  WeaponRange: 100
+  WeaponRange: 10000
   BigBulletWeaponRange: 300
   HitForce: 50
   Ammo: 3

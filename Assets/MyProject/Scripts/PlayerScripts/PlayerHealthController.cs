@@ -14,7 +14,6 @@ public class PlayerHealthController : MonoBehaviour
     [SerializeField] private float debuffTimeLast = 10f;
     [SerializeField] private float knockbackDistance = 2f; // Distance to move player backward
     [SerializeField] private float knockbackSpeed = 5f; // Speed of knockback
-    // [SerializeField] private Transform cameraTransform;  // Reference to the camera
     [SerializeField] private float shakeDuration = 0.2f; // Duration of camera shake
     [SerializeField] private float shakeMagnitude = 0.05f; // Intensity of camera shake
 

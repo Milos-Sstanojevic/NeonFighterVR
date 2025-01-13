@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class AGS_State_DrawGun : IState
 {
     private AlienGunslingerReferences references;
@@ -13,6 +15,7 @@ public class AGS_State_DrawGun : IState
         EventManager.Instance.SubscribeToOnDrawGunsAnimationFinished(AnimationFinished);
         isDone = false;
         references.Animator.SetBool("DrawGun", true);
+        Debug.Log("Draw Gun");
         references.Shield.SetActive(true);
     }
 

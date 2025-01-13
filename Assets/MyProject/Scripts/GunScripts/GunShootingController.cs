@@ -18,6 +18,9 @@ public class GunShootingController : MonoBehaviour
     private int currentAmmo;
 
     private List<LineRenderer> lineRenderers = new List<LineRenderer>();
+    private bool halfwayTriggered;
+    private EnemyDamageController alien;
+    private ShieldController shield;
 
     private void Awake()
     {
@@ -81,8 +84,8 @@ public class GunShootingController : MonoBehaviour
 
     private void DealDamageToTarget(RaycastHit hit)
     {
-        EnemyDamageController alien = hit.rigidbody?.GetComponent<EnemyDamageController>();
-        ShieldController shield = hit.rigidbody?.GetComponent<ShieldController>();
+        alien = hit.rigidbody?.GetComponent<EnemyDamageController>();
+        shield = hit.rigidbody?.GetComponent<ShieldController>();
 
         if (alien)
             alien.TakeDamage(gunData.GunDamage);
@@ -104,9 +107,9 @@ public class GunShootingController : MonoBehaviour
         bullets[barrelIndex].gameObject.transform.SetParent(null);
 
         LineRenderer line = lineRenderers[barrelIndex];
-        line.positionCount = 2;
+        line.positionCount = 1;
         line.SetPosition(0, startPosition);
-        line.SetPosition(1, startPosition);
+        int linePositionCount = 1;
 
         while (elapsedTime < travelTime)
         {
@@ -114,8 +117,15 @@ public class GunShootingController : MonoBehaviour
             float t = elapsedTime / travelTime;
             Vector3 currentPosition = Vector3.Lerp(startPosition, targetPoint, t);
             bullets[barrelIndex].transform.position = currentPosition;
+            linePositionCount++;
+            line.positionCount = linePositionCount;
+            line.SetPosition(linePositionCount - 1, currentPosition);
 
-            line.SetPosition(1, currentPosition);
+            if (!halfwayTriggered && t >= 0.9f && (alien || shield))
+            {
+                halfwayTriggered = true;
+                EventManager.Instance.ChanceToSteerBulletAway(ref targetPoint, currentPosition);
+            }
 
             yield return null;
         }
@@ -127,10 +137,8 @@ public class GunShootingController : MonoBehaviour
         bullets[barrelIndex].gameObject.transform.SetParent(shootingPoints[barrelIndex]);
         bullets[barrelIndex].transform.localPosition = Vector3.zero;
         bullets[barrelIndex].transform.localEulerAngles = new Vector3(-90, 0, 0);
-        line.SetPosition(0, Vector3.zero);
-        line.SetPosition(1, Vector3.zero);
-
-
+        line.positionCount = 0;
+        halfwayTriggered = false;
     }
 
     public void OnReadyToShoot()

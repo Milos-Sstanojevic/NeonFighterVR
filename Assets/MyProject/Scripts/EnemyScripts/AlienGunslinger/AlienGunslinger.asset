@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: AlienGunslinger
   m_EditorClassIdentifier: 
   Health: 100
-  Damage: 10
+  Damage: 2
   SpecialAttackDamage: 10
   SecondPhaseHPRatio: 0.6

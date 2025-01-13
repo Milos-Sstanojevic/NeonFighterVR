@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class AGS_State_PunishPlayer : IState
 {
     private AlienGunslingerReferences references;
@@ -9,13 +11,13 @@ public class AGS_State_PunishPlayer : IState
 
     public void OnEnter()
     {
-        references.Animator.SetBool("PunishPlayer", true);
+        references.Animator.SetTrigger("PunishPlayer");
+        Debug.Log("Punish Player");
         references.ShootingController.StunShoot();
     }
 
     public void OnExit()
     {
-        references.Animator.SetBool("PunishPlayer", false);
     }
 
     public void Tick()

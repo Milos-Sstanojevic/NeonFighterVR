@@ -53,7 +53,7 @@ public class AlienGSAroundHeadAttackController : MonoBehaviour
         {
             for (int i = 0; i < 2; i++)
             {
-                shootingHoles[shootHoleToEnable].SetActive(false);
+                shootingHoles[shootHoleToDisable].SetActive(false);
                 shootHoleToDisable++;
             }
 
