@@ -1,10 +1,10 @@
 using UnityEngine;
 
-public class AGS_State_SideWalkAndShoot : IState
+public class AGS_State_DefendingState : IState
 {
     private AlienGunslingerReferences references;
 
-    public AGS_State_SideWalkAndShoot(AlienGunslingerReferences references)
+    public AGS_State_DefendingState(AlienGunslingerReferences references)
     {
         this.references = references;
     }
@@ -12,8 +12,8 @@ public class AGS_State_SideWalkAndShoot : IState
     public void OnEnter()
     {
         references.Animator.SetBool("StandShoot", true);
-        Debug.Log("Side Walk And Shoot");
-        references.ShootingController.SetupShooting();
+        Debug.Log("Defending State");
+        references.ShootingController.SetupDefendingFromShooting();
         references.CachedAttackType = null;
     }
 

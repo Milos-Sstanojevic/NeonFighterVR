@@ -22,6 +22,12 @@ public class ShieldController : MonoBehaviour
         originalColor = shieldVFX.GetVector4("FresnelColor");
     }
 
+    private void OnEnable()
+    {
+        hitCount = 0;
+        shieldVFX.SetVector4("FresnelColor", originalColor);
+    }
+
     public void ActivateRipples()
     {
         if (bulletSteered)
@@ -30,8 +36,16 @@ public class ShieldController : MonoBehaviour
             return;
         }
 
+        if (alienGunslingerController.GetCurrentState() == typeof(AGS_State_IdleProvoking))
+        {
+            EventManager.Instance.OnShieldHitAction();
+            return;
+        }
+
+        if (alienGunslingerController.GetCurrentState() == typeof(AGS_State_PunishPlayer))
+            return;
+
         hitCount++;
-        EventManager.Instance.OnShieldHitAction();
 
         if (hitCount >= maxHits)
         {

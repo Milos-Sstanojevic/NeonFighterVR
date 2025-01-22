@@ -6,20 +6,16 @@ public class AlienGSSideToSideShootController : MonoBehaviour
     [SerializeField] private Transform shootingPoint;
     [SerializeField] private int shootingAngle = 160;
     [SerializeField] private float rotationSpeed = 2;
-    [SerializeField] private float shootingInterval = 0.5f;
     private AlienGunslingerReferences references;
-    private AlienGunslingerController alienGunslingerController;
     private CharacterController characterController;
     private float currentAngle;
     private bool isShooting;
-    private float nextShootTime = 0;
     private int rotationDirection = 0;
     private bool doneShooting;
     private bool shotPlayer;
 
     private void Start()
     {
-        alienGunslingerController = GetComponent<AlienGunslingerController>();
         references = GetComponent<AlienGunslingerReferences>();
         characterController = references.Character;
     }
@@ -54,7 +50,7 @@ public class AlienGSSideToSideShootController : MonoBehaviour
 
     private IEnumerator DelayShooting()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.1f);//da li mi ovo jos treba??
         isShooting = true;
     }
 
@@ -103,9 +99,12 @@ public class AlienGSSideToSideShootController : MonoBehaviour
     }
 
     public bool DoneShooting() => doneShooting;
+
     public void ResetShootingBools()
     {
         doneShooting = false;
+        isShooting = false;
+        ResetAimConstraints();
     }
 
     public bool ShotPlayer() => shotPlayer;

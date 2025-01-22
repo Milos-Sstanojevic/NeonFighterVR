@@ -4,16 +4,17 @@ using UnityEngine;
 public class AlienGSShootingController : MonoBehaviour
 {
     [SerializeField] private float shootingTime = 2f;
-    [SerializeField] private Transform shootingPoint;
+    [SerializeField] private Transform shootingPointPunish;
+    [SerializeField] private Transform shootingPointDownUp;
     private AlienGunslingerController alienGunslingerController;
     private ShieldController shieldController;
     private AlienGunslingerReferences references;
-    private bool isShooting = false;
-    private bool shouldMove = false;
     private int punishShootingDamage = 30;
-    private Vector3 direction;
     private float nextFireRate;
+    private bool isPunishing;
     private bool punishOver;
+    private bool doneDefending;
+    private bool isDownUpShooting;
 
     private void Start()
     {
@@ -27,12 +28,12 @@ public class AlienGSShootingController : MonoBehaviour
         EventManager.Instance.SubscribeToOnChanceToSteerBulletAway(SteerBulletAway);
     }
 
+    //stun shoot needs more work, player should not be able to move while being punished, solve by making another event
     public void StunShoot()
     {
         //stun player and shoot at him for 1 second
-        shouldMove = false;
         EventManager.Instance.OnPlayerHitAction(punishShootingDamage);
-        isShooting = true;
+        isPunishing = true;
         punishOver = false;
         StartCoroutine(StunShootCoroutine());
     }
@@ -40,61 +41,48 @@ public class AlienGSShootingController : MonoBehaviour
     private IEnumerator StunShootCoroutine()
     {
         yield return new WaitForSeconds(5f);
-        isShooting = false;
+        isPunishing = false;
         punishOver = true;
     }
 
-    public void SetupShooting()
+    public void SetupDefendingFromShooting()
     {
-        direction = DirectionToMove();
-        isShooting = true;
-        shouldMove = true;
-
+        doneDefending = false;
         StartCoroutine(UnsetupShooting());
     }
 
     private IEnumerator UnsetupShooting()
     {
         yield return new WaitForSeconds(shootingTime);
-        isShooting = false;
-        shouldMove = false;
+        doneDefending = true;
     }
 
     private void Update()
     {
-        // if (isShooting && Time.time >= nextFireRate)
-        // {
-        //     Shoot();
-        //     nextFireRate = Time.time + references.GunData.FireRate;
-        // }
+        if (isPunishing && Time.time >= nextFireRate)
+        {
+            Shoot(shootingPointPunish);
+            nextFireRate = Time.time + references.GunData.FireRate;
+        }
 
-        if (!shouldMove) return;
-
-        // float speed = references.SideWalkSpeed;
-        // transform.localPosition += direction * speed * Time.deltaTime;
+        if (isDownUpShooting && Time.time >= nextFireRate)
+        {
+            Shoot(shootingPointDownUp);
+            nextFireRate = Time.time + references.GunData.FireRate;
+        }
     }
 
-    public Vector3 DirectionToMove()
+    public void Shoot(Transform shootingPoint)
     {
-        float chance = Random.Range(0f, 1f);
-
-        if (chance < 0.5f)
-            return Vector3.right;
-        else
-            return Vector3.left;
+        RaycastHit hit;
+        if (Physics.Raycast(shootingPoint.position, shootingPoint.forward, out hit, Mathf.Infinity))
+            if (hit.collider.GetComponent<CharacterController>())
+                EventManager.Instance.OnPlayerHitAction(references.GunData.GunDamage);
     }
-
-    // public void Shoot()
-    // {
-    //     RaycastHit hit;
-    //     if (Physics.Raycast(shootingPoint.position, shootingPoint.forward, out hit, Mathf.Infinity))
-    //         if (hit.collider.GetComponent<CharacterController>())
-    //             EventManager.Instance.OnPlayerHitAction(references.GunData.GunDamage);
-    // }
 
     private void SteerBulletAway(ref Vector3 targetPoint, Vector3 currentPosition)
     {
-        if (alienGunslingerController.GetCurrentState() != typeof(AGS_State_SideWalkAndShoot))
+        if (alienGunslingerController.GetCurrentState() != typeof(AGS_State_DefendingState))
             return;
 
         shieldController.BulletSteered();
@@ -111,6 +99,19 @@ public class AlienGSShootingController : MonoBehaviour
         targetPoint = currentPosition + steeringDirection;
     }
 
+    public void StartDownUpShoot()
+    {
+        isDownUpShooting = true;
+    }
+
+    public void StopDownUpShooting()
+    {
+        isDownUpShooting = false;
+    }
+
+    public bool IsPunishOver() => punishOver;
+    public bool IsDoneDefending() => doneDefending;
+
     private void OnDisable()
     {
         EventManager.Instance.UnsubscribeFromOnChanceToSteerBulletAway(SteerBulletAway);
@@ -118,10 +119,16 @@ public class AlienGSShootingController : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (shootingPoint != null)
+        if (shootingPointPunish != null)
         {
             Gizmos.color = Color.red;
-            Gizmos.DrawRay(shootingPoint.position, shootingPoint.forward * 40f);
+            Gizmos.DrawRay(shootingPointPunish.position, shootingPointPunish.forward * 40f);
+        }
+
+        if (shootingPointDownUp != null)
+        {
+            Gizmos.color = Color.blue;
+            Gizmos.DrawRay(shootingPointDownUp.position, shootingPointDownUp.forward * 40f);
         }
     }
 }

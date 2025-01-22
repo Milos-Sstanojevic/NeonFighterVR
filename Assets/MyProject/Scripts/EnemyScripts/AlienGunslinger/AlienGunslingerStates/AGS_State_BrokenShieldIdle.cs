@@ -15,12 +15,9 @@ public class AGS_State_BrokenShieldIdle : IState
         isDone = false;
         references.Animator.SetTrigger("BrokenShieldIdle");
         Debug.Log("BrokenShieldIdle");
+        references.DashingController.ResetDashingCoroutine();
     }
 
-    private void AnimationFinished()
-    {
-        isDone = true;
-    }
 
     public void OnExit()
     {

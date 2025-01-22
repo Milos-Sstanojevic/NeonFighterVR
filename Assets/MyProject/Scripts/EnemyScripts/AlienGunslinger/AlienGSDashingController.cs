@@ -11,13 +11,16 @@ public class AlienGSDashingController : MonoBehaviour
     [SerializeField] private float dashSpeed = 50;
     [SerializeField] private ParticleSystem dashParticle;
     private AlienGunslingerReferences references;
+    private CapsuleCollider enemyCollider;
     private Transform playerTransform;
     private bool isDashing;
     private Coroutine dashingCoroutine;
     private bool dashDone;
+    [SerializeField] private float oldDashDistance;
 
     private void Awake()
     {
+        enemyCollider = GetComponent<CapsuleCollider>();
         references = GetComponent<AlienGunslingerReferences>();
     }
 
@@ -31,9 +34,16 @@ public class AlienGSDashingController : MonoBehaviour
         StopAllCoroutines();
     }
 
+    public void DashToMakeDistance(float distance)
+    {
+        oldDashDistance = dashDistance;
+        dashDistance = distance;
+        StartDashParticles(references.Character.transform.forward);
+    }
+
     public void DashAwayFromPlayer()
     {
-        transform.position += -references.Character.transform.forward * dashDistance;
+        StartDashParticles(references.Character.transform.forward);
     }
 
     public void Dash()
@@ -50,6 +60,11 @@ public class AlienGSDashingController : MonoBehaviour
             return;
         }
 
+        StartDashParticles(dashDirection);
+    }
+
+    private void StartDashParticles(Vector3 dashDirection)
+    {
         float travelTime = dashDistance / dashSpeed;
         var particleMain = dashParticle.main;
         particleMain.startLifetime = travelTime;
@@ -59,12 +74,9 @@ public class AlienGSDashingController : MonoBehaviour
         enemyMesh.SetActive(false);
         shield.SetActive(false);
         guns.SetActive(false);
+        enemyCollider.enabled = false;
 
         StartCoroutine(DashCoroutine(dashDirection, travelTime));
-
-        // transform.position += dashDirection * dashDistance;
-
-        // dashDone = true;
     }
 
     private IEnumerator DashCoroutine(Vector3 direction, float travelTime)
@@ -84,10 +96,17 @@ public class AlienGSDashingController : MonoBehaviour
         transform.position = targetPosition;
         dashDone = true;
 
+        if (oldDashDistance != 0)
+        {
+            dashDistance = oldDashDistance;
+            oldDashDistance = 0;
+        }
+
         dashParticle.Stop();
         enemyMesh.SetActive(true);
         shield.SetActive(true);
         guns.SetActive(true);
+        enemyCollider.enabled = true;
     }
 
     private Vector3 CalculateDashDirection()
@@ -117,13 +136,13 @@ public class AlienGSDashingController : MonoBehaviour
         isDashing = true;
     }
 
-    public void StopDashingCoroutine()
+    public void ResetDashingCoroutine()
     {
         isDashing = false;
+        dashDone = false;
         StopCoroutine(dashingCoroutine);
     }
 
     public bool IsDashing() => isDashing;
     public bool GetDashDone() => dashDone;
-    public void ResetDashDone() => dashDone = false;
 }

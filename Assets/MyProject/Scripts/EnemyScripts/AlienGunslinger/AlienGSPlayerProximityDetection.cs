@@ -18,6 +18,6 @@ public class AlienGSPlayerProximityDetection : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         if (other.GetComponent<CharacterController>())
-            alienDashingController.StopDashingCoroutine();
+            alienDashingController.ResetDashingCoroutine();
     }
 }
